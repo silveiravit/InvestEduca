@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity} from 'react-native'
-import {Picker} from '@react-native-picker/picker';
+import { View, Text, StyleSheet} from 'react-native'
+import { Picker } from '@react-native-picker/picker';
 
 import api from "../api";
 
@@ -12,8 +12,7 @@ export default class Conversor extends Component{
             moedaA: props.moedaA,
             moedaB: props.moedaB,
             moedaB_valor: 0,
-            valorConvertido: 0,
-            moeda: 0
+            valorConvertido: 0
         }
     }
 
@@ -34,26 +33,24 @@ export default class Conversor extends Component{
     render(){
         return(
             <View>
-
-            <View style={{flexDirection: 'row', marginTop: -280}}>
                 <View>
-                    <Text style={styles.cotacao}>Cotação do Dólar: 
-                        <Text style={styles.valor}>{( this.state.valorConvertido === '' ? <ActivityIndicator size={40} /> : this.state.valorConvertido )}
-                        </Text> 
-                    </Text>
-                </View>
+                    <View style={styles.view2}>
 
-                <View style={{marginLeft: 30}}>
-                    <Picker
-                        selectedValue={this.state.moeda}
-                        onValueChange={ (itemValue, itemIndex) =>  this.setState({moeda: itemValue})}
-                        style={{ width: 120, marginTop: -260}}
-                    >
-                        
-                    </Picker> 
-                </View>
-            </View>
+                        <View style={styles.view1}>
+                            <Text style={styles.cotacao}>Cotação do {(this.state.moedaA === 'USD' ? "Dólar" : "Euro")} </Text>
+                            <Text style={styles.valor}> 4,93 </Text> 
+                        </View>
 
+                        <Picker style={styles.picker}>
+                            <Picker.Item 
+                                key={1}
+                                value={1}
+                                label="EUR"
+                            />
+                        </Picker>
+
+                    </View>
+                </View>
             </View>
         )
     }
@@ -63,11 +60,25 @@ const styles = StyleSheet.create({
     cotacao: {
         fontWeight: '600',
         fontSize: 20,
-        marginTop: -250,
         textAlign: 'left',
-        marginLeft: 20
+        marginLeft: 10
     },
     valor: {
         color: '#ff0000',
+        fontSize: 20,
+        marginLeft: 10,
+        fontWeight: '600',
+    },
+    view1: {
+        flexDirection: 'row'
+    },
+    view2: {
+        flexDirection: 'row', 
+        marginTop: -570
+    },
+    picker: {
+        width: 120, 
+        marginLeft: 50, 
+        marginTop: -13,
     }
 })

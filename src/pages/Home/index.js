@@ -1,20 +1,14 @@
-import React, {useState} from "react";
+import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image} from "react-native";
 import Conversor from "../../../services/conversor";
 import { AntDesign } from '@expo/vector-icons';
-import {Picker} from '@react-native-picker/picker';
 
 export default function Home(){
 
     return(
         <View style={ styles.container }>
             
-            
-
-                <Conversor moedaA="EUR" moedaB="BRL" />
-
-         
-            
+            <Conversor moedaA="USD" moedaB="BRL" />
 
             <View>
                 <TouchableOpacity style={ styles.btn }>
@@ -47,9 +41,9 @@ const styles = StyleSheet.create({
     },
     btn: {
         backgroundColor: '#161F4E',
-        margin: 10,
+        margin: 8,
         borderRadius: 20,
-        padding: 15,
+        padding: 10,
         flexDirection: 'row',
         alignItems: 'center',
     },  
@@ -57,5 +51,6 @@ const styles = StyleSheet.create({
         color: '#E9AB43',
         fontSize: 30,
         fontWeight: 'bold',
+        marginLeft: 15
     }
 })

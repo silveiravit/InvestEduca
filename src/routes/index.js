@@ -2,7 +2,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Feather } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
-import { Image } from 'react-native'
 
 import Home from '../pages/Home';
 import Learn from '../pages/Learn';
@@ -33,8 +32,8 @@ export default function Routes (){
           name='Home' 
           component={Home} 
           options={{
-            tabBarIcon: ({ color, size }) => {
-              return <Feather name='home' color={ color } size={ 40 } />
+            tabBarIcon: ({color, size}) => {
+              return <Feather name='home' color={'#000'} size={40} />
             }
           }}
         />
@@ -42,33 +41,19 @@ export default function Routes (){
         <Tab.Screen 
           name='Learn'
           component={Learn}
-          options={{
-            headerTitle: 'Venha aprender',
-            tabBarIcon: ({ color, size }) => {
-              return <Feather name='book' color={ color } size={ 40 } />
-            }
-          }}
+          
         />
 
         <Tab.Screen 
           name='Money'
           component={Money}
-          options={{
-            headerTitle: 'Organize seu dinheiro',
-            tabBarIcon: ({ color, size }) => {
-              return <MaterialIcons name="attach-money" size={40} color={ color } />
-            }
-          }}
+          
         />
 
         <Tab.Screen 
           name='Config' 
           component={Config}
-          options={{
-            tabBarIcon: ({ color, size }) => {
-              return <Ionicons name="settings-outline" size={40} color={ color } />
-            }
-          }} 
+           
         />
 
       </Tab.Navigator>
