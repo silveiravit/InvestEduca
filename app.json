@@ -1,0 +1,36 @@
+{
+  "expo": {
+    "name": "InvestEduca",
+    "slug": "InvestEduca",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/mustang.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.vitorsilver39.InvestEduca"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "c746c98f-b7e0-4a06-a1f6-f722e8dcabf1"
+      }
+    }
+  }
+}
