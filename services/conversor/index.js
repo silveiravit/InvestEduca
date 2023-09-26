@@ -32,31 +32,42 @@ export default class Conversor extends Component{
 
     render(){
         return(
-            <View>
-                <View>
-                    <View style={styles.view2}>
+            <View style={styles.container}>
+                
+                <View style={styles.view2}>
 
-                        <View style={styles.view1}>
-                            <Text style={styles.cotacao}>Cotação do {(this.state.moedaA === 'USD' ? "Dólar" : "Euro")} </Text>
-                            <Text style={styles.valor}> 4,93 </Text> 
-                        </View>
-
-                        <Picker style={styles.picker}>
-                            <Picker.Item 
-                                key={1}
-                                value={1}
-                                label="EUR"
-                            />
-                        </Picker>
-
+                    <View style={styles.view1}>
+                        <Text style={styles.cotacao}>Cotação do {(this.state.moedaA === 'USD' ? "Dólar" : "Euro")} </Text>
+                        <Text style={styles.valor}> 4,93 </Text> 
                     </View>
+
+                    <Picker style={styles.picker}>
+                        <Picker.Item 
+                            key={1}
+                            value={1}
+                            label="USD"
+                        />
+
+                        <Picker.Item 
+                            key={1}
+                            value={1}
+                            label="EUR"
+                        />
+                    </Picker>
+
                 </View>
+                
             </View>
         )
     }
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'flex-start',
+        marginTop: 50
+    },
     cotacao: {
         fontWeight: '600',
         fontSize: 20,
@@ -73,8 +84,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     view2: {
-        flexDirection: 'row', 
-        marginTop: -570
+        flexDirection: 'row'
     },
     picker: {
         width: 120, 
