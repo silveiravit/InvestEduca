@@ -1,11 +1,35 @@
 import React from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity, StatusBar } from "react-native";
+import firebase from '../../../database/FirebaseConnection'
+import { useNavigation } from '@react-navigation/native'
 
 export default function Config(){
+
+    const navigation = useNavigation()
+
+    async function sair(){
+        
+        await firebase.auth().signOut()
+        .then( (value) => {
+            alert('Saindo da aplicação!')
+            navigation.navigate('Login')
+        })
+        .catch( (error) => {
+            alert('Ops, ocorreu um erro!')
+        })
+
+    }
+
     return(
         <View style={ styles.container }>
-            <Image 
-                source={require('../../assets/usuario.png')}
+
+            <StatusBar 
+                barStyle={'light-content'}
+                backgroundColor={'#000'}
+            />
+
+            <Image
+                source={require('../../img/PorcoConfig.png')}
                 style={ styles.img }
             />
 
@@ -29,6 +53,10 @@ export default function Config(){
                 <TouchableOpacity>
                     <Text style={ styles.subtitulo }>Privacidade</Text>
                 </TouchableOpacity>
+
+                <TouchableOpacity onPress={ sair }>
+                    <Text style={ [styles.subtitulo, { color: '#ff0000'}] }>Sair</Text>
+                </TouchableOpacity>
             </View>
             
         </View>
@@ -38,17 +66,20 @@ export default function Config(){
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor: '#eee'
     },
     config: {
-        width: '70%',
-        marginTop: 70,
-        justifyContent: 'flex-start'
+        flex: 1,
+        justifyContent: 'center'
     },
     img: {
         width: 150,
         height: 150,
-        marginTop: 70
+        marginTop: 40,
+        borderWidth: 1,
+        borderColor: '#EE990A',
+        borderRadius: 80
     },
     titulo: {
         color: '#EE990A',
@@ -62,7 +93,6 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: '#ccc',
         marginTop: 20,
-        marginBottom: 30,
-        
+        marginBottom: 30
     }
 })

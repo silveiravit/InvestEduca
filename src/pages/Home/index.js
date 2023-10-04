@@ -1,43 +1,75 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image, StatusBar} from "react-native";
 import Conversor from "../../../services/conversor";
 import { AntDesign } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native'
 
 export default function Home(){
+
+    const navigation = useNavigation()
 
     return(
         <View style={ styles.container }>
             
-            <Conversor moedaA="USD" moedaB="BRL" />
+            <StatusBar 
+                barStyle={'light-content'}
+            />
 
-            <View>
-                <TouchableOpacity style={ styles.btn }>
+            <View style={ styles.areaCotacao }>
+                <Conversor moedaA="USD" moedaB="BRL" />
+            </View>  
+            
+            <TouchableOpacity 
+                style={ styles.btn } 
+                onPress={ () => navigation.navigate('Money') }
+            >   
+                <View style={ styles.view }>
+
                     <Text style={ styles.textoBtn }>Objetivos </Text>
 
-                    <View style={{ marginLeft: 160}}>
-                        <Text style={{ backgroundColor: '#E9AB43', borderRadius: 50, padding: 10 }}> <AntDesign name="arrowright" size={30} color="black" /> </Text>
+                    <View style={ styles.icon }>
+                        <AntDesign name="arrowright" size={30} color="black" /> 
                     </View>
 
-                </TouchableOpacity>
+                </View>
+            </TouchableOpacity>
 
-                <TouchableOpacity style={ styles.btn }>
+            <TouchableOpacity 
+                style={ styles.btn } 
+                onPress={ () => navigation.navigate('Money') }
+            >
+                <View style={ styles.view }>
+
                     <Text style={ styles.textoBtn }>Metas</Text>
 
-                    <View style={{ marginLeft: 210}}>
-                        <Text style={{ backgroundColor: '#E9AB43', borderRadius: 50, padding: 10 }}> <AntDesign name="arrowright" size={30} color="black" /> </Text>
+                    <View style={ styles.icon }>
+                        <AntDesign name="arrowright" size={30} color="black" /> 
                     </View>
 
-                </TouchableOpacity>
-            </View>
-
+                </View>
+            </TouchableOpacity>
         </View>
+
     )
 }
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1
+    },
+    view: {
         flex: 1,
-        justifyContent: 'flex-end'
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingHorizontal: 10
+    },
+    areaCotacao: {
+        flex: 1,
+        marginTop: 20,
+        justifyContent: 'flex-start'
+    },
+    cotacao: {
+        fontSize: 30
     },
     btn: {
         backgroundColor: '#161F4E',
@@ -51,6 +83,11 @@ const styles = StyleSheet.create({
         color: '#E9AB43',
         fontSize: 30,
         fontWeight: 'bold',
-        marginLeft: 15
+    },
+    icon: {
+        backgroundColor: '#E9AB43',
+        justifyContent: 'center',
+        borderRadius: 30,
+        padding: 5
     }
 })

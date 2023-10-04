@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { View, Text, StyleSheet} from 'react-native'
-import { Picker } from '@react-native-picker/picker';
+//import { Picker } from '@react-native-picker/picker';
 
-import api from "../api";
+import api from "../api/api";
 
 export default class Conversor extends Component{
 
@@ -20,59 +20,38 @@ export default class Conversor extends Component{
 
         const valor = this.state.moedaA + '_' + this.state.moedaB
 
-        const cotacao = await api.get(`convert?q=${valor}&compact=ultra&apiKey=19aae28063acb0c5a2c2`) 
+        const cotacao = await api.get(`convert?q=${valor}&compact=ultra&apiKey=19aae28063acb0c5a2c2`)
 
         const response = cotacao.data[valor]
 
         this.setState({
-            valorConvertido: 'R$ '+response.toFixed(2).replace('.',',')
+            valorConvertido: 'R$ '+ response.toFixed(2).replace('.',',')
         })
 
     }
 
     render(){
-        return(
-            <View style={styles.container}>
-                
-                <View style={styles.view2}>
 
-                    <View style={styles.view1}>
-                        <Text style={styles.cotacao}>Cotação do {(this.state.moedaA === 'USD' ? "Dólar" : "Euro")} </Text>
-                        <Text style={styles.valor}> 4,93 </Text> 
+        return(
+            <View>
+                <View style={styles.view1}>
+
+                    <View style={styles.view2}>
+                        <Text style={styles.cotacao}>Cotação do { ( this.state.moedaA === 'USD' ? 'Dólar' : 'Euro') }</Text>
+                        <Text style={styles.valor}> { this.state.valorConvertido } </Text> 
                     </View>
 
-                    <Picker style={styles.picker}>
-                        <Picker.Item 
-                            key={1}
-                            value={1}
-                            label="USD"
-                        />
-
-                        <Picker.Item 
-                            key={1}
-                            value={1}
-                            label="EUR"
-                        />
-                    </Picker>
-
+            
                 </View>
-                
             </View>
         )
     }
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'flex-start',
-        marginTop: 50
-    },
     cotacao: {
         fontWeight: '600',
         fontSize: 20,
-        textAlign: 'left',
-        marginLeft: 10
     },
     valor: {
         color: '#ff0000',
@@ -81,10 +60,11 @@ const styles = StyleSheet.create({
         fontWeight: '600',
     },
     view1: {
-        flexDirection: 'row'
+        flexDirection: 'row',
     },
     view2: {
-        flexDirection: 'row'
+        flexDirection: 'row', 
+        paddingHorizontal: 10
     },
     picker: {
         width: 120, 

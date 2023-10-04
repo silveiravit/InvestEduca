@@ -1,24 +1,47 @@
-import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native'
-//import 'react-native-gesture-handler';
-import React,  { Component } from 'react';
+import { createNativeStackNavigator } from '@react-navigation/native-stack' //Biblioteca de navegação
+import React from 'react';
 
-//import { createStackNavigator } from '@react-navigation/stack'
+//Páginas
+import Routes from './src/routes';
+import Inicio from './src/pages/Inicial';
+import Cadastro from './src/pages/Cadastro';
+import Login from './src/pages/Login';
 
-import Routes from './src/routes'
-
-//const Stack = createStackNavigator()
+const Stack = createNativeStackNavigator()
 
 export default function App () {
-  
     return (
+      <NavigationContainer>
 
-        <NavigationContainer>
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false
+          }}
+        >
 
-          <Routes />
-          
-        </NavigationContainer>
+        <Stack.Screen
+          name='Inicio'
+          component={Inicio}
+        />
 
+        <Stack.Screen
+          name='Cadastro'
+          component={Cadastro}
+        />
+
+        <Stack.Screen
+          name='Login'
+          component={Login}
+        />
+
+        <Stack.Screen
+          name='Routes'
+          component={Routes}
+        />
+
+        </Stack.Navigator>
+
+      </NavigationContainer>
     );
-  
 }
