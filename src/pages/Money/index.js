@@ -7,6 +7,7 @@ export default function Money(){
             
             <StatusBar 
                 barStyle={'light-content'}
+                backgroundColor={'#000'}
             />
 
             <View style={ styles.view1 }>

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, Text, StyleSheet} from 'react-native'
-//import { Picker } from '@react-native-picker/picker';
+import { Picker } from '@react-native-picker/picker';
 
 import api from "../api/api";
 
@@ -12,7 +12,12 @@ export default class Conversor extends Component{
             moedaA: props.moedaA,
             moedaB: props.moedaB,
             moedaB_valor: 0,
-            valorConvertido: 0
+            valorConvertido: 0,
+            cotacao: 0,
+            dolareuro: [
+                {key: 1, money: 'USD'},
+                {key: 2, money: 'EUR'}
+            ]
         }
     }
 
@@ -32,16 +37,30 @@ export default class Conversor extends Component{
 
     render(){
 
+        let moneyItem = this.state.dolareuro.map( (v, k) => {
+            return <Picker.Item key={k} value={v} label={v.money} />
+        } )
+
         return(
             <View>
                 <View style={styles.view1}>
-
-                    <View style={styles.view2}>
-                        <Text style={styles.cotacao}>Cotação do { ( this.state.moedaA === 'USD' ? 'Dólar' : 'Euro') }</Text>
+                    <View style={{ flex: 1, flexDirection:'row'}}>
+                        <Text style={styles.cotacao}>
+                            Cotação do { ( this.state.moedaA === 'USD' ? 'Dólar' : 'Euro') }
+                        </Text>
+                        
                         <Text style={styles.valor}> { this.state.valorConvertido } </Text> 
                     </View>
 
-            
+                    <View style={{ justifyContent: 'flex-end'}}>
+                        <Picker 
+                        style={ styles.picker }
+                        selectedValue={ this.state.cotacao }
+                        onValueChange={ (itemvalue, itemindex) => this.setState({ cotacao: itemvalue }) }
+                        >
+                            { moneyItem }
+                        </Picker>
+                    </View>
                 </View>
             </View>
         )
@@ -60,15 +79,11 @@ const styles = StyleSheet.create({
         fontWeight: '600',
     },
     view1: {
-        flexDirection: 'row',
-    },
-    view2: {
         flexDirection: 'row', 
+        alignItems: 'center',
         paddingHorizontal: 10
     },
     picker: {
         width: 120, 
-        marginLeft: 50, 
-        marginTop: -13,
     }
 })

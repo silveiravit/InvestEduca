@@ -18,8 +18,8 @@ export default function Cadastro() {
             firebase.database().ref('usuarios').child(value.user.uid).set({
                 username: username
             })
-            navigation.navigate('Login')
             alert('Usuário cadastrado: ' + username)
+            navigation.navigate('Login')
         } )
         .catch( (error) => {
             alert('Ops, ocorreu um erro!')

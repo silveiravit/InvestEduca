@@ -6,6 +6,8 @@ import { useNavigation } from '@react-navigation/native'
 //import Carousel, { Pagination }  from 'react-native-snap-carousel'
 import { SliderBox } from "react-native-image-slider-box";
 
+import { Picker } from '@react-native-picker/picker'
+
 const SLIDER_WIDTH = Dimensions.get('window').width
 const ITEM_WIDTH = SLIDER_WIDTH * 0.95
 
@@ -21,7 +23,6 @@ export default function Home(){
         'https://www.fundsexplorer.com.br/artigos/wp-content/uploads/2022/03/Imagem21.png',
         
         'https://somosleve.com.br/wp-content/uploads/2021/10/28_post.png'
-        
     ]
 
     function renderItem({ item }){
@@ -39,15 +40,20 @@ export default function Home(){
     const [index, setIndex] = React.useState(0)
     //const isCarousel = React.useRef(null)
 
+    const dolar = 'USD'
+
     return(
         <View style={ styles.container }>
             
             <StatusBar 
                 barStyle={'light-content'}
+                backgroundColor={'#000'}
             />
 
             <View style={ styles.areaCotacao }>
-                <Conversor moedaA="USD" moedaB="BRL" />
+                <Conversor moedaA={dolar} moedaB="BRL" />
+
+                
             </View>  
 
             <View style={ styles.sliderImg }> 
@@ -94,7 +100,7 @@ export default function Home(){
             >   
                 <View style={ styles.view }>
 
-                    <Text style={ styles.textoBtn }>Objetivos </Text>
+                    <Text style={ styles.textoBtn }>OBJETIVOS </Text>
 
                     <View style={ styles.icon }>
                         <AntDesign name="arrowright" size={30} color="black" /> 
@@ -109,7 +115,7 @@ export default function Home(){
             >
                 <View style={ styles.view }>
 
-                    <Text style={ styles.textoBtn }>Metas</Text>
+                    <Text style={ styles.textoBtn }>GASTOS</Text>
 
                     <View style={ styles.icon }>
                         <AntDesign name="arrowright" size={30} color="black" /> 
@@ -132,10 +138,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingHorizontal: 10
     },
-    areaCotacao: {
-        //flex:1,
-        marginTop: 20,
-        justifyContent: 'flex-start'
+    areaCotacao: {      
+        justifyContent: 'center',
     },
     cotacao: {
         fontSize: 30
@@ -161,7 +165,6 @@ const styles = StyleSheet.create({
     },
     sliderImg: {
         flex: 1,
-        paddingTop: 20
     },
     containerCarousel: {
         width: ITEM_WIDTH,
@@ -170,5 +173,5 @@ const styles = StyleSheet.create({
         width: ITEM_WIDTH,
         height: 200,
         borderRadius: 20
-    }
+    },
 })

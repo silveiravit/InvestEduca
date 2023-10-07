@@ -1,7 +1,8 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Feather } from '@expo/vector-icons';
+// import { Feather } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
 
 import Home from '../pages/Home';
 import Learn from '../pages/Learn';
@@ -32,7 +33,7 @@ export default function Routes (){
         component={Home} 
         options={{
           tabBarIcon: ({color, size}) => {
-            return <Feather name='home' color={ color } size={40} />
+            return <AntDesign name="home" size={40} color={ color } />
           }
         }}
       />
@@ -42,7 +43,7 @@ export default function Routes (){
         component={Learn} 
         options={{
           tabBarIcon: ({color, size}) => {
-            return <AntDesign name="book" size={40} color={ color } />
+            return <Entypo name="book" size={40} color={ color } />
           }
         }}
       />
