@@ -1,46 +1,93 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image, StatusBar, Dimensions} from "react-native";
-import Conversor from "../../../services/conversor";
+import Conversor from "../../../services/conversor"; // Importado o arquivo de conversor de moeda
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native'
-//import Carousel, { Pagination }  from 'react-native-snap-carousel'
-import { SliderBox } from "react-native-image-slider-box";
-
-import { Picker } from '@react-native-picker/picker'
+import Carousel from 'react-native-snap-carousel'
 
 const SLIDER_WIDTH = Dimensions.get('window').width
-const ITEM_WIDTH = SLIDER_WIDTH * 0.95
+const ITEM_WIDTH = SLIDER_WIDTH * 1
+
+// Acima faremos com que os componentes da tela se adaptem de acordo com a tela do celular
 
 export default function Home(){
 
     const navigation = useNavigation()
 
-    const carousel = [
-        'https://investidorsardinha.r7.com/wp-content/uploads/2020/10/o-que-e-educacao-financeira-importancia-e-10-dicas-para-alcancar-1200x900.png',
-
-        'https://andrebona.com.br/wp-content/uploads/2019/04/financial-3268440_1920.jpg',
-        
-        'https://www.fundsexplorer.com.br/artigos/wp-content/uploads/2022/03/Imagem21.png',
-        
-        'https://somosleve.com.br/wp-content/uploads/2021/10/28_post.png'
+    const carouselMoeda = [
+        { title: ( <Conversor moedaA="USD" moedaB="BRL" /> ) },
+        { title: ( <Conversor moedaA="EUR" moedaB="BRL" /> ) },
     ]
 
-    function renderItem({ item }){
+    const carouselImagem = [
+        { 
+            image:  'https://investidorsardinha.r7.com/wp-content/uploads/2020/10/o-que-e-educacao-financeira-importancia-e-10-dicas-para-alcancar-1200x900.png' 
+        },
+        { 
+            image:  'https://beieducacao.com.br/wp-content/uploads/2022/12/blog_201222_educfinanceira-scaled.jpg' 
+        },
+        { 
+            image:  'https://www.sucessor.com.br/wp-content/uploads/2020/09/educa%C3%A7%C3%A3o-financeira-scaled.jpg' 
+        },
+        { 
+            image:  'https://querofinanciar.com/wp-content/uploads/2019/11/312463-conheca-6-incriveis-aplicativos-de-educacao-financeira.jpg' 
+        },
+    ]
+
+    const carouselImagemCentro = [
+        { 
+            title: 'Estabelecendo metas',
+            text: 'Você já pensou sobre o que quer fazer daqui a 5 anos? Está certo sobre qual é o seu objetivo principal no momento? Sabe o que você quer ter alcançado ',
+            image:  'https://assets-blog.pagseguro.uol.com.br/wp-content/2022/05/real-digital.jpg' 
+        },
+        { 
+            title: 'Estabelecendo metas',
+            text: 'Você já pensou sobre o que quer fazer daqui a 5 anos? Está certo sobre qual é o seu objetivo principal no momento? Sabe o que você quer ter alcançado ',
+            image:  'https://images.pexels.com/photos/6368833/pexels-photo-6368833.jpeg?auto=compress&cs=tinysrgb&w=600' 
+        },
+        { 
+            title: 'Estabelecendo metas',
+            text: 'Você já pensou sobre o que quer fazer daqui a 5 anos? Está certo sobre qual é o seu objetivo principal no momento? Sabe o que você quer ter alcançado ',
+            image:  'https://images.pexels.com/photos/6802049/pexels-photo-6802049.jpeg?auto=compress&cs=tinysrgb&w=600' 
+        },
+        { 
+            title: 'Estabelecendo metas',
+            text: 'Você já pensou sobre o que quer fazer daqui a 5 anos? Está certo sobre qual é o seu objetivo principal no momento? Sabe o que você quer ter alcançado ',
+            image:  'https://www.tupi.fm/wp-content/uploads/Endividamento-do-brasileiro-em-2019-Blog-Consignet.png' 
+        },
+    ]
+
+    function renderMoeda({ item }){
         return(
-            <View style={ styles.containerCarousel }>
-                <Image 
-                    source={{ uri: `${item.Image}`}}
-                    style={ styles.imgCarousel }
-                />
-            </View>
+            <View style={ styles.areaCotacao }>     
+                {item.title}
+            </View> 
         )
     }
 
+    function renderItem({ item }){
+        return(
+            <View style={ styles.carouselItemContainer }>     
+                <Image 
+                    source={{ uri: `${item.image}`}} 
+                    style={ styles.image }
+                />
+            </View> 
+        )
+    }
 
-    const [index, setIndex] = React.useState(0)
-    //const isCarousel = React.useRef(null)
-
-    const dolar = 'USD'
+    function renderItemCentro({ item }){
+        return(
+            <View style={ styles.carouselItemContainerCentro }>     
+                <Image 
+                    source={{ uri: `${item.image}` }} 
+                    style={ styles.imageCentro }
+                />
+                <Text style={ styles.title }>{ item.title }</Text>
+                <Text style={ styles.text }>{ item.text }</Text>
+            </View> 
+        )
+    }
 
     return(
         <View style={ styles.container }>
@@ -50,110 +97,150 @@ export default function Home(){
                 backgroundColor={'#000'}
             />
 
-            <View style={ styles.areaCotacao }>
-                <Conversor moedaA={dolar} moedaB="BRL" />
+            <View style={ styles.viewPrincipalCotacao }>
+                <Carousel
+                    data={carouselMoeda}
+                    sliderWidth={SLIDER_WIDTH}
+                    itemWidth={ITEM_WIDTH}
+                    renderItem={renderMoeda}
+                    autoplay={true}
+                    loop={true}
+                    autoplayInterval={3000}
+                />
+            </View>
 
-                
-            </View>  
-
-            <View style={ styles.sliderImg }> 
-                {/* <Carousel 
-                    layout={'default'}
-                    data={carousel}
+            <View style={ styles.viewPrincipalImagem }>
+                <Carousel
+                    data={carouselImagem}
                     sliderWidth={SLIDER_WIDTH}
                     itemWidth={ITEM_WIDTH}
                     renderItem={renderItem}
                     autoplay={true}
-                    //ref={isCarousel}
-                    onSnapToItem={(index) => setIndex(index)}
-                    //useScrollView={true}
                     loop={true}
+                    autoplayInterval={5000}
                 />
-                <Pagination
-                    dotsLength={carousel.length}
-                    activeDotIndex={index}
-                    //carouselRef={isCarousel}
-                    dotStyle={{
-                    width: 10,
-                    height: 10,
-                    borderRadius: 5,
-                    marginHorizontal: 0,
-                    backgroundColor: 'rgba(0, 0, 0, 0.92)'
-                    }}
-                    inactiveDotOpacity={0.4}
-                    inactiveDotScale={0.6}
-                /> */}
-
-                <SliderBox 
-                    images={carousel} 
-                    autoplay={true}
-                    autoplayinterval={1000}
-                    dotColor='#E9AB43'
-                    circleLoop={true}
-                />
-
             </View>
-            
-            <TouchableOpacity 
-                style={ styles.btn } 
-                onPress={ () => navigation.navigate('Money') }
-            >   
-                <View style={ styles.view }>
 
-                    <Text style={ styles.textoBtn }>OBJETIVOS </Text>
+            <View style={ styles.viewCentroImagem }>
+                <Carousel
+                    data={carouselImagemCentro}
+                    sliderWidth={SLIDER_WIDTH}
+                    itemWidth={ITEM_WIDTH}
+                    renderItem={renderItemCentro}
+                    autoplay={true}
+                    loop={true}
+                    autoplayInterval={5000}
+                />
+            </View>
 
-                    <View style={ styles.icon }>
-                        <AntDesign name="arrowright" size={30} color="black" /> 
+            <View style={ styles.areaBtn }>
+                <TouchableOpacity 
+                    style={ styles.btn } 
+                    onPress={ () => navigation.navigate('Objetivo') }
+                >   
+                    <View style={ styles.viewBtn }>
+                        <Text style={ styles.textoBtn }>OBJETIVOS </Text>
+                        <View style={ styles.icon }>
+                            <AntDesign name="arrowright" size={30} color="black" /> 
+                        </View>
                     </View>
+                </TouchableOpacity>
 
-                </View>
-            </TouchableOpacity>
-
-            <TouchableOpacity 
-                style={ styles.btn } 
-                onPress={ () => navigation.navigate('Money') }
-            >
-                <View style={ styles.view }>
-
-                    <Text style={ styles.textoBtn }>GASTOS</Text>
-
-                    <View style={ styles.icon }>
-                        <AntDesign name="arrowright" size={30} color="black" /> 
+                <TouchableOpacity 
+                    style={ styles.btn } 
+                    onPress={ () => navigation.navigate('Gasto') }
+                >
+                    <View style={ styles.viewBtn }>
+                        <Text style={ styles.textoBtn }>GASTOS</Text>
+                        <View style={ styles.icon }>
+                            <AntDesign name="arrowright" size={30} color="black" /> 
+                        </View>
                     </View>
-
-                </View>
-            </TouchableOpacity>
+                </TouchableOpacity>
+            </View>
         </View>
 
     )
 }
 
 const styles = StyleSheet.create({
+    // Interface
     container: {
         flex: 1
     },
-    view: {
+    areaCotacao: {      
+        padding: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor:  '#000',
+    },
+    carouselItemContainer: {
+        marginHorizontal: 15,
+    },
+    image: {
+        width: '100%',
+        height: 180,
+        borderRadius: 10
+    },
+    viewConteudo:{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    viewPrincipalCotacao: {
+        marginBottom: 10
+    },
+    viewPrincipalImagem: {
+        flex: 1,
+        justifyContent: 'flex-start'
+    },
+    carouselItemContainerCentro: {
+        padding: 20,
+        margin: 15,
+        borderRadius: 10,
+        borderWidth: 2,
+        borderColor: '#161F4E'
+    },
+    imageCentro : {
+        width: '100%',
+        height: 200,
+        borderRadius: 10
+    },
+    viewCentroImagem : {
+        
+    },
+    title: {
+        fontSize: 18,
+        color: '#161F4E',
+        fontWeight: '400',
+        marginTop: 8
+    }, 
+    text: {
+        fontSize: 14,
+        color: '#161F4E',
+        fontWeight: '400'
+    },
+
+    // Botões
+    areaBtn: {
+        justifyContent: 'flex-end'
+    },
+    viewBtn: {
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
         paddingHorizontal: 10
     },
-    areaCotacao: {      
-        justifyContent: 'center',
-    },
-    cotacao: {
-        fontSize: 30
-    },
     btn: {
         backgroundColor: '#161F4E',
-        margin: 8,
-        borderRadius: 20,
+        margin: 7,
+        borderRadius: 10,
         padding: 10,
         flexDirection: 'row',
         alignItems: 'center',
     },  
     textoBtn: {
-        color: '#E9AB43',
+        color: '#FFF',
         fontSize: 30,
         fontWeight: 'bold',
     },
@@ -162,16 +249,5 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderRadius: 30,
         padding: 5
-    },
-    sliderImg: {
-        flex: 1,
-    },
-    containerCarousel: {
-        width: ITEM_WIDTH,
-    },
-    imgCarousel: {
-        width: ITEM_WIDTH,
-        height: 200,
-        borderRadius: 20
-    },
+    }
 })

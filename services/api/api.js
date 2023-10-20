@@ -1,6 +1,6 @@
 import axios from "axios";
 
-//https://free.currconv.com/api/v7/convert?q=USD_PHP&compact=ultra&apiKey=19aae28063acb0c5a2c2
+//https://free.currconv.com/api/v7/convert?q=USD_PHP&compact=ultra&apiKey=35d807af28b8ab7e3d9d
 
 const api = axios.create({
     baseURL: 'https://free.currconv.com/api/v7/'

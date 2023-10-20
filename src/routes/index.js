@@ -1,5 +1,4 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-// import { Feather } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
@@ -11,7 +10,7 @@ import Config from '../pages/Config';
 
 const Tab = createBottomTabNavigator()
 
-export default function Routes (){
+export default function Routes(){
   return(
     <Tab.Navigator
       screenOptions={{

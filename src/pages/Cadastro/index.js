@@ -1,30 +1,48 @@
-import react, { useState } from 'react'
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image, StatusBar } from 'react-native';
-import { useNavigation } from '@react-navigation/native'
+import react, { useState } from 'react' // Hook de estados
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image, StatusBar } from 'react-native'; // Componentes
+import { useNavigation } from '@react-navigation/native' // Hook de navegação
 
-import firebase from '../../../database/FirebaseConnection';
+import firebase from '../../../database/FirebaseConnection'; // Importação do firebase
 
 export default function Cadastro() {
 
     const navigation = useNavigation()
     const [email, setEmail] = useState('')
     const [senha, setSenha] = useState('')
+    const [confirmSenha, setConfirmSenha] = useState('')
     const [username, setUsername] = useState('')
+    const [user, setUser] = useState(null)
+
+    // Acima foi declarado as states de navegação e de usuário
 
     async function cadastrar(){
 
-        await firebase.auth().createUserWithEmailAndPassword(email, senha)
-        .then( (value) => {
-            firebase.database().ref('usuarios').child(value.user.uid).set({
-                username: username
+        if( confirmSenha === senha){
+
+            await firebase.auth().createUserWithEmailAndPassword(email, senha)
+            .then( (user) => {
+                
+                firebase.database().ref('usuarios').child(user.user.uid).set({
+                    username: username
+                })
+
+                alert('Usuário cadastrado, '+ username)
+                navigation.navigate('Login')
+
+            } )
+            .catch( (error) => {
+                alert('Ops, ocorreu um erro!')
             })
-            alert('Usuário cadastrado: ' + username)
-            navigation.navigate('Login')
-        } )
-        .catch( (error) => {
-            alert('Ops, ocorreu um erro!')
-        })
+
+        }else{
+
+            alert('Senhas diferentes!')
+            return
+
+        }
     }
+
+    // Acima é feito a autenticação no banco de dados firebase para efetuar o cadastro
 
     return (
         <View style={styles.container}>
@@ -56,12 +74,14 @@ export default function Cadastro() {
                         style={ styles.input }
                         onChangeText={ (username) => setUsername(username) }
                         placeholder='Username'
+                        placeholderTextColor={'#161F4E'}
                     />
 
                     <TextInput 
                         style={ styles.input }
                         onChangeText={ (email) => setEmail(email) }
                         placeholder='E-mail'
+                        placeholderTextColor={'#161F4E'}
                     />
 
                     <TextInput 
@@ -70,14 +90,16 @@ export default function Cadastro() {
                         keyboardType='numeric'
                         secureTextEntry={true}
                         placeholder='Senha'
+                        placeholderTextColor={'#161F4E'}
                     />
 
                     <TextInput 
                         style={ styles.input }
-                        onChangeText={ (senha) => setSenha(senha) }
+                        onChangeText={ (confirmsenha) => setConfirmSenha(confirmsenha) }
                         keyboardType='numeric'
                         secureTextEntry={true}
                         placeholder='Confirmação de senha'
+                        placeholderTextColor={'#161F4E'}
                     />
 
                 </View>

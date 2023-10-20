@@ -1,30 +1,37 @@
 import react, { useState } from 'react'
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image, StatusBar } from 'react-native';
-import firebase from '../../../database/FirebaseConnection'
-import { useNavigation } from '@react-navigation/native'
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image, StatusBar } from 'react-native'; // Componentes
+import firebase from '../../../database/FirebaseConnection' // Importação do firebase
+import { useNavigation } from '@react-navigation/native' // Hook de navegação
 
-export default function Login() {
+export default function Login({ changeStatus }) {
 
     const navigation = useNavigation()
-    const [email, setEmail] = useState('')
-    const [senha, setSenha] = useState('')
+    const [email, setEmail] = useState('teste@teste.com')
+    const [senha, setSenha] = useState('123456')
     const [username, setUsername] = useState('')
 
-    async function logar(){
+    // Acima foi declarado as states de navegação e de usuário
 
-        await firebase.auth().signInWithEmailAndPassword(email, senha)
-        .then( (value) => {
-            firebase.database().ref('usuarios').child(value.user.uid).on('value', (snapshot) => {
-                alert('Bem-vindo, '+ snapshot.val().username + '!')
-            })
-            
+    function acessar(){
+
+        const user = firebase.auth().signInWithEmailAndPassword(email, senha)
+        .then( (user) => {
+            // changeStatus(user.user.uid)
+            // firebase.database().ref('usuarios').child(user.user.uid).once('value', (snapshot) => {
+            //     setUsername(snapshot)
+            //     username: username
+            // })
+            alert('Acesso permitido, '+ user.user.email)
             navigation.navigate('Routes')
-        })
-        .catch( (error) => {
-            alert('Ops, ocorreu um erro!')
+
         } )
+        .catch( () => {
+            alert('Acesso negado!')
+        })
 
     }
+
+    // Acima é feito a autenticação no banco de dados firebase para efetuar o login
 
     return (
         <View style={styles.container}>
@@ -56,6 +63,8 @@ export default function Login() {
                         style={ styles.input }
                         onChangeText={ (email) => setEmail(email) }
                         placeholder='E-mail'
+                        placeholderTextColor={'#161F4E'}
+                        value={email}
                     />
 
                     <TextInput 
@@ -64,12 +73,14 @@ export default function Login() {
                         keyboardType='numeric'
                         secureTextEntry={true}
                         placeholder='Senha'
+                        placeholderTextColor={'#161F4E'}
+                        value={senha}
                     />
 
                 </View>
 
                 <View style={ styles.view2 }>  
-                    <TouchableOpacity style={ styles.btn } onPress={ logar } >
+                    <TouchableOpacity style={ styles.btn } onPress={ acessar } >
                         <Text style={ styles.textoBtn }>ENTRAR</Text>
                     </TouchableOpacity>
 

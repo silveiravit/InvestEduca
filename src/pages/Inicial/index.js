@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
         borderRadius: 50
     },
     areaTitulo: {
-        flexDirection: 'row'
+        flexDirection: 'row',
+        paddingHorizontal: 10
     }
 })
