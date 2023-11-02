@@ -68,10 +68,9 @@ export default function Objetivo(){
 
             <View style={ styles.areaBtn }>
                 <TouchableOpacity style={ styles.btn }>
-                    <Text style={ styles.textoBtn }>CALCULAR</Text>
+                    <Text style={ styles.textoBtn }>SIMULAR</Text>
                 </TouchableOpacity>
             </View>
-            
             
         </View>
     )
@@ -84,16 +83,16 @@ const styles = StyleSheet.create({
     },
     view1: {
         justifyContent: 'flex-start',
-        marginVertical: 30
+        marginVertical: '5%'
     },
     view2: {
         justifyContent: 'center',
     },
     areaBtn: {
         flex: 1,
-        justifyContent: 'flex-start',
+        justifyContent: 'flex-end',
         alignItems: 'center',
-        marginBottom: 30
+        marginBottom: '10%'
     },
     titulo: {
         color: '#161F4E',
@@ -117,14 +116,14 @@ const styles = StyleSheet.create({
     },
     btn: {
         backgroundColor: '#161F4E',
-        borderRadius: 10,
+        borderRadius: 50,
         width: 200,
         marginTop: 20,
         height: 50,
         justifyContent: 'center'
     },
     textoBtn: {
-        color: '#E9AB43',
+        color: '#FFF',
         fontSize: 25,
         textAlign: 'center',
         fontWeight: 'bold',

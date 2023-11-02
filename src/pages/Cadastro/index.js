@@ -1,44 +1,58 @@
 import react, { useState } from 'react' // Hook de estados
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image, StatusBar } from 'react-native'; // Componentes
 import { useNavigation } from '@react-navigation/native' // Hook de navegação
-
 import firebase from '../../../database/FirebaseConnection'; // Importação do firebase
+import Loading from '../../Loading'; //Componente de Loading 
+import { Entypo } from '@expo/vector-icons';
 
 export default function Cadastro() {
 
     const navigation = useNavigation()
-    const [email, setEmail] = useState('')
-    const [senha, setSenha] = useState('')
-    const [confirmSenha, setConfirmSenha] = useState('')
-    const [username, setUsername] = useState('')
-    const [user, setUser] = useState(null)
+    const [email, setEmail] = useState('vitor@gmail.com')
+    const [senha, setSenha] = useState('123456')
+    const [confirmSenha, setConfirmSenha] = useState('123456')
+    const [username, setUsername] = useState('vitor')
+    const [loading, setLoading] = useState(false)
+    const [hidePass, setHidePass] = useState(true)
+    const [hidePass1, setHidePass1] = useState(true)
 
     // Acima foi declarado as states de navegação e de usuário
 
-    async function cadastrar(){
+    function cadastrar(){
+
+        setLoading(true)
 
         if( confirmSenha === senha){
 
-            await firebase.auth().createUserWithEmailAndPassword(email, senha)
+            firebase.auth().createUserWithEmailAndPassword(email, senha)
             .then( (user) => {
-                
                 firebase.database().ref('usuarios').child(user.user.uid).set({
                     username: username
                 })
-
-                alert('Usuário cadastrado, '+ username)
+                alert('Usuário cadastrado!')
                 navigation.navigate('Login')
+                setLoading(false)
 
             } )
             .catch( (error) => {
-                alert('Ops, ocorreu um erro!')
+                if( error.code === 'auth/invalid-email'){
+                    alert('E-mail é inválido.')
+
+                }
+                if( error.code === 'auth/email-already-exists' ){
+                    alert('O e-mail fornecido já está em uso por outro usuário.')
+                }
+                if( error.code === 'auth/weak-password' ){
+                    alert('Sua senha deve ter pelo menos 6 caracteres.')
+                }
+
+                setLoading(false)
             })
 
         }else{
-
             alert('Senhas diferentes!')
+            setLoading(false)
             return
-
         }
     }
 
@@ -47,12 +61,9 @@ export default function Cadastro() {
     return (
         <View style={styles.container}>
 
-            <StatusBar 
-                barStyle={'light-content'}
-                backgroundColor={'#161F4E'}
-            />
-
             <View style={ styles.viewCont }>
+
+                <Loading visible={loading} />
 
                 <View style={ styles.areaTitulo }>
                     <Text style={ styles.text }>Invest</Text>
@@ -68,39 +79,64 @@ export default function Cadastro() {
                         />
                     </View>
 
-                    <Text style={ styles.titulo }>Cadastrar</Text>
+                    <View style={ styles.viewCad }>
 
-                    <TextInput 
-                        style={ styles.input }
-                        onChangeText={ (username) => setUsername(username) }
-                        placeholder='Username'
-                        placeholderTextColor={'#161F4E'}
-                    />
+                        <Text style={ styles.titulo }>Cadastrar</Text>
 
-                    <TextInput 
-                        style={ styles.input }
-                        onChangeText={ (email) => setEmail(email) }
-                        placeholder='E-mail'
-                        placeholderTextColor={'#161F4E'}
-                    />
+                        <TextInput 
+                            style={ styles.input }
+                            onChangeText={ (username) => setUsername(username) }
+                            placeholder='Username'
+                            placeholderTextColor={'#161F4E'}
+                            value={username}
+                        />
 
-                    <TextInput 
-                        style={ styles.input }
-                        onChangeText={ (senha) => setSenha(senha) }
-                        keyboardType='numeric'
-                        secureTextEntry={true}
-                        placeholder='Senha'
-                        placeholderTextColor={'#161F4E'}
-                    />
+                        <TextInput 
+                            style={ styles.input }
+                            onChangeText={ (email) => setEmail(email) }
+                            placeholder='E-mail'
+                            placeholderTextColor={'#161F4E'}
+                            value={email}
+                            autoCapitalize='none'
+                        />
 
-                    <TextInput 
-                        style={ styles.input }
-                        onChangeText={ (confirmsenha) => setConfirmSenha(confirmsenha) }
-                        keyboardType='numeric'
-                        secureTextEntry={true}
-                        placeholder='Confirmação de senha'
-                        placeholderTextColor={'#161F4E'}
-                    />
+                        <View style={ styles.inputSenha }>
+
+                            <TextInput 
+                                style={ styles.input1 }
+                                onChangeText={ (senha) => setSenha(senha) }
+                                keyboardType='numeric'
+                                secureTextEntry={ hidePass }
+                                placeholder='Senha'
+                                placeholderTextColor={'#161F4E'}
+                                value={senha}
+                            /> 
+
+                            <TouchableOpacity onPress={ () => setHidePass(!hidePass)} >                               
+                                <Entypo name={ !hidePass ? 'eye-with-line' : 'eye'} size={30} color="black" />
+                            </TouchableOpacity>
+
+                        </View>
+
+                        <View style={ styles.inputSenha }>
+
+                            <TextInput 
+                                style={ styles.input1 }
+                                onChangeText={ (senha) => setConfirmSenha(senha) }
+                                keyboardType='numeric'
+                                secureTextEntry={ hidePass1 }
+                                placeholder='Senha'
+                                placeholderTextColor={'#161F4E'}
+                                value={confirmSenha}
+                            /> 
+
+                            <TouchableOpacity onPress={ () => setHidePass1(!hidePass1)} >                               
+                                <Entypo name={ !hidePass1 ? 'eye-with-line' : 'eye'} size={30} color="black" />
+                            </TouchableOpacity>
+
+                        </View> 
+
+                    </View>
 
                 </View>
 
@@ -137,7 +173,7 @@ const styles = StyleSheet.create({
         height: 400,
         paddingHorizontal: '5%',
         borderRadius: 15,
-        width: '95%'
+        width: '90%'
     },
     view2: {
         alignItems: 'center',
@@ -148,6 +184,10 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    viewCad: {
+        flex: 1,
+        justifyContent: 'flex-start'
     },
     texto: {
         fontSize: 25,
@@ -163,7 +203,8 @@ const styles = StyleSheet.create({
         borderRadius: 30,
         color: '#161F4E',
         backgroundColor: '#E9AB43',
-        margin: 10
+        marginHorizontal: '2%',
+        marginVertical: '3%'
     },
     btn: {
         backgroundColor: '#E9AB43',
@@ -181,8 +222,7 @@ const styles = StyleSheet.create({
         color: '#161F4E',
         fontSize: 30,
         textAlign: 'center',
-        marginTop: 5,
-        marginBottom: 40,
+        marginVertical: '3%',
         fontWeight: 'bold',
         fontStyle: 'italic'
     },
@@ -207,8 +247,9 @@ const styles = StyleSheet.create({
         height: 130
     },
     areaImg: {
-        marginTop: -110,
-        alignItems: 'center'
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        marginTop: '-25%'
     },
     textoCadastro: {
         color: '#fff', 
@@ -225,5 +266,24 @@ const styles = StyleSheet.create({
     cadastre: {
         flexDirection: 'row',
         marginTop: 10
-    }
+    },
+    input1: {
+        fontSize: 25,
+        textAlign: 'left',
+        color: '#161F4E',
+        flex: 1
+    },
+    inputSenha: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#E9AB43',
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 30,
+        paddingHorizontal: 20,
+        justifyContent: 'center',
+        paddingVertical: 5,
+        marginHorizontal: '2%',
+        margin: 10
+    },
 });

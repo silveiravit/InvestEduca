@@ -1,26 +1,39 @@
 import react, { useState } from 'react'
-import { StyleSheet, Text, View, TouchableOpacity, StatusBar } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ActivityIndicator, Modal } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native'
 
 export default function Inicio(){
 
     const navigation = useNavigation()
+    const [loading, setLoading] = useState(false)
+
+    function proximo(){
+        setTimeout( () => {
+            setLoading(true)
+            navigation.navigate('Cadastro')
+        }, setLoading(false))
+    }
 
     return(
         <View style={ styles.container }>
 
-            <StatusBar 
-                barStyle={'light-content'}
-                backgroundColor={'#161F4E'}
-            />
+            <Modal transparent visible={loading}>
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                    <ActivityIndicator 
+                        size={100}
+                        color={"#fff"}
+                        animating={true}
+                    />
+                </View>
+            </Modal>
 
             <View style={ styles.areaTitulo }>
                 <Text style={ styles.text }>Invest</Text>
                 <Text style={ styles.text1 }>Educa</Text>
             </View>
 
-            <TouchableOpacity style={ styles.btn } onPress={ () => navigation.navigate('Cadastro') }>
+            <TouchableOpacity style={ styles.btn } onPress={ proximo }>
                 <AntDesign name="arrowright" size={50} color="white" />
             </TouchableOpacity>
 
@@ -50,7 +63,11 @@ const styles = StyleSheet.create({
     btn: {
         backgroundColor: '#E9AB43',
         padding: 10,
-        borderRadius: 50
+        borderRadius: 50,
+        elevation: 8,
+        shadowColor: '#E9AB43',
+        shadowOffset: {width: 150, height: 150},
+        shadowRadius: '1'
     },
     areaTitulo: {
         flexDirection: 'row',

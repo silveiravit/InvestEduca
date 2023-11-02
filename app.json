@@ -4,7 +4,7 @@
     "slug": "InvestEduca",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/Porco.png",
+    "icon": "./assets/PorcoConfig.png",
     "userInterfaceStyle": "light",
     "assetBundlePatterns": [
       "**/*"
@@ -14,7 +14,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/Porco.png",
+        "foregroundImage": "./assets/PorcoConfig.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.vitorsil22.InvestEduca"

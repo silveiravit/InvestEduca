@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image, StatusBar, Dimensions} from "react-native";
+import React, { useState, useContext } from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Image, StatusBar, Dimensions, ActivityIndicator} from "react-native";
 import Conversor from "../../../services/conversor"; // Importado o arquivo de conversor de moeda
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native'
@@ -15,8 +15,14 @@ export default function Home(){
     const navigation = useNavigation()
 
     const carouselMoeda = [
-        { title: ( <Conversor moedaA="USD" moedaB="BRL" /> ) },
-        { title: ( <Conversor moedaA="EUR" moedaB="BRL" /> ) },
+        { moeda: ( <Conversor moedaA="USD" moedaB="BRL" /> ) },
+        { moeda: ( <Conversor moedaA="EUR" moedaB="BRL" /> ) },
+        { moeda: ( <Conversor moedaA="CAD" moedaB="BRL" /> ) },
+        { moeda: ( <Conversor moedaA="SEK" moedaB="BRL" /> ) },
+        { moeda: ( <Conversor moedaA="AUD" moedaB="BRL" /> ) },
+        { moeda: ( <Conversor moedaA="CHF" moedaB="BRL" /> ) },
+        { moeda: ( <Conversor moedaA="CNY" moedaB="BRL" /> ) },
+        { moeda: ( <Conversor moedaA="ARS" moedaB="BRL" /> ) },
     ]
 
     const carouselImagem = [
@@ -60,7 +66,7 @@ export default function Home(){
     function renderMoeda({ item }){
         return(
             <View style={ styles.areaCotacao }>     
-                {item.title}
+                {item.moeda}
             </View> 
         )
     }
@@ -90,12 +96,7 @@ export default function Home(){
     }
 
     return(
-        <View style={ styles.container }>
-            
-            <StatusBar 
-                barStyle={'light-content'}
-                backgroundColor={'#000'}
-            />
+        <View style={ styles.container }>        
 
             <View style={ styles.viewPrincipalCotacao }>
                 <Carousel
@@ -106,6 +107,7 @@ export default function Home(){
                     autoplay={true}
                     loop={true}
                     autoplayInterval={3000}
+                    scrollAnimationDuration={3000}
                 />
             </View>
 
@@ -130,6 +132,7 @@ export default function Home(){
                     autoplay={true}
                     loop={true}
                     autoplayInterval={5000}
+                    layout="stack"
                 />
             </View>
 
@@ -139,7 +142,7 @@ export default function Home(){
                     onPress={ () => navigation.navigate('Objetivo') }
                 >   
                     <View style={ styles.viewBtn }>
-                        <Text style={ styles.textoBtn }>OBJETIVOS </Text>
+                        <Text style={ styles.textoBtn }>OBJETIVOS</Text>
                         <View style={ styles.icon }>
                             <AntDesign name="arrowright" size={30} color="black" /> 
                         </View>
@@ -158,6 +161,7 @@ export default function Home(){
                     </View>
                 </TouchableOpacity>
             </View>
+
         </View>
 
     )
@@ -175,11 +179,11 @@ const styles = StyleSheet.create({
         backgroundColor:  '#000',
     },
     carouselItemContainer: {
-        marginHorizontal: 15,
+        marginHorizontal: '3%',
     },
     image: {
         width: '100%',
-        height: 180,
+        height: '100%',
         borderRadius: 10
     },
     viewConteudo:{
@@ -188,7 +192,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     viewPrincipalCotacao: {
-        marginBottom: 10
+        marginBottom: '3%'
     },
     viewPrincipalImagem: {
         flex: 1,
@@ -196,10 +200,12 @@ const styles = StyleSheet.create({
     },
     carouselItemContainerCentro: {
         padding: 20,
-        margin: 15,
+        marginVertical: '5%',
+        marginHorizontal: '3%',
         borderRadius: 10,
         borderWidth: 2,
-        borderColor: '#161F4E'
+        borderColor: '#161F4E',
+        backgroundColor: '#fff'
     },
     imageCentro : {
         width: '100%',
@@ -207,7 +213,7 @@ const styles = StyleSheet.create({
         borderRadius: 10
     },
     viewCentroImagem : {
-        
+        backgroundColor: '#fff'
     },
     title: {
         fontSize: 18,
@@ -223,17 +229,18 @@ const styles = StyleSheet.create({
 
     // Botões
     areaBtn: {
-        justifyContent: 'flex-end'
+        justifyContent: 'flex-end',
+        marginHorizontal: '3%'
     },
     viewBtn: {
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingHorizontal: 10
+        paddingHorizontal: '3%'
     },
     btn: {
         backgroundColor: '#161F4E',
-        margin: 7,
+        marginBottom: '3%',
         borderRadius: 10,
         padding: 10,
         flexDirection: 'row',

@@ -3,16 +3,8 @@ import { View, Text, StyleSheet, TouchableOpacity, Image, StatusBar, Dimensions,
 import { useNavigation } from '@react-navigation/native'
 import { AntDesign } from '@expo/vector-icons';
 
-import Login from "../Login";
-
-import firebase from '../../../database/FirebaseConnection'
-
-import Gasto from "./Gastos";
-import Objetivo from "./Objetivos";
-
 export default function Money(){
 
-    const [type, setType] = useState('')
     const navigation = useNavigation()
 
     return(
@@ -22,29 +14,46 @@ export default function Money(){
                 backgroundColor={'#000'}
             />
 
-            <TouchableOpacity 
-                style={ styles.btn } 
-                onPress={ () => navigation.navigate('Objetivo') }
-            >   
-                <View style={ styles.view }>
-                    <Text style={ styles.textoBtn }>OBJETIVOS </Text>
-                    <View style={ styles.icon }>
-                        <AntDesign name="arrowright" size={30} color="black" /> 
-                    </View>
-                </View>
-            </TouchableOpacity>
+            <View style={ styles.areaBtn }>
 
-            <TouchableOpacity 
-                style={ styles.btn } 
-                onPress={ () => navigation.navigate('Gasto') }
-            >
-                <View style={ styles.view }>
-                    <Text style={ styles.textoBtn }>GASTOS</Text>
-                    <View style={ styles.icon }>
-                        <AntDesign name="arrowright" size={30} color="black" /> 
-                    </View>
+                <Text style={{ textAlign: 'center', fontSize: 25, color: '#161F4E', fontWeight: '600'}}>O que gostaria de ver?</Text>
+
+                <View style={{ height: 200, borderWidth: 3, borderRadius: 20, borderColor: '#161F4E'}}>
+
+                    <TouchableOpacity 
+                        style={ styles.btn } 
+                        onPress={ () => navigation.navigate('Objetivo') }
+                    >   
+                        <View style={ styles.viewBtn }>
+                            <Text style={ styles.textoBtn }>OBJETIVOS</Text>
+                            <View style={ styles.icon }>
+                                <AntDesign name="arrowright" size={30} color="black" /> 
+                            </View>
+                        </View>
+                    </TouchableOpacity>
+
+                    <Text style={{ fontSize: 20, margin: 15, color: '#161F4E'}}>Demonstrativo de metas estabelecidas no planejamento</Text>
+
                 </View>
-            </TouchableOpacity>
+
+                <View style={{ height: 200, borderWidth: 3, borderRadius: 20, borderColor: '#161F4E'}}>
+
+                    <TouchableOpacity 
+                        style={ styles.btn } 
+                        onPress={ () => navigation.navigate('Gasto') }
+                    >
+                        <View style={ styles.viewBtn }>
+                            <Text style={ styles.textoBtn }>GASTOS</Text>
+                            <View style={ styles.icon }>
+                                <AntDesign name="arrowright" size={30} color="black" /> 
+                            </View>
+                        </View>
+                    </TouchableOpacity>
+
+                    <Text style={{ fontSize: 20, margin: 15, color: '#161F4E'}}>Controle financeiro ligado diretamente a datas</Text>
+
+                </View>
+            </View>
 
         </View>
     )
@@ -53,12 +62,22 @@ export default function Money(){
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'flex-end',
-        alignItems: 'center'
+        justifyContent: 'center'
+    },
+    areaBtn: {
+        flex: 1,
+        justifyContent: 'space-around',
+        marginHorizontal: '3%'
+    },
+    viewBtn: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingHorizontal: '3%'
     },
     btn: {
         backgroundColor: '#161F4E',
-        margin: 7,
+        marginBottom: '3%',
         borderRadius: 10,
         padding: 10,
         flexDirection: 'row',
@@ -74,11 +93,5 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderRadius: 30,
         padding: 5
-    },
-    view: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        paddingHorizontal: 10
-    },
+    }
 })

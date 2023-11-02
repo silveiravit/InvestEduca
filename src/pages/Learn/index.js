@@ -1,82 +1,72 @@
-import React from "react";
-import { View, Text, StyleSheet, StatusBar, ScrollView } from "react-native";
-import { FontAwesome } from '@expo/vector-icons';
+import React, { useState } from "react";
+import { View, Text, StyleSheet, StatusBar, ScrollView, Image, TouchableOpacity } from "react-native";
+
+import { useNavigation } from '@react-navigation/native'
 
 export default function Learn(){
+
+    const navigation = useNavigation()
+
     return(
         <View style={ styles.container }>
 
-            <StatusBar 
-                barStyle={'light-content'}
-                backgroundColor='#000'
-            />
-            
             <View style={ styles.areaTitulo }>
-                <Text style={ styles.text }>Invest</Text>
-                <Text style={ styles.text1 }>Educa</Text>
-            </View>
-            
-            <View style={ styles.areaEstudo }>
-                <ScrollView
-                    showsVerticalScrollIndicator={false}
-                >
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center'}}>
-                        <FontAwesome name="circle" size={15} color="#E9AB43" />
-                        <Text style={ styles.titulo }>Economizando para construir um bom controle financeiro</Text>
-                    </View>
-
-                    <View style={{ borderLeftWidth: 10, borderLeftColor: '#161F4E', backgroundColor: '#E9AB4333', marginTop: 20, padding: 15}}>
-                        <Text style={{ textAlign: 'center', fontSize: 23, fontWeight: '600'}}>Conheça sua realidade financeira</Text>
-                    </View>
-
-                    <View style={ styles.areaEstudo1 }>
-                        <Text style={{ textAlign: 'left', fontSize: 20, fontWeight: '600'}}>
-                            Ciência da realidade financeira é o ponto de partida para economizar de forma efetiva.
-                            É o passo determinante para estabelecer metas. Para tal, é preciso responder às seguintes perguntas:
-                        </Text>
-                    </View>
-
-                    <View style={ styles.links }>
-                        <FontAwesome name="circle" size={15} color="#E9AB43" />
-                        <Text style={{ textAlign: 'left', fontSize: 20, fontWeight: '600', marginLeft: 10}}>Quanto você ganha?</Text>
-                    </View>
-
-                    <View style={ styles.links }>
-                        <FontAwesome name="circle" size={15} color="#E9AB43" />
-                        <Text style={{ textAlign: 'left', fontSize: 20, fontWeight: '600', marginLeft: 10}}>Quais os seus gastos mensais?</Text>
-                    </View>
-
-                    <View style={ styles.links }>
-                        <FontAwesome name="circle" size={15} color="#E9AB43" />
-                        <Text style={{ textAlign: 'left', fontSize: 20, fontWeight: '600', marginLeft: 10}}>Quais as suas dívidas?</Text>
-                    </View>
-
-                    <View style={ styles.links }>
-                        <FontAwesome name="circle" size={15} color="#E9AB43" />
-                        <Text style={{ textAlign: 'left', fontSize: 20, fontWeight: '600', marginLeft: 10}}>Quais as suas necessidades financeiras?</Text>
-                    </View>
-
-                    <View style={ styles.links }>
-                        <FontAwesome name="circle" size={15} color="#E9AB43" />
-                        <Text style={{ textAlign: 'left', fontSize: 20, fontWeight: '600', marginLeft: 10}}>Quais os seus objetivos financeiros?</Text>
-                    </View>
-
-                    <View style={ styles.areaEstudo1 }>
-                        <Text style={ styles.titulo }>O que é educação financeira?</Text>
-
-                        <Text style={{ textAlign: 'justify', fontSize: 20, fontWeight: '600', marginTop: 20}}>
-                            Educação financeira é todo o conhecimento relacionado ao dinheiro e como ele funciona.
-                            Ou seja, é o processo que ajuda a compreender melhor os produtos e serviços financeiros, assim, você se torna capaz de fazer melhores escolhas.
-                            Dessa forma, ter conhecimento sobre temas como: juros, poupança, Selic, inflação e outros pode ajudá-lo a tomar decisões financeiras de forma consciente e inteligente.
-                            De forma prática, quanto mais educado(a) financeiramente você for, mais consciente e confiante ficará para tomar decisões de como utilizar o seu dinheiro.
-                            Além disso, ao se educar financeiramente, você conseguirá melhorar o processo de como cortar gastos, aumentar receitas e investir valores poupados periodicamente para gerar acúmulo de riqueza.
-                            Nesse sentido, fica muito mais fácil fazer o seu dinheiro trabalhar para você! Veja abaixo o que fazer para ter educação financeira.
-                        </Text>
-                    </View>
-
-                </ScrollView>
+                <Text style={ styles.titulo }>O que você quer aprender hoje?</Text>
             </View>
 
+            <View style={ styles.areaAssunto }>
+
+                <TouchableOpacity style={ styles.assunto } onPress={ () => navigation.navigate('EducaFinan')}>
+                    <View style={ styles.areaImg }>
+                        <Image
+                            source={ require('../../img/ef4.png')}
+                            style={ styles.imagem }
+                        />
+                    </View>
+                    <View style={ styles.areaText }>
+                        <Text style={ styles.textAssunto }>O que é educação financeira?</Text>
+                    </View>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={ styles.assunto }>
+                    <View style={ styles.areaImg }>
+                        <Image
+                            source={ require('../../img/ef5.jpg')}
+                            style={ styles.imagem }
+                        />
+                    </View>
+                    <View style={ styles.areaText }>
+                        <Text style={ styles.textAssunto }>Dívidas?</Text>
+                    </View>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={ styles.assunto }>
+                    <View style={ styles.areaImg }>
+                        <Image
+                            source={ require('../../img/ef3.jpg')}
+                            style={ styles.imagem }
+                        />
+                    </View>
+
+                    <View style={ styles.areaText }>
+                        <Text style={ styles.textAssunto }>O que é investimento?</Text>
+                    </View>
+                </TouchableOpacity> 
+
+                <TouchableOpacity style={ styles.assunto }>
+                    <View style={ styles.areaImg }>
+                        <Image
+                            source={ require('../../img/ef6.jpg')}
+                            style={ styles.imagem }
+                        />
+                    </View>
+
+                    <View style={ styles.areaText }>
+                        <Text style={ styles.textAssunto }>Como organizar suas finanças?</Text>
+                    </View>
+                </TouchableOpacity>
+
+            </View>
         </View>
     )
 }
@@ -84,51 +74,52 @@ export default function Learn(){
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-    },
-    areaTitulo: {
-        flexDirection: 'row',
-        marginBottom: 20,
-        backgroundColor: '#E9AB43',
-        justifyContent: 'center',
-        alignItems: 'flex-start',
-        borderBottomColor: '#000',
-        borderBottomWidth: 1
-    },
-    text: {
-        fontSize: 40,
-        color: '#fff',
-        marginBottom: 10,
-        fontWeight: 'bold',
-    },
-    text1: {
-        fontSize: 40,
-        color: '#161F4E',
-        marginBottom: 10,
-        fontWeight: 'bold'
-    },
-    areaEstudo: {
-        flex: 1,
         alignItems: 'center',
-        padding: 10
+        
     },
-    titulo: {
-        fontSize: 23,
-        textAlign: 'left',
+    assunto: {
+        width: '90%',
+        backgroundColor: '#161F4EEB',
+        borderRadius: 20,
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        padding: 10,
+        marginVertical: 20
+    },
+    imagem: {
+        height: 60, 
+        width: 60, 
+        borderRadius: 50
+    },
+    areaImg: {
+        justifyContent: 'flex-start',
+        borderWidth: 3,
+        borderColor: '#fff',
+        padding: 5,
+        borderRadius: 50
+    },
+    textAssunto: {
+        color: '#fff',
+        fontSize: 20,
         fontWeight: '600'
     },
-    areaEstudo1: {
-        marginVertical: 30,
-        borderTopWidth: 1,
-        borderBottomWidth: 1,
-        padding: 10,
-        borderTopColor: '#E9AB4333',
-        borderBottomColor: '#E9AB4333'
+    titulo: {
+        fontSize: 25,
+        color: '#161F4E',
+        fontWeight: '600',
+        fontStyle: 'italic'
     },
-    links: {
-        flexDirection: 'row', 
-        justifyContent: 'flex-start', 
-        alignItems: 'center',
-        marginVertical: 5,
-        marginHorizontal: 8
+    areaText: {
+        flex: 1,
+        alignItems: 'flex-start',
+        marginHorizontal: 10
+    },
+    areaTitulo: {
+        marginVertical: 50
+    },
+    areaAssunto: {
+        flex: 1,
+        justifyContent: 'flex-start'
     }
 })

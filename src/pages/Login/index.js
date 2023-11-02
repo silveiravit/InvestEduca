@@ -1,34 +1,26 @@
-import react, { useState } from 'react'
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image, StatusBar } from 'react-native'; // Componentes
-import firebase from '../../../database/FirebaseConnection' // Importação do firebase
+import react, { useState, useContext } from 'react'
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native' // Hook de navegação
+import { Entypo } from '@expo/vector-icons';
+import Loading from '../../Loading';
+import { AuthContext } from '../../contexts/auth';
 
-export default function Login({ changeStatus }) {
+export default function Login() {
 
+    const { logar } = useContext(AuthContext)
     const navigation = useNavigation()
-    const [email, setEmail] = useState('teste@teste.com')
+    const [email, setEmail] = useState('vitor@gmail.com')
     const [senha, setSenha] = useState('123456')
-    const [username, setUsername] = useState('')
+    const [loading, setLoading] = useState(false)
+    const [hidePass, setHidePass] = useState(true)
 
     // Acima foi declarado as states de navegação e de usuário
 
     function acessar(){
-
-        const user = firebase.auth().signInWithEmailAndPassword(email, senha)
-        .then( (user) => {
-            // changeStatus(user.user.uid)
-            // firebase.database().ref('usuarios').child(user.user.uid).once('value', (snapshot) => {
-            //     setUsername(snapshot)
-            //     username: username
-            // })
-            alert('Acesso permitido, '+ user.user.email)
-            navigation.navigate('Routes')
-
-        } )
-        .catch( () => {
-            alert('Acesso negado!')
-        })
-
+        setTimeout( () => {
+            setLoading(true)
+            logar(email, senha)
+        }, setLoading(false))
     }
 
     // Acima é feito a autenticação no banco de dados firebase para efetuar o login
@@ -36,12 +28,9 @@ export default function Login({ changeStatus }) {
     return (
         <View style={styles.container}>
 
-            <StatusBar
-                barStyle={'light-content'}
-                backgroundColor={'#161F4E'}
-            />
-
             <View style={ styles.viewCont }>
+
+                <Loading visible={loading} />
 
                 <View style={ styles.areaTitulo }>
                     <Text style={ styles.text }>Invest</Text>
@@ -57,25 +46,38 @@ export default function Login({ changeStatus }) {
                         />
                     </View>
 
-                    <Text style={ styles.titulo }>Entrar</Text>
+                    <View style={ styles.viewCad }>
 
-                    <TextInput 
-                        style={ styles.input }
-                        onChangeText={ (email) => setEmail(email) }
-                        placeholder='E-mail'
-                        placeholderTextColor={'#161F4E'}
-                        value={email}
-                    />
+                        <Text style={ styles.titulo }>Entrar</Text>
 
-                    <TextInput 
-                        style={ styles.input }
-                        onChangeText={ (senha) => setSenha(senha) }
-                        keyboardType='numeric'
-                        secureTextEntry={true}
-                        placeholder='Senha'
-                        placeholderTextColor={'#161F4E'}
-                        value={senha}
-                    />
+                        <TextInput 
+                            style={ styles.input }
+                            onChangeText={ (email) => setEmail(email) }
+                            placeholder='E-mail'
+                            placeholderTextColor={'#161F4E'}
+                            value={email}
+                            autoCapitalize='none'
+                        />
+
+                        <View style={ styles.inputSenha }>
+
+                            <TextInput 
+                                style={ styles.input1 }
+                                onChangeText={ (senha) => setSenha(senha) }
+                                keyboardType='numeric'
+                                secureTextEntry={ hidePass }
+                                placeholder='Senha'
+                                placeholderTextColor={'#161F4E'}
+                                value={senha}
+                            /> 
+
+                            <TouchableOpacity onPress={ () => setHidePass(!hidePass)} >                               
+                                <Entypo name={ !hidePass ? 'eye-with-line' : 'eye'} size={30} color="black" />
+                            </TouchableOpacity>
+
+                        </View>
+
+                    </View>
 
                 </View>
 
@@ -112,7 +114,7 @@ const styles = StyleSheet.create({
         height: 400,
         paddingHorizontal: '5%',
         borderRadius: 15,
-        width: '95%'
+        width: '90%'
     },
     view2: {
         alignItems: 'center',
@@ -124,6 +126,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
+    viewCad: {
+        flex: 1,
+        justifyContent: 'flex-start',
+    },
+    texto: {
+        fontSize: 25,
+        color: '#fff',
+    },
     input: {
         borderWidth: 1,
         borderColor: '#ccc',
@@ -134,7 +144,27 @@ const styles = StyleSheet.create({
         borderRadius: 30,
         color: '#161F4E',
         backgroundColor: '#E9AB43',
-        margin: 10,
+        marginHorizontal: '2%',
+        marginVertical: '3%'
+    },
+    input1: {
+        fontSize: 25,
+        textAlign: 'left',
+        color: '#161F4E',
+        flex: 1
+    },
+    inputSenha: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#E9AB43',
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 30,
+        paddingHorizontal: 20,
+        justifyContent: 'center',
+        paddingVertical: 5,
+        marginHorizontal: '2%',
+        margin: 10
     },
     btn: {
         backgroundColor: '#E9AB43',
@@ -152,21 +182,19 @@ const styles = StyleSheet.create({
         color: '#161F4E',
         fontSize: 30,
         textAlign: 'center',
-        marginTop: 5,
-        marginBottom: 40,
+        marginVertical: '3%',
         fontWeight: 'bold',
         fontStyle: 'italic'
     },
     areaTitulo: {
         flexDirection: 'row',
-        alignItems: 'center',
-        marginBottom: 20
+        marginBottom: 20,
     },
     text: {
         fontSize: 40,
         color: '#fff',
         marginBottom: 50,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
     },
     text1: {
         fontSize: 40,
@@ -179,8 +207,9 @@ const styles = StyleSheet.create({
         height: 130
     },
     areaImg: {
-        marginTop: -240,
-        alignItems: 'center'
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        marginTop: '-25%'
     },
     textoCadastro: {
         color: '#fff', 

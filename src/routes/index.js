@@ -2,7 +2,11 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
+import React, { useState, useContext } from "react";
 
+import { AuthContext } from '../contexts/auth';
+
+import Login from '../pages/Login';
 import Home from '../pages/Home';
 import Learn from '../pages/Learn';
 import Money from '../pages/Money';
@@ -11,6 +15,15 @@ import Config from '../pages/Config';
 const Tab = createBottomTabNavigator()
 
 export default function Routes(){
+
+  const { user } = useContext(AuthContext)
+
+  if( !user ){
+    return(
+      <Login status={ (user) => setUser(user) }/>
+    )
+  }
+
   return(
     <Tab.Navigator
       screenOptions={{
@@ -22,7 +35,7 @@ export default function Routes(){
           tabBarStyle: {
               height: 60,
               borderTopWidth: 1,
-              borderTopColor: '#161F4E'
+              borderTopColor: '#161F4E',
           }
       }}
     >
@@ -43,7 +56,7 @@ export default function Routes(){
         options={{
           tabBarIcon: ({color, size}) => {
             return <Entypo name="book" size={40} color={ color } />
-          }
+          },
         }}
       />
 
@@ -53,7 +66,7 @@ export default function Routes(){
         options={{
           tabBarIcon: ({color, size}) => {
             return <MaterialIcons name="attach-money" size={40} color={ color } />
-          }
+          },
         }}
       />
 

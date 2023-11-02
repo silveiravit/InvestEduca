@@ -1,162 +1,50 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, StatusBar, Dimensions, FlatList } from "react-native";
-import { AntDesign } from '@expo/vector-icons';
+import React from "react";
 
-import CampoGasto from "./campogasto";
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
+import { NavigationContainer } from '@react-navigation/native'
 
-import firebase from '../../../../database/FirebaseConnection'
+import Diario from './diario'
+import Anual from './anual'
+import Mensal from './mensal'
 
-import Login from "../../Login";
-
-const SLIDER_WIDTH = Dimensions.get('window').width
-const ITEM_WIDTH = SLIDER_WIDTH * 0.95
+const Tab = createMaterialTopTabNavigator()
 
 export default function Gasto(){
 
-    const [valor, setValor] = useState([])
-    const [novoValor, setNovoValor] = useState('')
-    const [user, setUser] = useState(null)
-
-    function handleAdd(){
-
-        if( novoValor === ''){
-            return
-        }
-
-        let gastos = firebase.database().ref('Gastos').child(user)
-        let chave = gastos.push().key
-
-        gastos.child(chave).set({
-            gasto: novoValor
-        })
-        .then( () => {
-            const data = {
-                key: chave,
-                gasto: novoValor
-            }
-
-            setValor(oldValor => [...oldValor, data])
-
-        })
-
-        
-
-    }
-
-    function handleDelete(){
-
-    }
-
-    function handleEdit(){
-
-    }
-
-    
-
     return(
-        <View style={ styles.container }>
-            
-            <StatusBar 
-                barStyle={'light-content'}
-                backgroundColor={'#000'}
-            />
-
-            <View style={ styles.view1 }>
-                <Text style={ styles.titulo }>Organize seus Gastos</Text>
-            </View>
-
-            <View style={ styles.areaMensal }>
-                <TouchableOpacity>
-                    <Text style={ styles.textMensal }>Diário</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity>
-                    <Text style={ styles.textMensal }>Mensal</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity>
-                    <Text style={ styles.textMensal }>Anual</Text>
-                </TouchableOpacity>
-            </View>
-
-            <View style={ styles.registro }>
+        <NavigationContainer independent={true}>
+            <Tab.Navigator
+                screenOptions={{
+                    headerShown: false,
+                    tabBarLabelStyle: { fontSize: 20, fontWeight: '600'},
+                    tabBarStyle: {
+                        backgroundColor: '#E9AB43',
+                        borderColor: '#000',
+                        borderWidth: 2,
+                        borderRadius: 10,
+                        margin: 10,
+                        height: 100,
+                        justifyContent: 'center'
+                    },      
+                }}
                 
-                <TextInput 
-                    style={ styles.campoRegistro }
-                    placeholder="R$"
-                    onChangeText={ (valor) => setNovoValor(valor) }
-                    value={novoValor}
-                    
+            >
+                <Tab.Screen
+                    name="Diario"
+                    component={Diario}
                 />
 
-                <TouchableOpacity style={ styles.regBtn } onPress={ handleAdd }>
-                    <AntDesign name="plus" size={35} color={'#fff'}/>
-                </TouchableOpacity>
+                <Tab.Screen
+                    name="Mensal"
+                    component={Mensal}
+                />
 
-            </View>
-    
-            <FlatList 
-                data={valor}
-                keyExtractor={ (item) => item.key }
-                renderItem={ ({ item }) => (
-                    <CampoGasto data={item} deleteItem={ handleDelete } editItem={ handleEdit } />
-                ) }
-            />
+                <Tab.Screen
+                    name="Anual"
+                    component={Anual}
+                />
 
-        </View>
+            </Tab.Navigator>
+        </NavigationContainer>
     )
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center'
-    },
-    titulo: {
-        color: '#161F4E',
-        fontSize: 25,
-        textAlign: 'center'
-    },
-    areaMensal: {
-        flexDirection: 'row',
-        backgroundColor: '#E9AB43',
-        width: ITEM_WIDTH,
-        borderRadius: 10,
-        height: 100, 
-        alignItems: 'center',
-        justifyContent: 'space-around',
-        borderWidth: 2,
-        borderColor: '#000'
-    },
-    textMensal: {
-        fontSize: 20,
-        color: '#161F4E',
-        fontWeight: '600'
-    },
-    registro: {
-        backgroundColor: '#E9AB43',
-        width: ITEM_WIDTH,
-        borderRadius: 10,
-        borderWidth: 2,
-        borderColor: '#000',
-        marginTop: 30,
-        height: 150,
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: 'row'
-    },
-    campoRegistro: {
-        fontSize: 20,
-        backgroundColor: '#eee',
-        width: '70%',
-        padding: 10,
-        borderRadius: 10,
-        textAlign: 'center',
-        marginHorizontal: 10
-    },
-    regBtn: {
-        backgroundColor: '#161F4E',
-        padding: 5,
-        borderRadius: 10,
-    }
-})

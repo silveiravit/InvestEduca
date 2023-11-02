@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity, StatusBar, Dimensions } from "react-native";
 import firebase from '../../../database/FirebaseConnection'
 import { useNavigation } from '@react-navigation/native'
@@ -6,45 +6,32 @@ import { AntDesign } from '@expo/vector-icons';
 
 import Tema from "./tema";
 
+import { AuthContext } from "../../contexts/auth";
+
+import Loading from "../../Loading";
+
 const WIDTH = Dimensions.get('window').width * 1
 
 export default function Config(){
 
     const navigation = useNavigation()
-    const [user, setUser] = useState(null)
+    const { username } = useContext(AuthContext)
+    const [loading, setLoading] = useState(false)
 
-    // useEffect( () => {
-
-        
-
-    // }, [])
-
-    async function sair(){
-        
-        await firebase.auth().signOut()
-        .then( (value) => {
-            alert('Saindo da aplicação!')
-            navigation.navigate('Login')
-        })
-        .catch( (error) => {
-            alert('Ops, ocorreu um erro!')
-        })
-
+    function sair(){
+        setTimeout( () => {
+            setLoading(true)
+            firebase.auth().signOut()
+            .then( () => {
+                navigation.navigate('Login')
+            })   
+        }, setLoading(false))
     }
-
-    function tema(){
-        return(
-            <Tema />
-        )
-    }   
 
     return(
         <View style={ styles.container }>
 
-            <StatusBar 
-                barStyle={'light-content'}
-                backgroundColor={'#000'}
-            />
+            <Loading visible={loading} />
 
             <Image
                 source={require('../../img/PorcoConfig.png')}
@@ -52,13 +39,13 @@ export default function Config(){
             />
 
             <View style={ styles.nomeUsuario }>
-                <Text style={{ fontSize: 25}}>Olá, Vitor!</Text>
+                <Text style={{ fontSize: 25}}>Olá, { username }!</Text>
             </View>
 
             <View style={ styles.config }>
                 <Text style={ styles.titulo }>Aparência</Text>
 
-                <TouchableOpacity style={ styles.btn } onPress={ tema }>
+                <TouchableOpacity style={ styles.btn } >
                     <View style={ styles.areaBtn }>
                         <Text style={ styles.subtitulo }>Tema</Text>
                         <AntDesign name="right" size={25} color="#EE990A" />
@@ -74,7 +61,7 @@ export default function Config(){
                     </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={ styles.btn }>
+                <TouchableOpacity style={ styles.btn } onPress={ () => navigation.navigate('InformConta')}>
                     <View style={ styles.areaBtn }>
                         <Text style={ styles.subtitulo }>Informações da Conta</Text>
                         <AntDesign name="right" size={25} color="#EE990A" />
@@ -82,7 +69,7 @@ export default function Config(){
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={ sair }>
-                    <Text style={ [styles.subtitulo, { color: '#ff0000'}] }>Sair</Text>
+                    <Text style={ [styles.subtitulo, { color: '#EE990A'}] }>Sair</Text>
                 </TouchableOpacity>
             </View>
             
