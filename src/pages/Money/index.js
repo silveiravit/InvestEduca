@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image, StatusBar, Dimensions, Button} from "react-native";
+import React from "react";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useNavigation } from '@react-navigation/native'
 import { AntDesign } from '@expo/vector-icons';
 
@@ -9,14 +9,10 @@ export default function Money(){
 
     return(
         <View style={ styles.container }>
-            <StatusBar 
-                barStyle={'light-content'}
-                backgroundColor={'#000'}
-            />
 
             <View style={ styles.areaBtn }>
 
-                <Text style={{ textAlign: 'center', fontSize: 25, color: '#161F4E', fontWeight: '600'}}>O que gostaria de ver?</Text>
+                <Text style={{ fontStyle: 'italic', textAlign: 'center', fontSize: 25, color: '#161F4E', fontWeight: '600'}}>O que gostaria de ver?</Text>
 
                 <View style={{ height: 200, borderWidth: 3, borderRadius: 20, borderColor: '#161F4E'}}>
 

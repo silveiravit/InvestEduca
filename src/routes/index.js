@@ -6,6 +6,8 @@ import React, { useState, useContext } from "react";
 
 import { AuthContext } from '../contexts/auth';
 
+import Mensal from '../pages/Money/Gastos/mensal';
+
 import Login from '../pages/Login';
 import Home from '../pages/Home';
 import Learn from '../pages/Learn';
@@ -28,7 +30,7 @@ export default function Routes(){
     <Tab.Navigator
       screenOptions={{
           headerShown: false,
-          tabBarHideOnKeyboard: true,
+          tabBarHideOnKeyboard: false,
           tabBarShowLabel: false,
           tabBarActiveTintColor: '#E9AB43',
           tabBarInactiveTintColor: '#161F4E',

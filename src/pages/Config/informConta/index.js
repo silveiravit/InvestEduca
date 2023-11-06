@@ -22,11 +22,6 @@ export default function InformConta(){
                     <Text style={ [styles.subtitulo, { textDecorationLine: 'underline' }] }>{ email }</Text>
                 </View>
 
-                <View style={ styles.informacoes }>
-                    <Text style={ styles.titulo }>Senha</Text>
-                    <Text style={ styles.subtitulo }>{ senha }</Text>
-                </View>
-
             </View>
         </View>
     )

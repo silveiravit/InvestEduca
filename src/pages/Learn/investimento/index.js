@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet, StatusBar, ScrollView } from "react-native";
 import { FontAwesome } from '@expo/vector-icons';
 
-export default function EducaFinan(){
+export default function Investimento(){
 
     return(
         <View style={ styles.container }>
@@ -33,15 +33,16 @@ export default function EducaFinan(){
                     </View>
 
                     <View style={ styles.areaEstudo1 }>
-                        <Text style={ styles.titulo }>O que é educação financeira?</Text>
+                        <Text style={ styles.titulo }>O que é investimento?</Text>
 
                         <Text style={{ textAlign: 'justify', fontSize: 20, fontWeight: '600', marginTop: 20}}>
-                            Educação financeira é todo o conhecimento relacionado ao dinheiro e como ele funciona.
-                            Ou seja, é o processo que ajuda a compreender melhor os produtos e serviços financeiros, assim, você se torna capaz de fazer melhores escolhas.
-                            Dessa forma, ter conhecimento sobre temas como: juros, poupança, Selic, inflação e outros pode ajudá-lo a tomar decisões financeiras de forma consciente e inteligente.
-                            De forma prática, quanto mais educado(a) financeiramente você for, mais consciente e confiante ficará para tomar decisões de como utilizar o seu dinheiro.
-                            Além disso, ao se educar financeiramente, você conseguirá melhorar o processo de como cortar gastos, aumentar receitas e investir valores poupados periodicamente para gerar acúmulo de riqueza.
-                            Nesse sentido, fica muito mais fácil fazer o seu dinheiro trabalhar para você! Veja abaixo o que fazer para ter educação financeira.
+                        Entendemos por investimentos qualquer valor capaz de gerar um lucro, seja em um período de curto, médio ou longo prazo.
+
+                        Muitas pessoas não investem por pensar que é algo muito complexo e que necessita de uma grande quantia de dinheiro para começar, mas isso não é verdade.
+
+                        Há diferentes oportunidades capazes de render mais do que a poupança. Você pode começar investindo seu dinheiro em uma conta digital que renda 100% do CDI ou comprando um título no Tesouro Direto a partir de R$ 30,00, por exemplo.
+
+                        No início, isso pode trazer retornos pequenos, mas se você persistir em estudar mais sobre o assunto e se aprofundar cada vez mais em entender o que são investimentos, colherá recompensas a longo prazo.
                         </Text>
                     </View>
 

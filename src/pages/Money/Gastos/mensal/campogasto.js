@@ -1,10 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Dimensions } from "react-native";
-import { AntDesign } from '@expo/vector-icons';
-import { Entypo } from '@expo/vector-icons';
-
-const SLIDER_WIDTH = Dimensions.get('window').width
-const ITEM_WIDTH = SLIDER_WIDTH * 0.95
+import { Octicons } from '@expo/vector-icons';
 
 export default function CampoGasto({ data, deleteItem, editItem }){
 
@@ -13,8 +9,8 @@ export default function CampoGasto({ data, deleteItem, editItem }){
     return(
         <View style={ styles.container }>
             <View style={ styles.campoRegisto }>
-                <TouchableOpacity onPress={ () => deleteItem(data) }>
-                    <Entypo name="trash" size={24} color="black" />
+                <TouchableOpacity onPress={ () => deleteItem(data.key) }>
+                    <Octicons name="trash" size={25} color="black" />
                 </TouchableOpacity>
 
                 <TouchableWithoutFeedback onPress={ () => editItem(data) }>
@@ -22,7 +18,9 @@ export default function CampoGasto({ data, deleteItem, editItem }){
                 </TouchableWithoutFeedback>
                 
                 <TouchableWithoutFeedback >
-                        <Text style={[ styles.valor, { color: valor > 0 ? '#27E309' : '#ff0000'} ]}> R$ { data.valorGasto } </Text>
+                    <Text style={[ styles.valor, { color: valor > 0 ? '#27E309' : '#ff0000'} ]}> 
+                        R$ { data.valorGasto } 
+                    </Text>
                 </TouchableWithoutFeedback>
             </View>
         </View>
@@ -39,7 +37,8 @@ const styles = StyleSheet.create({
         fontSize: 20
     },
     valor: {
-        fontSize: 20
+        fontSize: 20,
+        fontWeight: '600'
     },
     campoRegisto: {
         borderWidth: 1,
@@ -47,8 +46,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         marginBottom: 15,
         marginHorizontal: 10,
+        paddingHorizontal: 15,
         padding: 10,
         borderRadius: 10,
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        alignItems: 'center'
     }
 })

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image, StatusBar, Dimensions, ActivityIndicator} from "react-native";
 import Conversor from "../../../services/conversor"; // Importado o arquivo de conversor de moeda
 import { AntDesign } from '@expo/vector-icons';
@@ -17,6 +17,7 @@ export default function Home(){
     const carouselMoeda = [
         { moeda: ( <Conversor moedaA="USD" moedaB="BRL" /> ) },
         { moeda: ( <Conversor moedaA="EUR" moedaB="BRL" /> ) },
+        { moeda: ( <Conversor moedaA="GBP" moedaB="BRL" /> ) },
         { moeda: ( <Conversor moedaA="CAD" moedaB="BRL" /> ) },
         { moeda: ( <Conversor moedaA="SEK" moedaB="BRL" /> ) },
         { moeda: ( <Conversor moedaA="AUD" moedaB="BRL" /> ) },
@@ -42,8 +43,8 @@ export default function Home(){
 
     const carouselImagemCentro = [
         { 
-            title: 'Estabelecendo metas',
-            text: 'Você já pensou sobre o que quer fazer daqui a 5 anos? Está certo sobre qual é o seu objetivo principal no momento? Sabe o que você quer ter alcançado ',
+            title: 'Investindo da melhor forma',
+            text: 'Chega um momento das nossas vidas que precisamos investir em algo para termos retorno no futuro. Aqui você está no lugar certo.',
             image:  'https://assets-blog.pagseguro.uol.com.br/wp-content/2022/05/real-digital.jpg' 
         },
         { 
@@ -52,13 +53,8 @@ export default function Home(){
             image:  'https://images.pexels.com/photos/6368833/pexels-photo-6368833.jpeg?auto=compress&cs=tinysrgb&w=600' 
         },
         { 
-            title: 'Estabelecendo metas',
-            text: 'Você já pensou sobre o que quer fazer daqui a 5 anos? Está certo sobre qual é o seu objetivo principal no momento? Sabe o que você quer ter alcançado ',
-            image:  'https://images.pexels.com/photos/6802049/pexels-photo-6802049.jpeg?auto=compress&cs=tinysrgb&w=600' 
-        },
-        { 
-            title: 'Estabelecendo metas',
-            text: 'Você já pensou sobre o que quer fazer daqui a 5 anos? Está certo sobre qual é o seu objetivo principal no momento? Sabe o que você quer ter alcançado ',
+            title: 'Saindo das dívidas',
+            text: 'Sabe aquele momento que parece que suas dívidas não tem fim? Não fique desesperado, com o organizamento financeiro correto você conseguirá sair delas.',
             image:  'https://www.tupi.fm/wp-content/uploads/Endividamento-do-brasileiro-em-2019-Blog-Consignet.png' 
         },
     ]
@@ -224,7 +220,8 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 14,
         color: '#161F4E',
-        fontWeight: '400'
+        fontWeight: '400',
+        textAlign: 'justify'
     },
 
     // Botões

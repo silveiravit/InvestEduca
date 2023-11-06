@@ -10,10 +10,11 @@ import Categoria from "./categoria";
 export default function Diario(){
 
     const { user } = useContext(AuthContext)
-    const [novoValor, setNovoValor] = useState(null)
+    const [novoValor, setNovoValor] = useState('')
     const [valor, setValor] = useState('')
     const [nomeGasto, setNomeGasto] = useState('')
-    const [meses] = useState([
+    const [dataAtual, setDataAtual] = useState(Date())
+    const [categoria] = useState([
         { key: 1, categoria: 'Carro'},
         { key: 2, categoria: 'Imovél'},
         { key: 3, categoria: 'Empréstimo'},
@@ -33,15 +34,16 @@ export default function Diario(){
 
         gastos.child(chave).set({
             nomeGasto: nomeGasto,
-            valorGasto: novoValor
+            valorGasto: novoValor,
+            dataCadastro: dataAtual
         })
         .then( () => {
             const data = {
                 key: chave,
                 nomeGasto: nomeGasto,
-                valorGasto: novoValor
+                valorGasto: novoValor,
+                dataCadastro: dataAtual
             }
-
             setValor(oldValor => [...oldValor, data])
         })
         .catch( (error) => {
@@ -50,16 +52,15 @@ export default function Diario(){
 
         setNovoValor('')
         setNomeGasto('')
-
+        setValor('')
     }
 
     return(
         <View style={ styles.container }>
-            
             <View style={ styles.campoValor }>
                 <View>
                     <TextInput
-                        placeholder=" R$"
+                        placeholder="R$"
                         onChangeText={ (valor) => setNovoValor(valor) }
                         style={ styles.input }
                         keyboardType="numeric"
@@ -78,10 +79,10 @@ export default function Diario(){
 
                 <View style={ styles.campoCategoria1 }>
                     <FlatList 
-                        data={meses}
+                        data={categoria}
                         keyExtractor={ (item) => item.key }
                         renderItem={ ({item}) => (
-                            <Categoria data={item} add={handleAdd}/>
+                            <Categoria data={item} add={ (gasto) => setNomeGasto(gasto) } addOutro={ (gasto) => setNomeGasto(gasto) }/>
                         )}
                     />
                 </View>
@@ -128,11 +129,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',
-        paddingVertical: 40      
+        paddingVertical: 30      
     },
     campoCategoria1: {
         backgroundColor: '#161F4E',
-        height: 200,
+        height: '45%',
         borderBottomRightRadius: 10,
         borderBottomLeftRadius: 10,
         flexDirection: 'row',

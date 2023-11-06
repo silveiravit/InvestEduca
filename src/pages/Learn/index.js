@@ -28,7 +28,7 @@ export default function Learn(){
                     </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={ styles.assunto }>
+                <TouchableOpacity style={ styles.assunto } onPress={ () => navigation.navigate('Dividas') }>
                     <View style={ styles.areaImg }>
                         <Image
                             source={ require('../../img/ef5.jpg')}
@@ -36,11 +36,11 @@ export default function Learn(){
                         />
                     </View>
                     <View style={ styles.areaText }>
-                        <Text style={ styles.textAssunto }>Dívidas?</Text>
+                        <Text style={ styles.textAssunto }>Dívidas</Text>
                     </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={ styles.assunto }>
+                <TouchableOpacity style={ styles.assunto } onPress={ () => navigation.navigate('Investimento') }>
                     <View style={ styles.areaImg }>
                         <Image
                             source={ require('../../img/ef3.jpg')}
@@ -53,7 +53,7 @@ export default function Learn(){
                     </View>
                 </TouchableOpacity> 
 
-                <TouchableOpacity style={ styles.assunto }>
+                <TouchableOpacity style={ styles.assunto } onPress={ () => navigation.navigate('Organizar') }>
                     <View style={ styles.areaImg }>
                         <Image
                             source={ require('../../img/ef6.jpg')}
@@ -74,8 +74,7 @@ export default function Learn(){
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center',
-        
+        alignItems: 'center'
     },
     assunto: {
         width: '90%',
@@ -84,7 +83,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
-        padding: 10,
+        paddingHorizontal: 20,
+        paddingVertical: 10,
         marginVertical: 20
     },
     imagem: {
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         borderWidth: 3,
         borderColor: '#fff',
-        padding: 5,
+        padding: 7,
         borderRadius: 50
     },
     textAssunto: {
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     areaText: {
         flex: 1,
         alignItems: 'flex-start',
-        marginHorizontal: 10
+        marginHorizontal: 20
     },
     areaTitulo: {
         marginVertical: 50

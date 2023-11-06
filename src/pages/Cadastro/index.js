@@ -8,10 +8,10 @@ import { Entypo } from '@expo/vector-icons';
 export default function Cadastro() {
 
     const navigation = useNavigation()
-    const [email, setEmail] = useState('vitor@gmail.com')
-    const [senha, setSenha] = useState('123456')
-    const [confirmSenha, setConfirmSenha] = useState('123456')
-    const [username, setUsername] = useState('vitor')
+    const [email, setEmail] = useState('')
+    const [senha, setSenha] = useState('')
+    const [confirmSenha, setConfirmSenha] = useState('')
+    const [username, setUsername] = useState('')
     const [loading, setLoading] = useState(false)
     const [hidePass, setHidePass] = useState(true)
     const [hidePass1, setHidePass1] = useState(true)

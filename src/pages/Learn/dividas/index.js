@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet, StatusBar, ScrollView } from "react-native";
 import { FontAwesome } from '@expo/vector-icons';
 
-export default function EducaFinan(){
+export default function Dividas(){
 
     return(
         <View style={ styles.container }>
@@ -33,15 +33,14 @@ export default function EducaFinan(){
                     </View>
 
                     <View style={ styles.areaEstudo1 }>
-                        <Text style={ styles.titulo }>O que é educação financeira?</Text>
+                        <Text style={ styles.titulo }>Como o trabalho de educação financeira pode evitar dívidas?</Text>
 
                         <Text style={{ textAlign: 'justify', fontSize: 20, fontWeight: '600', marginTop: 20}}>
-                            Educação financeira é todo o conhecimento relacionado ao dinheiro e como ele funciona.
-                            Ou seja, é o processo que ajuda a compreender melhor os produtos e serviços financeiros, assim, você se torna capaz de fazer melhores escolhas.
-                            Dessa forma, ter conhecimento sobre temas como: juros, poupança, Selic, inflação e outros pode ajudá-lo a tomar decisões financeiras de forma consciente e inteligente.
-                            De forma prática, quanto mais educado(a) financeiramente você for, mais consciente e confiante ficará para tomar decisões de como utilizar o seu dinheiro.
-                            Além disso, ao se educar financeiramente, você conseguirá melhorar o processo de como cortar gastos, aumentar receitas e investir valores poupados periodicamente para gerar acúmulo de riqueza.
-                            Nesse sentido, fica muito mais fácil fazer o seu dinheiro trabalhar para você! Veja abaixo o que fazer para ter educação financeira.
+                        Uma palavra que assombra muitos brasileiros é “dívida”. Para muitos, ela é justamente a principal razão para não começar a investir. Entretanto, a educação financeira pode ser o primeiro passo para transformar os juros em aliados. Sancionada no início de julho, a Lei do Superendividamento busca dar mais empoderamento aos consumidores através do conhecimento.
+                        
+                        Segundo dados do Serasa, a inadimplência afeta 61,4% dos brasileiros. Por conta da renda comprometida com dívidas, a construção de uma reserva de emergência é um desafio. Além dos inadimplentes, muitos brasileiros possuem dívidas altas, especialmente por conta do uso de cartão de crédito, financiamentos e empréstimos bancários. Para especialistas, quitar os débitos deve ser o passo inicial para quem deseja ver o dinheiro render.
+
+                        Os “superendividados” são os consumidores impossibilitados de pagar a totalidade de suas dívidas sem comprometer a renda com alimentação e ensino básico dos dependentes. Segundo o novo texto da Lei do Superendividamento, as empresas que oferecem crédito e serviços financeiros devem dar mais transparência para evitar que o consumidor seja prejudicado.
                         </Text>
                     </View>
 

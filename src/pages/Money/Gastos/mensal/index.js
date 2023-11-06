@@ -1,10 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions, FlatList } from "react-native";
-
+import { View, Text, StyleSheet, Dimensions, FlatList } from "react-native";
 import firebase from '../../../../../database/FirebaseConnection'
-
 import CampoGasto from "./campogasto";
-
 import {AuthContext} from '../../../../contexts/auth'
 
 const SLIDER_WIDTH = Dimensions.get('window').width
@@ -14,6 +11,8 @@ export default function Mensal(){
 
     const { user } = useContext(AuthContext)
     const [valor, setValor] = useState(null)
+    const [valorTotal, setValorTotal] = useState()
+    //const [dataAtual, setDataAtual] = useState(new Date().getFullYear())
     
     useEffect( () => {
 
@@ -23,22 +22,21 @@ export default function Mensal(){
             }
 
             firebase.database().ref('gastos').child(user).on('value', (snapshot) => {
-
                 setValor([])
-
+            
                 snapshot?.forEach( (childItem) => {
                     let data = {
                         key: childItem.key,
                         nomeGasto: childItem.val().nomeGasto,
-                        valorGasto: childItem.val().valorGasto
+                        valorGasto: childItem.val().valorGasto,
+                        dataCadastro: childItem.val().dataCadastro
                     }
-
                     setValor(oldValor => [...oldValor, data])
-
+                
                 })
-
+                
             })
-
+           
         }
 
         getUser()
@@ -74,6 +72,10 @@ export default function Mensal(){
                 />
 
             </View>
+
+            {/* <View style={ styles.areaTotal }>
+                <Text style={{ color: '#000', fontSize: 25, fontWeight: '600'}}>TOTAL R$ { valorTotal }</Text>
+            </View> */}
         </View>
     )
 }
@@ -89,7 +91,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         width: ITEM_WIDTH,
         marginVertical: 20,
-        paddingVertical: 20
+        paddingVertical: 20,
+        height: '60%'
     },
     areaMes: {
         marginBottom: 20
@@ -99,5 +102,14 @@ const styles = StyleSheet.create({
         color: '#000',
         fontWeight: '600',
         textAlign: 'center'
+    },
+    areaTotal: {
+        backgroundColor: '#E9AB43',
+        width: ITEM_WIDTH,
+        borderWidth: 2,
+        borderRadius: 10,
+        height: '11%',
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 })

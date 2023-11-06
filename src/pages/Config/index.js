@@ -3,11 +3,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, StatusBar, Dimensions 
 import firebase from '../../../database/FirebaseConnection'
 import { useNavigation } from '@react-navigation/native'
 import { AntDesign } from '@expo/vector-icons';
-
-import Tema from "./tema";
-
 import { AuthContext } from "../../contexts/auth";
-
 import Loading from "../../Loading";
 
 const WIDTH = Dimensions.get('window').width * 1
@@ -45,7 +41,7 @@ export default function Config(){
             <View style={ styles.config }>
                 <Text style={ styles.titulo }>Aparência</Text>
 
-                <TouchableOpacity style={ styles.btn } >
+                <TouchableOpacity style={ styles.btn } onPress={ () => navigation.navigate('Tema')}>
                     <View style={ styles.areaBtn }>
                         <Text style={ styles.subtitulo }>Tema</Text>
                         <AntDesign name="right" size={25} color="#EE990A" />
@@ -56,7 +52,7 @@ export default function Config(){
 
                 <TouchableOpacity style={ styles.btn }>
                     <View style={ styles.areaBtn }>
-                        <Text style={ styles.subtitulo }>Privacidade</Text>
+                        <Text style={ styles.subtitulo }>Ajuda e Suporte</Text>
                         <AntDesign name="right" size={25} color="#EE990A" />
                     </View>
                 </TouchableOpacity>

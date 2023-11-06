@@ -4,23 +4,29 @@ import { useNavigation } from '@react-navigation/native' // Hook de navegação
 import { Entypo } from '@expo/vector-icons';
 import Loading from '../../Loading';
 import { AuthContext } from '../../contexts/auth';
+import { AntDesign } from '@expo/vector-icons';
 
 export default function Login() {
 
-    const { logar } = useContext(AuthContext)
+    const { logar, resetPassword } = useContext(AuthContext)
     const navigation = useNavigation()
-    const [email, setEmail] = useState('vitor@gmail.com')
-    const [senha, setSenha] = useState('123456')
+    const [email, setEmail] = useState('')
+    const [senha, setSenha] = useState('')
     const [loading, setLoading] = useState(false)
     const [hidePass, setHidePass] = useState(true)
 
     // Acima foi declarado as states de navegação e de usuário
 
     function acessar(){
-        setTimeout( () => {
-            setLoading(true)
-            logar(email, senha)
-        }, setLoading(false))
+        
+        logar(email, senha)
+        
+    }
+
+    function resetSenha(){
+
+        resetPassword(email)
+
     }
 
     // Acima é feito a autenticação no banco de dados firebase para efetuar o login
@@ -75,6 +81,19 @@ export default function Login() {
                                 <Entypo name={ !hidePass ? 'eye-with-line' : 'eye'} size={30} color="black" />
                             </TouchableOpacity>
 
+                        </View>
+
+                        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+
+                            <TouchableOpacity onPress={ resetSenha }>
+                                <Text style={{ fontSize: 20, fontStyle: 'italic', color: '#161F4E', fontWeight: '500' }}>Esqueceu a senha?</Text>
+                            </TouchableOpacity>
+
+                            <Text style={{ marginVertical: 10, fontSize: 20, fontStyle: 'italic', color: '#161F4E', fontWeight: '500'}}>Ou entre com </Text>
+
+                            <TouchableOpacity style={{ backgroundColor: '#E9AB43', padding: 10, borderRadius: 50 }}>
+                                <AntDesign name="google" size={30} color="#161F4E" />
+                            </TouchableOpacity>
                         </View>
 
                     </View>

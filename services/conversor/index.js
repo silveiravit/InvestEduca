@@ -10,29 +10,23 @@ export default class Conversor extends Component{
         this.state = {
             moedaA: props.moedaA,
             moedaB: props.moedaB,
-            valorConvertido: 0,
-            loading: 'false'
+            valorConvertido: 0
         }
     }
 
-    // async componentDidMount(){
+    async componentDidMount(){
 
-    //     this.setState({
-    //         loading: 'true'
-    //     })
+        const valor = this.state.moedaA + '_' + this.state.moedaB
 
-    //     const valor = this.state.moedaA + '_' + this.state.moedaB
+        const cotacao = await api.get(`convert?q=${valor}&compact=ultra&apiKey=35d807af28b8ab7e3d9d`)
 
-    //     const cotacao = await api.get(`convert?q=${valor}&compact=ultra&apiKey=35d807af28b8ab7e3d9d`)
+        const response = cotacao.data[valor]
 
-    //     const response = cotacao.data[valor]
+        this.setState({
+            valorConvertido: 'R$ '+ response.toFixed(2).replace('.',',')
+        })
 
-    //     this.setState({
-    //         valorConvertido: 'R$ '+ response.toFixed(2).replace('.',','),
-    //         loading: 'false'
-    //     })
-
-    // }
+    }
 
     render(){
 
@@ -44,6 +38,9 @@ export default class Conversor extends Component{
             
         }else if( this.state.moedaA === 'EUR' ){
             moedaA = 'Cotação do Euro'
+
+        }else if( this.state.moedaA === 'GBP' ){
+            moedaA = 'Cotação da Libra Esterlina'
 
         }else if( this.state.moedaA === 'CAD' ){
             moedaA = 'Cotação do Dólar Canadense'
@@ -67,16 +64,6 @@ export default class Conversor extends Component{
 
         return(
             <View>
-                <Modal transparent visible={this.state.loading}>
-                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                        <ActivityIndicator 
-                            size={50}
-                            color={"#fff"}
-                            animating={true}
-                        />
-                    </View>
-                </Modal>
-
                 <View style={styles.view1}>
                     
                     <Text style={styles.cotacao}>
