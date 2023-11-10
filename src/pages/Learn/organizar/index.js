@@ -37,9 +37,11 @@ export default function Organizar(){
 
                         <Text style={{ textAlign: 'justify', fontSize: 20, fontWeight: '600', marginTop: 20}}>
                         Organizar as finanças pessoais é um grande desafio para várias pessoas, especialmente para trabalha com CNPJ e precisa cuidar também das finanças da empresa.
-
+                        {'\n'}
+                        {'\n'}
                         No entanto, é uma tarefa muito importante, já que a falta de planejamento pode gerar sérios problemas, como aumento de dívidas, gastos desnecessários que comprometem a renda, entre outros.
-
+                        {'\n'}
+                        {'\n'}
                         Para evitar que isso aconteça, é preciso investir em um controle financeiro eficaz do seu dinheiro. Isso contribui para que você tenha que se preocupar menos no final do mês, além de outras vantagens, como a possibilidade de investir e multiplicar seu capital, fazer uma viagem, trocar de carro etc.
                         </Text>
                     </View>

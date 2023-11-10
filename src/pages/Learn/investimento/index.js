@@ -37,11 +37,14 @@ export default function Investimento(){
 
                         <Text style={{ textAlign: 'justify', fontSize: 20, fontWeight: '600', marginTop: 20}}>
                         Entendemos por investimentos qualquer valor capaz de gerar um lucro, seja em um período de curto, médio ou longo prazo.
-
+                        {'\n'}
+                        {'\n'}
                         Muitas pessoas não investem por pensar que é algo muito complexo e que necessita de uma grande quantia de dinheiro para começar, mas isso não é verdade.
-
+                        {'\n'}
+                        {'\n'}
                         Há diferentes oportunidades capazes de render mais do que a poupança. Você pode começar investindo seu dinheiro em uma conta digital que renda 100% do CDI ou comprando um título no Tesouro Direto a partir de R$ 30,00, por exemplo.
-
+                        {'\n'}
+                        {'\n'}
                         No início, isso pode trazer retornos pequenos, mas se você persistir em estudar mais sobre o assunto e se aprofundar cada vez mais em entender o que são investimentos, colherá recompensas a longo prazo.
                         </Text>
                     </View>

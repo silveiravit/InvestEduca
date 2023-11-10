@@ -2,8 +2,6 @@ import React, { createContext, useState } from "react";
 import { useNavigation } from '@react-navigation/native'
 import firebase from '../../database/FirebaseConnection'
 
-import Loading from '../Loading'
-
 export const AuthContext = createContext({})
 
 export default function AuthProvider({ children }){
@@ -17,6 +15,12 @@ export default function AuthProvider({ children }){
 
         const user = firebase.auth().signInWithEmailAndPassword(email, senha)
         .then( (user) => {
+
+            if(!firebase.auth().currentUser.emailVerified){
+                alert('Verifique o seu e-mail antes de prosseguir.')
+                return
+            }
+
             firebase.database().ref('usuarios').child(user.user.uid).on('value', (snapshot) => {
                 setUsername(snapshot.val().username)
             })
@@ -26,12 +30,16 @@ export default function AuthProvider({ children }){
             navigation.navigate('Routes')
             
         })
-        .catch( (error) => {
-            if( error.code === 'auth/invalid-email'){
-                alert('E-mail inválido!')
-            }
-            else if( error.code === 'auth/weak-password'){
-                alert('Sua senha precisa ter pelo menos 6 caracteres.')
+        .catch( (e) => {
+            switch(e.code){
+                case 'auth/user-not-found':
+                    console.log(e)
+                    break
+                case 'auth/wrong-password':
+                    console.log(e)
+                    break
+                default:
+                    alert('Ops, algo deu errado!')
             }
         })
 
@@ -41,7 +49,7 @@ export default function AuthProvider({ children }){
 
         firebase.auth().sendPasswordResetEmail(email)
         .then( () => {
-            alert('Foi enviado um e-mail para: '+ email + '. Verifique a sua caixa de e-mail.')
+            alert('Foi enviado um e-mail de recuperação para: '+ email + '. Verifique a sua caixa de e-mail.')
         })
         .catch( (error) => {
             if( error.code === 'auth/user-not-found'){

@@ -19,7 +19,7 @@ export default function Learn(){
                 <TouchableOpacity style={ styles.assunto } onPress={ () => navigation.navigate('EducaFinan')}>
                     <View style={ styles.areaImg }>
                         <Image
-                            source={ require('../../img/ef4.png')}
+                            source={ require('../../images/ef4.png')}
                             style={ styles.imagem }
                         />
                     </View>
@@ -31,7 +31,7 @@ export default function Learn(){
                 <TouchableOpacity style={ styles.assunto } onPress={ () => navigation.navigate('Dividas') }>
                     <View style={ styles.areaImg }>
                         <Image
-                            source={ require('../../img/ef5.jpg')}
+                            source={ require('../../images/ef5.jpg')}
                             style={ styles.imagem }
                         />
                     </View>
@@ -43,7 +43,7 @@ export default function Learn(){
                 <TouchableOpacity style={ styles.assunto } onPress={ () => navigation.navigate('Investimento') }>
                     <View style={ styles.areaImg }>
                         <Image
-                            source={ require('../../img/ef3.jpg')}
+                            source={ require('../../images/ef3.jpg')}
                             style={ styles.imagem }
                         />
                     </View>
@@ -56,7 +56,7 @@ export default function Learn(){
                 <TouchableOpacity style={ styles.assunto } onPress={ () => navigation.navigate('Organizar') }>
                     <View style={ styles.areaImg }>
                         <Image
-                            source={ require('../../img/ef6.jpg')}
+                            source={ require('../../images/ef6.jpg')}
                             style={ styles.imagem }
                         />
                     </View>
@@ -74,7 +74,8 @@ export default function Learn(){
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor: '#fff'
     },
     assunto: {
         width: '90%',
@@ -85,7 +86,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingHorizontal: 20,
         paddingVertical: 10,
-        marginVertical: 20
+        marginVertical: 20,
     },
     imagem: {
         height: 60, 
@@ -108,7 +109,6 @@ const styles = StyleSheet.create({
         fontSize: 25,
         color: '#161F4E',
         fontWeight: '600',
-        fontStyle: 'italic'
     },
     areaText: {
         flex: 1,

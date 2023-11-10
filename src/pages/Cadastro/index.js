@@ -2,7 +2,7 @@ import react, { useState } from 'react' // Hook de estados
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image, StatusBar } from 'react-native'; // Componentes
 import { useNavigation } from '@react-navigation/native' // Hook de navegação
 import firebase from '../../../database/FirebaseConnection'; // Importação do firebase
-import Loading from '../../Loading'; //Componente de Loading 
+import Loading from '../../components/Loading'; //Componente de Loading 
 import { Entypo } from '@expo/vector-icons';
 
 export default function Cadastro() {
@@ -22,35 +22,46 @@ export default function Cadastro() {
 
         setLoading(true)
 
-        if( confirmSenha === senha){
+        if( confirmSenha === senha && username !== '' ){
 
             firebase.auth().createUserWithEmailAndPassword(email, senha)
             .then( (user) => {
+                
+                let userF = firebase.auth().currentUser
+                userF.sendEmailVerification()
+                .then( () => {
+                    alert('Foi enviado um e-mail de verificação para '+email+'.')
+                })
+                .catch( (error) => {
+                    
+                })
+
                 firebase.database().ref('usuarios').child(user.user.uid).set({
                     username: username
                 })
-                alert('Usuário cadastrado!')
                 navigation.navigate('Login')
                 setLoading(false)
 
             } )
-            .catch( (error) => {
-                if( error.code === 'auth/invalid-email'){
-                    alert('E-mail é inválido.')
-
-                }
-                if( error.code === 'auth/email-already-exists' ){
-                    alert('O e-mail fornecido já está em uso por outro usuário.')
-                }
-                if( error.code === 'auth/weak-password' ){
-                    alert('Sua senha deve ter pelo menos 6 caracteres.')
+            .catch( (e) => {
+                switch(e.code){
+                    case 'auth/invalid-email':
+                        alert('E-mail está inválido.')
+                        break
+                    case 'auth/email-already-in-use':
+                        alert('O e-mail fornecido já está em uso por outro usuário.')
+                        break
+                    case 'auth/weak-password':
+                        alert('Sua senha deve ter pelo menos 6 caracteres.')
+                        break
+                    
                 }
 
                 setLoading(false)
             })
 
         }else{
-            alert('Senhas diferentes!')
+            alert('Preencha o username e verifique a senha!')
             setLoading(false)
             return
         }
@@ -74,7 +85,7 @@ export default function Cadastro() {
 
                     <View style={ styles.areaImg }>
                         <Image 
-                            source={require('../../img/Porco.png')}
+                            source={require('../../images/Porco.png')}
                             style={ styles.img }
                         />
                     </View>
@@ -125,7 +136,7 @@ export default function Cadastro() {
                                 onChangeText={ (senha) => setConfirmSenha(senha) }
                                 keyboardType='numeric'
                                 secureTextEntry={ hidePass1 }
-                                placeholder='Senha'
+                                placeholder='Confirme a senha'
                                 placeholderTextColor={'#161F4E'}
                                 value={confirmSenha}
                             /> 

@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image, StatusBar, Dimensions, ActivityIndicator} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions } from "react-native";
 import Conversor from "../../../services/conversor"; // Importado o arquivo de conversor de moeda
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native'
@@ -31,7 +31,7 @@ export default function Home(){
             image:  'https://investidorsardinha.r7.com/wp-content/uploads/2020/10/o-que-e-educacao-financeira-importancia-e-10-dicas-para-alcancar-1200x900.png' 
         },
         { 
-            image:  'https://beieducacao.com.br/wp-content/uploads/2022/12/blog_201222_educfinanceira-scaled.jpg' 
+            image:  'https://futurofunsejem.org.br/online/wp-content/uploads/2021/09/120-edfinanceira-1920x1080px-1.jpg' 
         },
         { 
             image:  'https://www.sucessor.com.br/wp-content/uploads/2020/09/educa%C3%A7%C3%A3o-financeira-scaled.jpg' 
@@ -166,7 +166,8 @@ export default function Home(){
 const styles = StyleSheet.create({
     // Interface
     container: {
-        flex: 1
+        flex: 1,
+        backgroundColor: '#fff'
     },
     areaCotacao: {      
         padding: 10,
@@ -188,7 +189,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     viewPrincipalCotacao: {
-        marginBottom: '3%'
+        marginBottom: '3%',
     },
     viewPrincipalImagem: {
         flex: 1,
@@ -201,7 +202,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         borderWidth: 2,
         borderColor: '#161F4E',
-        backgroundColor: '#fff'
+        backgroundColor: '#F7FFE5'
     },
     imageCentro : {
         width: '100%',
@@ -238,7 +239,7 @@ const styles = StyleSheet.create({
     btn: {
         backgroundColor: '#161F4E',
         marginBottom: '3%',
-        borderRadius: 10,
+        borderRadius: 15,
         padding: 10,
         flexDirection: 'row',
         alignItems: 'center',

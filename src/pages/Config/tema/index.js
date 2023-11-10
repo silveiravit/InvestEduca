@@ -14,20 +14,28 @@ export default function Tema(){
             <TouchableOpacity style={ styles.btn } onPress={ (claro) => setChecked('claro')}>
                 <Text style={ styles.textBtn }>Claro</Text>
 
-                <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'flex-end'}}>{ checked === 'claro' ? <AntDesign name="check" size={24} color="#161F4E" /> : '' }</View>
+                <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'flex-end'}}>
+                    { checked === 'claro' ? <AntDesign name="check" size={24} color="#161F4E" /> : '' }
+                </View>
                 
             </TouchableOpacity>
 
             <TouchableOpacity style={ styles.btn } onPress={ (escuro) => setChecked('escuro')}>
                 <Text style={ styles.textBtn }>Escuro</Text>
 
-                <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'flex-end'}}>{ checked === 'escuro' ? <AntDesign name="check" size={24} color="#161F4E" /> : '' }</View>
+                <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'flex-end'}}>
+                    { checked === 'escuro' ? <AntDesign name="check" size={24} color="#161F4E" /> : '' }
+                </View>
+                
             </TouchableOpacity>
 
             <TouchableOpacity style={ styles.btn } onPress={ (automatico) => setChecked('automatico')}>
                 <Text style={ styles.textBtn }>Automático</Text>
 
-                <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'flex-end'}}>{ checked === 'automatico' ? <AntDesign name="check" size={24} color="#161F4E" /> : '' }</View>
+                <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'flex-end'}}>
+                    { checked === 'automatico' ? <AntDesign name="check" size={24} color="#161F4E" /> : '' }
+                </View>
+
             </TouchableOpacity>
 
         </View>

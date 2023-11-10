@@ -38,9 +38,15 @@ export default function EducaFinan(){
                         <Text style={{ textAlign: 'justify', fontSize: 20, fontWeight: '600', marginTop: 20}}>
                             Educação financeira é todo o conhecimento relacionado ao dinheiro e como ele funciona.
                             Ou seja, é o processo que ajuda a compreender melhor os produtos e serviços financeiros, assim, você se torna capaz de fazer melhores escolhas.
+                            {'\n'}
+                            {'\n'}
                             Dessa forma, ter conhecimento sobre temas como: juros, poupança, Selic, inflação e outros pode ajudá-lo a tomar decisões financeiras de forma consciente e inteligente.
                             De forma prática, quanto mais educado(a) financeiramente você for, mais consciente e confiante ficará para tomar decisões de como utilizar o seu dinheiro.
+                            {'\n'}
+                            {'\n'}
                             Além disso, ao se educar financeiramente, você conseguirá melhorar o processo de como cortar gastos, aumentar receitas e investir valores poupados periodicamente para gerar acúmulo de riqueza.
+                            {'\n'}
+                            {'\n'}
                             Nesse sentido, fica muito mais fácil fazer o seu dinheiro trabalhar para você! Veja abaixo o que fazer para ter educação financeira.
                         </Text>
                     </View>

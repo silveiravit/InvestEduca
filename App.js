@@ -17,6 +17,7 @@ import Dividas from './src/pages/Learn/dividas';
 import Investimento from './src/pages/Learn/investimento';
 import Organizar from './src/pages/Learn/organizar';
 import Tema from './src/pages/Config/tema'
+import Suporte from './src/pages/Config/suporte';
 
 const Stack = createNativeStackNavigator() // Constante de navegação
 
@@ -71,8 +72,7 @@ export default function App () {
               name='Objetivo'
               component={Objetivo}
               options={{
-                headerShown: true,
-                headerTitle: 'VOLTAR',
+                headerShown: false,
                 headerTintColor: '#FFF',
                 statusBarColor: '#161F4E',
                 headerStyle: {
@@ -85,8 +85,7 @@ export default function App () {
               name='Gasto'
               component={Gasto}
               options={{
-                headerShown: true,
-                headerTitle: 'Controle seus Gastos',
+                headerShown: false,
                 headerTintColor: '#161F4E',
                 statusBarColor: '#000',
                 headerTitleAlign: 'center',
@@ -105,8 +104,7 @@ export default function App () {
               options={{
                 statusBarColor: '#000',
                 statusBarStyle: 'light',
-                headerShown: true,
-                headerTitle: 'VOLTAR'
+                headerShown: false
               }}
             />
 
@@ -116,8 +114,17 @@ export default function App () {
               options={{
                 statusBarColor: '#000',
                 statusBarStyle: 'light',
-                headerShown: true,
-                headerTitle: 'VOLTAR'
+                headerShown: false
+              }}
+            />
+
+            <Stack.Screen
+              name='Suporte'
+              component={Suporte}
+              options={{
+                statusBarColor: '#000',
+                statusBarStyle: 'light',
+                headerShown: false
               }}
             />
 
@@ -127,7 +134,7 @@ export default function App () {
               component={EducaFinan}
               options={{
                 statusBarColor: '#E9AB43',
-                statusBarStyle: 'light',
+                statusBarStyle: 'auto',
                 headerShown: false,
               }}
             />

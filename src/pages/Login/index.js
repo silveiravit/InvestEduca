@@ -1,35 +1,44 @@
 import react, { useState, useContext } from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native' // Hook de navegação
-import { Entypo } from '@expo/vector-icons';
-import Loading from '../../Loading';
+
+// Componente de carregamento de página
+import Loading from '../../components/Loading';
+
+// Componente de autenticação
 import { AuthContext } from '../../contexts/auth';
+
+// Biblioteca de icones
+import { Entypo } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 
 export default function Login() {
 
     const { logar, resetPassword } = useContext(AuthContext)
     const navigation = useNavigation()
-    const [email, setEmail] = useState('')
-    const [senha, setSenha] = useState('')
+    const [email, setEmail] = useState('investeduca07@gmail.com')
+    const [senha, setSenha] = useState('123456')
     const [loading, setLoading] = useState(false)
     const [hidePass, setHidePass] = useState(true)
 
     // Acima foi declarado as states de navegação e de usuário
 
+    // Função de login para acessar a home do aplicativo
     function acessar(){
-        
-        logar(email, senha)
+        setLoading(true)
+        setTimeout( () => {
+            logar(email, senha)
+            setLoading(false)
+        }, 5000)
         
     }
 
+    // Função de esqueceu a senha para caso o usuário não lembre da senha
     function resetSenha(){
 
         resetPassword(email)
 
     }
-
-    // Acima é feito a autenticação no banco de dados firebase para efetuar o login
 
     return (
         <View style={styles.container}>
@@ -47,7 +56,7 @@ export default function Login() {
 
                     <View style={ styles.areaImg }>
                         <Image 
-                            source={require('../../img/Porco.png')}
+                            source={require('../../images/Porco.png')}
                             style={ styles.img }
                         />
                     </View>
@@ -86,7 +95,7 @@ export default function Login() {
                         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
 
                             <TouchableOpacity onPress={ resetSenha }>
-                                <Text style={{ fontSize: 20, fontStyle: 'italic', color: '#161F4E', fontWeight: '500' }}>Esqueceu a senha?</Text>
+                                <Text style={{ fontSize: 20, fontStyle: 'italic', color: '#161F4E', fontWeight: '500', borderBottomWidth: 1, borderBottomColor: '#161F4E' }}>Esqueceu a senha?</Text>
                             </TouchableOpacity>
 
                             <Text style={{ marginVertical: 10, fontSize: 20, fontStyle: 'italic', color: '#161F4E', fontWeight: '500'}}>Ou entre com </Text>

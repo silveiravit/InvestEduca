@@ -15,12 +15,12 @@ export default function Diario(){
     const [nomeGasto, setNomeGasto] = useState('')
     const [dataAtual, setDataAtual] = useState(Date())
     const [categoria] = useState([
-        { key: 1, categoria: 'Carro'},
+        { key: 1, categoria: 'Veículo'},
         { key: 2, categoria: 'Imovél'},
         { key: 3, categoria: 'Empréstimo'},
         { key: 4, categoria: 'Despesas'},
         { key: 5, categoria: 'Estudos'},
-        { key: 6, categoria: 'Outro'},
+        { key: 6, categoria: 'Outros'},
     ])
 
     function handleAdd(){
@@ -50,22 +50,19 @@ export default function Diario(){
             alert('Digite um valor para adicionar.')
         })
 
-        setNovoValor('')
-        setNomeGasto('')
-        setValor('')
     }
 
     return(
         <View style={ styles.container }>
             <View style={ styles.campoValor }>
-                <View>
+                
                     <TextInput
                         placeholder="R$"
                         onChangeText={ (valor) => setNovoValor(valor) }
                         style={ styles.input }
                         keyboardType="numeric"
                     />
-                </View>
+                
 
                 <TouchableOpacity style={ styles.icon } onPress={ handleAdd }>
                     <AntDesign name="plus" size={25} color="white" />
@@ -78,13 +75,16 @@ export default function Diario(){
                 </View>
 
                 <View style={ styles.campoCategoria1 }>
+                    
                     <FlatList 
                         data={categoria}
                         keyExtractor={ (item) => item.key }
                         renderItem={ ({item}) => (
-                            <Categoria data={item} add={ (gasto) => setNomeGasto(gasto) } addOutro={ (gasto) => setNomeGasto(gasto) }/>
+                            <Categoria data={item} add={ (gasto) => setNomeGasto(gasto) } />
                         )}
+                        showsVerticalScrollIndicator={false}
                     />
+                    
                 </View>
             </View> 
         </View>
@@ -94,27 +94,27 @@ export default function Diario(){
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center'
+        alignItems: 'center',
     },
     campoValor: {
         backgroundColor: '#E9AB43',
         borderWidth: 2,
         borderRadius: 10,
-        justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',
         marginVertical: 20,
         width:'95%',
+        paddingHorizontal: 40
     },
     input: {
         backgroundColor: '#ffffffbb',
-        width: 250,
         borderRadius: 10,
         marginVertical: 50,
         padding: 5,
         marginHorizontal: 10,
         fontSize: 25,
-        textAlign: 'center'
+        textAlign: 'center',
+        flex: 1
     },
     icon: {
         backgroundColor: '#161F4E',
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     },
     campoCategoria1: {
         backgroundColor: '#161F4E',
-        height: '45%',
+        height: '40%',
         borderBottomRightRadius: 10,
         borderBottomLeftRadius: 10,
         flexDirection: 'row',

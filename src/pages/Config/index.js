@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity, StatusBar, Dimensions } from "react-native";
 import firebase from '../../../database/FirebaseConnection'
 import { useNavigation } from '@react-navigation/native'
 import { AntDesign } from '@expo/vector-icons';
 import { AuthContext } from "../../contexts/auth";
-import Loading from "../../Loading";
+import Loading from "../../components/Loading";
 
 const WIDTH = Dimensions.get('window').width * 1
 
@@ -15,13 +15,14 @@ export default function Config(){
     const [loading, setLoading] = useState(false)
 
     function sair(){
+        setLoading(true)
         setTimeout( () => {
-            setLoading(true)
             firebase.auth().signOut()
             .then( () => {
                 navigation.navigate('Login')
+                setLoading(false)
             })   
-        }, setLoading(false))
+        }, 2000)
     }
 
     return(
@@ -30,7 +31,7 @@ export default function Config(){
             <Loading visible={loading} />
 
             <Image
-                source={require('../../img/PorcoConfig.png')}
+                source={require('../../images/PorcoConfig.png')}
                 style={ styles.img }
             />
 
@@ -50,7 +51,7 @@ export default function Config(){
 
                 <Text style={ styles.titulo }>Conta</Text>
 
-                <TouchableOpacity style={ styles.btn }>
+                <TouchableOpacity style={ styles.btn } onPress={ () => navigation.navigate('Suporte')}>
                     <View style={ styles.areaBtn }>
                         <Text style={ styles.subtitulo }>Ajuda e Suporte</Text>
                         <AntDesign name="right" size={25} color="#EE990A" />
@@ -77,7 +78,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        backgroundColor: '#eee',
+        backgroundColor: '#fff',
         width: WIDTH
     },
     config: {

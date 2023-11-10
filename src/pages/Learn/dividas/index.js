@@ -37,9 +37,11 @@ export default function Dividas(){
 
                         <Text style={{ textAlign: 'justify', fontSize: 20, fontWeight: '600', marginTop: 20}}>
                         Uma palavra que assombra muitos brasileiros é “dívida”. Para muitos, ela é justamente a principal razão para não começar a investir. Entretanto, a educação financeira pode ser o primeiro passo para transformar os juros em aliados. Sancionada no início de julho, a Lei do Superendividamento busca dar mais empoderamento aos consumidores através do conhecimento.
-                        
+                        {'\n'}
+                        {'\n'}
                         Segundo dados do Serasa, a inadimplência afeta 61,4% dos brasileiros. Por conta da renda comprometida com dívidas, a construção de uma reserva de emergência é um desafio. Além dos inadimplentes, muitos brasileiros possuem dívidas altas, especialmente por conta do uso de cartão de crédito, financiamentos e empréstimos bancários. Para especialistas, quitar os débitos deve ser o passo inicial para quem deseja ver o dinheiro render.
-
+                        {'\n'}
+                        {'\n'}
                         Os “superendividados” são os consumidores impossibilitados de pagar a totalidade de suas dívidas sem comprometer a renda com alimentação e ensino básico dos dependentes. Segundo o novo texto da Lei do Superendividamento, as empresas que oferecem crédito e serviços financeiros devem dar mais transparência para evitar que o consumidor seja prejudicado.
                         </Text>
                     </View>

@@ -6,8 +6,7 @@ import React, { useState, useContext } from "react";
 
 import { AuthContext } from '../contexts/auth';
 
-import Mensal from '../pages/Money/Gastos/mensal';
-
+// Páginas da navegação principal
 import Login from '../pages/Login';
 import Home from '../pages/Home';
 import Learn from '../pages/Learn';
@@ -35,7 +34,7 @@ export default function Routes(){
           tabBarActiveTintColor: '#E9AB43',
           tabBarInactiveTintColor: '#161F4E',
           tabBarStyle: {
-              height: 60,
+              height: 55,
               borderTopWidth: 1,
               borderTopColor: '#161F4E',
           }
@@ -47,7 +46,7 @@ export default function Routes(){
         component={Home} 
         options={{
           tabBarIcon: ({color, size}) => {
-            return <AntDesign name="home" size={40} color={ color } />
+            return <AntDesign name="home" size={38} color={ color } />
           }
         }}
       />
@@ -57,7 +56,7 @@ export default function Routes(){
         component={Learn} 
         options={{
           tabBarIcon: ({color, size}) => {
-            return <Entypo name="book" size={40} color={ color } />
+            return <Entypo name="book" size={38} color={ color } />
           },
         }}
       />
@@ -67,7 +66,7 @@ export default function Routes(){
         component={Money} 
         options={{
           tabBarIcon: ({color, size}) => {
-            return <MaterialIcons name="attach-money" size={40} color={ color } />
+            return <MaterialIcons name="monetization-on" size={38} color={ color } />
           },
         }}
       />
@@ -77,7 +76,7 @@ export default function Routes(){
         component={Config} 
         options={{
           tabBarIcon: ({color, size}) => {
-            return <AntDesign name="setting" size={40} color={ color } />
+            return <MaterialIcons name="settings" size={38} color={ color } />
           }
         }}
       />

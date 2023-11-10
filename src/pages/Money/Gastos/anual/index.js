@@ -38,6 +38,7 @@ export default function Anual(){
                         renderItem={ ({item}) => (
                             <Meses data={item} />
                         )}
+                        showsVerticalScrollIndicator={false}
                     />
                 </View>
 
@@ -74,5 +75,5 @@ const styles = StyleSheet.create({
     },
     areaAno: {
         marginBottom: 20
-    }
+    },
 })

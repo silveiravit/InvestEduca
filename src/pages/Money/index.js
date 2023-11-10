@@ -12,43 +12,37 @@ export default function Money(){
 
             <View style={ styles.areaBtn }>
 
-                <Text style={{ fontStyle: 'italic', textAlign: 'center', fontSize: 25, color: '#161F4E', fontWeight: '600'}}>O que gostaria de ver?</Text>
+                <Text style={{ textAlign: 'center', fontSize: 25, color: '#161F4E', fontWeight: '600'}}>O que gostaria de ver?</Text>
 
-                <View style={{ height: 200, borderWidth: 3, borderRadius: 20, borderColor: '#161F4E'}}>
+                <TouchableOpacity onPress={ () => navigation.navigate('Objetivo') } style={ styles.btn }>
 
-                    <TouchableOpacity 
-                        style={ styles.btn } 
-                        onPress={ () => navigation.navigate('Objetivo') }
-                    >   
+                    <View style={ styles.view } >
                         <View style={ styles.viewBtn }>
                             <Text style={ styles.textoBtn }>OBJETIVOS</Text>
                             <View style={ styles.icon }>
                                 <AntDesign name="arrowright" size={30} color="black" /> 
                             </View>
                         </View>
-                    </TouchableOpacity>
+                    </View>
 
                     <Text style={{ fontSize: 20, margin: 15, color: '#161F4E'}}>Demonstrativo de metas estabelecidas no planejamento</Text>
 
-                </View>
+                </TouchableOpacity>
 
-                <View style={{ height: 200, borderWidth: 3, borderRadius: 20, borderColor: '#161F4E'}}>
+                <TouchableOpacity onPress={ () => navigation.navigate('Gasto') } style={ styles.btn }>
 
-                    <TouchableOpacity 
-                        style={ styles.btn } 
-                        onPress={ () => navigation.navigate('Gasto') }
-                    >
+                    <View style={ styles.view } >
                         <View style={ styles.viewBtn }>
                             <Text style={ styles.textoBtn }>GASTOS</Text>
                             <View style={ styles.icon }>
                                 <AntDesign name="arrowright" size={30} color="black" /> 
                             </View>
                         </View>
-                    </TouchableOpacity>
+                    </View>
 
                     <Text style={{ fontSize: 20, margin: 15, color: '#161F4E'}}>Controle financeiro ligado diretamente a datas</Text>
 
-                </View>
+                </TouchableOpacity>
             </View>
 
         </View>
@@ -58,7 +52,8 @@ export default function Money(){
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        backgroundColor: '#fff'
     },
     areaBtn: {
         flex: 1,
@@ -71,13 +66,16 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingHorizontal: '3%'
     },
-    btn: {
+    view: {
         backgroundColor: '#161F4E',
         marginBottom: '3%',
-        borderRadius: 10,
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
+        borderColor: '#161F4E',
         padding: 10,
         flexDirection: 'row',
         alignItems: 'center',
+        borderWidth: 2
     },  
     textoBtn: {
         color: '#FFF',
@@ -89,5 +87,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderRadius: 30,
         padding: 5
+    },
+    btn: {
+        borderColor: '#161F4E' , 
+        borderWidth: 3, 
+        borderRadius: 20, 
+        height: 200
     }
 })
