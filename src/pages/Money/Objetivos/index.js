@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Dimensions, ScrollView, Modal, Pressable, TouchableWithoutFeedback } from "react-native";
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Dimensions, ScrollView, Modal, TouchableWithoutFeedback } from "react-native";
 import { Picker } from '@react-native-picker/picker'
 import { AntDesign } from '@expo/vector-icons';
 
@@ -41,6 +41,7 @@ export default function Objetivo(){
         }
 
         setMarkedDates(markedDay)
+        
     }
 
     function dataSelect(dateSel){
@@ -90,23 +91,15 @@ export default function Objetivo(){
                     
                     <View style={ styles.form }>
                         <Text style={ styles.subtitulo }>DATA PREVISTA</Text>
-
-                        <View style={ styles.date }>
-                            
-                            <View style={{ flex: 1, alignItems: 'center'}}>
                                 
-                                <Text style={{ fontSize: 20, color: '#999'}}>
-                                    { date.getDate() }/{ date.getMonth() }/{ date.getFullYear() }
-                                </Text>
-                                            
-                            </View>                            
-
-                            <View>
-                                <TouchableOpacity style={ styles.btnDate } onPress={ () => setShowDate(true) }>
-                                    <AntDesign name="calendar" size={30} color="#FF0000" />
-                                </TouchableOpacity>
-                            </View>
-                        </View>
+                        <TouchableOpacity style={ styles.btnDate } onPress={ () => setShowDate(true) }>
+                            <Text style={{ flex: 1, textAlign: 'center', fontSize: 20, color: '#999'}}>
+                                
+                            </Text>
+                                    
+                            <AntDesign name="calendar" size={30} color="#FF0000" />
+                        </TouchableOpacity>
+                        
                     </View>
                 
                     <View style={ styles.form }>
@@ -154,10 +147,12 @@ export default function Objetivo(){
                             selectedDayTextColor: '#fff'
                         }}
                         dataPrevista={markedDate}
+                        initialDate={date.dateString}
                     />
-                    <TouchableOpacity style={{ backgroundColor: '#161F4E', marginTop: 20, marginHorizontal: 20,
-                borderRadius: 10, alignItems: 'center', padding: 10}} onPress={ dataSelect }>
-                        <Text style={{ fontSize: 25, color: '#fff', fontWeight: '600'}}>FEITO!</Text>
+                    <TouchableOpacity style={{ flexDirection: 'row', backgroundColor: '#161F4E', marginTop: 20, marginHorizontal: 20,
+                borderRadius: 10, alignItems: 'center', padding: 10, justifyContent: 'center'}} onPress={ dataSelect }>
+                        <Text style={{ fontSize: 25, color: '#fff', fontWeight: '600'}}>FEITO</Text>
+                        <AntDesign name="check" size={30} color="white" />
                     </TouchableOpacity>
                 </View>
             </Modal>
@@ -188,7 +183,6 @@ const styles = StyleSheet.create({
         fontSize: 25,
         textAlign: 'center',
         fontWeight: '600',
-        fontStyle: 'italic',
         marginVertical: 30
     },
     subtitulo: {
@@ -225,18 +219,14 @@ const styles = StyleSheet.create({
     },
     form: {
         marginVertical: 10,
-        
-    },
-    date: {
-        borderWidth: 2,
-        borderRadius: 10, 
-        width: ITEM_WIDTH,
-        height: 50,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'flex-end'
     },
     btnDate: {
         marginHorizontal: 10,
+        flexDirection: 'row',
+        width: ITEM_WIDTH,
+        justifyContent: 'space-between',
+        borderWidth: 2,
+        borderRadius: 10,
+        padding: 8
     }
 })

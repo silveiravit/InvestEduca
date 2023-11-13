@@ -42,17 +42,20 @@ export default function Home(){
     ]
 
     const carouselImagemCentro = [
-        { 
+        {   
+            key: 1,
             title: 'Investindo da melhor forma',
             text: 'Chega um momento das nossas vidas que precisamos investir em algo para termos retorno no futuro. Aqui você está no lugar certo.',
             image:  'https://assets-blog.pagseguro.uol.com.br/wp-content/2022/05/real-digital.jpg' 
         },
-        { 
+        {   
+            key: 2,
             title: 'Estabelecendo metas',
             text: 'Você já pensou sobre o que quer fazer daqui a 5 anos? Está certo sobre qual é o seu objetivo principal no momento? Sabe o que você quer ter alcançado ',
             image:  'https://images.pexels.com/photos/6368833/pexels-photo-6368833.jpeg?auto=compress&cs=tinysrgb&w=600' 
         },
-        { 
+        {   
+            key: 3,
             title: 'Saindo das dívidas',
             text: 'Sabe aquele momento que parece que suas dívidas não tem fim? Não fique desesperado, com o organizamento financeiro correto você conseguirá sair delas.',
             image:  'https://www.tupi.fm/wp-content/uploads/Endividamento-do-brasileiro-em-2019-Blog-Consignet.png' 
@@ -70,8 +73,8 @@ export default function Home(){
     function renderItem({ item }){
         return(
             <View style={ styles.carouselItemContainer }>     
-                <Image 
-                    source={{ uri: `${item.image}`}} 
+                <Image
+                    source={{ uri: `${item.image}`}}
                     style={ styles.image }
                 />
             </View> 
@@ -89,6 +92,19 @@ export default function Home(){
                 <Text style={ styles.text }>{ item.text }</Text>
             </View> 
         )
+    }
+
+    function mudarPagina(key){
+
+        console.log(key.key)
+
+        if( key === 1 ){
+            navigation.navigate('EducaFinan')
+        }
+        else if( key === 2 ){
+            navigation.navigate('Dividas')
+        }
+
     }
 
     return(
@@ -120,16 +136,18 @@ export default function Home(){
             </View>
 
             <View style={ styles.viewCentroImagem }>
-                <Carousel
-                    data={carouselImagemCentro}
-                    sliderWidth={SLIDER_WIDTH}
-                    itemWidth={ITEM_WIDTH}
-                    renderItem={renderItemCentro}
-                    autoplay={true}
-                    loop={true}
-                    autoplayInterval={5000}
-                    layout="stack"
-                />
+                <TouchableOpacity>
+                    <Carousel
+                        data={carouselImagemCentro}
+                        sliderWidth={SLIDER_WIDTH}
+                        itemWidth={ITEM_WIDTH}
+                        renderItem={renderItemCentro}
+                        autoplay={true}
+                        loop={true}
+                        autoplayInterval={5000}
+                        layout="stack"
+                    />
+                </TouchableOpacity>
             </View>
 
             <View style={ styles.areaBtn }>

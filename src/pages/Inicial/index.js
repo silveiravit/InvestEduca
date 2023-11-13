@@ -40,7 +40,7 @@ export default function Inicio(){
                 </View>
 
                 <TouchableOpacity style={ styles.btn } onPress={ proximo }>
-                    <AntDesign name="arrowright" size={50} color="white" />
+                    <AntDesign name="arrowright" size={50} color="#161F4E" />
                 </TouchableOpacity>
 
             </View>

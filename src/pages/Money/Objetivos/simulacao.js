@@ -9,11 +9,15 @@ export default function Simular({ setVisible, data, valorMensal, renda, dataPrev
             <View style={ styles.view }>
 
                 <View>
+                    <Text>Para realizar o seu objetivo vai precisar: </Text>
+                </View>
+
+                <View>
                     <Text>O seu objetivo é { data }</Text>
                 </View>
 
                 <View>
-                    <Text>O valor mensal é { valorMensal }</Text>
+                    <Text>Investir { valorMensal }</Text>
                 </View>
 
                 <View>

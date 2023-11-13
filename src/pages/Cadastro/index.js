@@ -116,7 +116,6 @@ export default function Cadastro() {
                             <TextInput 
                                 style={ styles.input1 }
                                 onChangeText={ (senha) => setSenha(senha) }
-                                keyboardType='numeric'
                                 secureTextEntry={ hidePass }
                                 placeholder='Senha'
                                 placeholderTextColor={'#161F4E'}
@@ -134,7 +133,6 @@ export default function Cadastro() {
                             <TextInput 
                                 style={ styles.input1 }
                                 onChangeText={ (senha) => setConfirmSenha(senha) }
-                                keyboardType='numeric'
                                 secureTextEntry={ hidePass1 }
                                 placeholder='Confirme a senha'
                                 placeholderTextColor={'#161F4E'}

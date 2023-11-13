@@ -36,7 +36,7 @@ export default function Config(){
             />
 
             <View style={ styles.nomeUsuario }>
-                <Text style={{ fontSize: 25}}>Olá, { username }!</Text>
+                <Text style={{ fontSize: 25}}>Bem-vindo, { username }!</Text>
             </View>
 
             <View style={ styles.config }>

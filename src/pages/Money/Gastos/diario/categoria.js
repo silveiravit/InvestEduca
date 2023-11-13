@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, TextInput, StyleSheet } from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet, TouchableWithoutFeedback, Alert } from 'react-native'
 import { AntDesign } from '@expo/vector-icons';
 //<AntDesign name="check" size={30} color="white" />
 
@@ -8,8 +8,21 @@ export default function Categoria({ data, add }){
     const [checked, setChecked] = useState(false)
 
     function adicionar(){
-
-        add(data.categoria)
+        Alert.alert(
+            "Deseja confirmar?",
+            `Categoria Selecionada: ${data.categoria}`,
+            [
+                {
+                    text: "Cancelar",
+                    onPress: () => {return},
+                    style: "cancel"
+                },
+                { 
+                    text: "OK", 
+                    onPress: () => {add(data.categoria)} 
+                }
+            ]
+        )
     }
 
     return(
@@ -20,7 +33,7 @@ export default function Categoria({ data, add }){
                     { data.categoria }
                 </Text>
 
-                { checked !== false ? <AntDesign name="check" size={30} color="white" /> : '' }
+            {/* { checked !== false ? <AntDesign name="check" size={30} color="white" /> : '' } */}
                 
             </TouchableOpacity>
         </View>
@@ -31,14 +44,16 @@ const styles = StyleSheet.create({
     btn: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        borderBottomWidth: 2,
+        borderBottomColor: '#E9AB43'
     },
     textBtn: {
         paddingHorizontal: 10, 
-        marginVertical: 10, 
+        marginVertical: 20,
         color: '#fff', 
         fontSize: 25, 
         fontWeight: '600',
         flex: 1
-    }
+    },
 })

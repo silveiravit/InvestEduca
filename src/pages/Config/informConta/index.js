@@ -1,11 +1,11 @@
-import React, { useState, useContext } from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity, StatusBar, Switch } from "react-native";
+import React, { useContext } from "react";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
 import { AuthContext } from "../../../contexts/auth";
 
 export default function InformConta(){
 
-    const { email, senha, username } = useContext(AuthContext)
+    const { email, resetPassword, username } = useContext(AuthContext)
 
     return(
         <View style={ styles.container }>
@@ -20,6 +20,12 @@ export default function InformConta(){
                 <View style={ styles.informacoes }>
                     <Text style={ styles.titulo }>E-mail</Text>
                     <Text style={ [styles.subtitulo, { textDecorationLine: 'underline' }] }>{ email }</Text>
+                </View>
+
+                <View style={ styles.informacoes }>
+                    <TouchableOpacity onPress={ resetPassword }>
+                        <Text style={ styles.titulo }>Trocar Senha</Text>
+                    </TouchableOpacity>
                 </View>
 
             </View>

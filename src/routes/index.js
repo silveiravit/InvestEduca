@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 
 import { AuthContext } from '../contexts/auth';
 

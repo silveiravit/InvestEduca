@@ -79,7 +79,6 @@ export default function Login() {
                             <TextInput 
                                 style={ styles.input1 }
                                 onChangeText={ (senha) => setSenha(senha) }
-                                keyboardType='numeric'
                                 secureTextEntry={ hidePass }
                                 placeholder='Senha'
                                 placeholderTextColor={'#161F4E'}
@@ -95,7 +94,7 @@ export default function Login() {
                         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
 
                             <TouchableOpacity onPress={ resetSenha }>
-                                <Text style={{ fontSize: 20, fontStyle: 'italic', color: '#161F4E', fontWeight: '500', borderBottomWidth: 1, borderBottomColor: '#161F4E' }}>Esqueceu a senha?</Text>
+                                <Text style={{ fontSize: 20, color: '#161F4E', fontWeight: '500', borderBottomWidth: 1, borderBottomColor: '#161F4E' }}>Esqueceu a senha?</Text>
                             </TouchableOpacity>
 
                             <Text style={{ marginVertical: 10, fontSize: 20, fontStyle: 'italic', color: '#161F4E', fontWeight: '500'}}>Ou entre com </Text>

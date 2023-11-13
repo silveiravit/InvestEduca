@@ -28,7 +28,7 @@ export default function Gasto(){
             
         >
             <Tab.Screen
-                name="Diario"
+                name="Diário"
                 component={Diario}
             />
 

@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
-import { View, Text, StyleSheet, Dimensions, FlatList } from "react-native";
+import { View, Text, StyleSheet, Dimensions, FlatList, Alert } from "react-native";
 import firebase from '../../../../../database/FirebaseConnection'
 import CampoGasto from "./campogasto";
-import {AuthContext} from '../../../../contexts/auth'
+import { AuthContext } from '../../../../contexts/auth'
 
 const SLIDER_WIDTH = Dimensions.get('window').width
 const ITEM_WIDTH = SLIDER_WIDTH * 0.95
@@ -31,8 +31,12 @@ export default function Mensal(){
                         valorGasto: childItem.val().valorGasto,
                         dataCadastro: childItem.val().dataCadastro
                     }
-                    setValor(oldValor => [...oldValor, data])
-                
+                    setValor(oldValor => [...oldValor, data].reverse())
+                    // for( i = 0; i <= data.nomeGasto.length; i++){
+                        
+                    //     console.log(i)
+                    // }
+                    //setValorTotal(tot)
                 })
                 
             })
@@ -44,11 +48,27 @@ export default function Mensal(){
     }, [user])
 
     function handleDelete(key){
-        firebase.database().ref('gastos').child(user).child(key).remove()
-        .then( () => {
-            const findGastos = valor.filter( item => item.key !== key)
-            setValor(findGastos)
-        })
+        Alert.alert(
+            "Confirmar exclusão?",
+            "",
+            [
+                {
+                    text: "Cancelar",
+                    onPress: () => { return },
+                    style: "cancel"
+                },
+                { 
+                    text: "SIM", 
+                    onPress: () => { 
+                        firebase.database().ref('gastos').child(user).child(key).remove()
+                        .then( () => {
+                            const findGastos = valor.filter( item => item.key !== key)
+                            setValor(findGastos)
+                        })
+                    } 
+                }
+            ]
+        )
     }
 
     function handleEdit(){
@@ -73,9 +93,9 @@ export default function Mensal(){
 
             </View>
 
-            {/* <View style={ styles.areaTotal }>
-                <Text style={{ color: '#000', fontSize: 25, fontWeight: '600'}}>TOTAL R$ { valorTotal }</Text>
-            </View> */}
+            <View style={ styles.areaTotal }>
+                <Text style={{ color: '#000', fontSize: 25, fontWeight: '600'}}>TOTAL R$ { valorTotal } </Text>
+            </View>
         </View>
     )
 }
