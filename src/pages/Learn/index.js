@@ -1,22 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { View, Text, StyleSheet, StatusBar, ScrollView, Image, TouchableOpacity } from "react-native";
 
 import { useNavigation } from '@react-navigation/native'
 
+import ThemeContext from "../../contexts/ThemeContext";
+import appTheme from "../../themes/Themes";
+
 export default function Learn(){
 
     const navigation = useNavigation()
+    const [themeMode] = useContext(ThemeContext)
 
     return(
-        <View style={ styles.container }>
+        <View style={ [styles.container, appTheme[themeMode]] }>
 
             <View style={ styles.areaTitulo }>
-                <Text style={ styles.titulo }>O que você quer aprender hoje?</Text>
+                <Text style={ [styles.titulo, appTheme[themeMode]] }>O que você quer aprender hoje?</Text>
             </View>
 
             <View style={ styles.areaAssunto }>
 
-                <TouchableOpacity style={ styles.assunto } onPress={ () => navigation.navigate('EducaFinan')}>
+                <TouchableOpacity style={ [styles.assunto, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#5C20B6'}] } onPress={ () => navigation.navigate('EducaFinan')}>
                     <View style={ styles.areaImg }>
                         <Image
                             source={ require('../../images/ef4.png')}
@@ -28,7 +32,7 @@ export default function Learn(){
                     </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={ styles.assunto } onPress={ () => navigation.navigate('Dividas') }>
+                <TouchableOpacity style={ [styles.assunto, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#5C20B6'}] } onPress={ () => navigation.navigate('Dividas') }>
                     <View style={ styles.areaImg }>
                         <Image
                             source={ require('../../images/ef5.jpg')}
@@ -40,7 +44,7 @@ export default function Learn(){
                     </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={ styles.assunto } onPress={ () => navigation.navigate('Investimento') }>
+                <TouchableOpacity style={ [styles.assunto, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#5C20B6'}] } onPress={ () => navigation.navigate('Investimento') }>
                     <View style={ styles.areaImg }>
                         <Image
                             source={ require('../../images/ef3.jpg')}
@@ -53,7 +57,7 @@ export default function Learn(){
                     </View>
                 </TouchableOpacity> 
 
-                <TouchableOpacity style={ styles.assunto } onPress={ () => navigation.navigate('Organizar') }>
+                <TouchableOpacity style={ [styles.assunto, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#5C20B6'}] } onPress={ () => navigation.navigate('Organizar') }>
                     <View style={ styles.areaImg }>
                         <Image
                             source={ require('../../images/ef6.jpg')}

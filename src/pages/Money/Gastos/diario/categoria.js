@@ -32,8 +32,6 @@ export default function Categoria({ data, add }){
                 <Text style={ styles.textBtn }>
                     { data.categoria }
                 </Text>
-
-            {/* { checked !== false ? <AntDesign name="check" size={30} color="white" /> : '' } */}
                 
             </TouchableOpacity>
         </View>

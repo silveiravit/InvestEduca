@@ -2,6 +2,9 @@ import react, { useState, useContext } from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native' // Hook de navegação
 
+// Tema
+import ThemeContext from '../../contexts/ThemeContext'
+
 // Componente de carregamento de página
 import Loading from '../../components/Loading';
 
@@ -20,6 +23,7 @@ export default function Login() {
     const [senha, setSenha] = useState('123456')
     const [loading, setLoading] = useState(false)
     const [hidePass, setHidePass] = useState(true)
+    const [themeMode] = useContext(ThemeContext)
 
     // Acima foi declarado as states de navegação e de usuário
 
@@ -30,18 +34,15 @@ export default function Login() {
             logar(email, senha)
             setLoading(false)
         }, 5000)
-        
     }
 
     // Função de esqueceu a senha para caso o usuário não lembre da senha
     function resetSenha(){
-
         resetPassword(email)
-
     }
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#0D1117'}]}>
 
             <View style={ styles.viewCont }>
 

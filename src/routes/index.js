@@ -6,6 +6,10 @@ import React, { useContext } from "react";
 
 import { AuthContext } from '../contexts/auth';
 
+// Tema
+import ThemeContext from '../contexts/ThemeContext';
+import appTheme from '../themes/Themes';
+
 // Páginas da navegação principal
 import Login from '../pages/Login';
 import Home from '../pages/Home';
@@ -18,6 +22,7 @@ const Tab = createBottomTabNavigator()
 export default function Routes(){
 
   const { user } = useContext(AuthContext)
+  const [themeMode] = useContext(ThemeContext)
 
   if( !user ){
     return(
@@ -32,11 +37,12 @@ export default function Routes(){
           tabBarHideOnKeyboard: false,
           tabBarShowLabel: false,
           tabBarActiveTintColor: '#E9AB43',
-          tabBarInactiveTintColor: '#161F4E',
+          tabBarInactiveTintColor: themeMode === 'light' ? '#161F4E' : '#fff',
           tabBarStyle: {
               height: 55,
               borderTopWidth: 1,
-              borderTopColor: '#161F4E',
+              borderTopColor: themeMode === 'light' ? '#161F4E' : '#fff',
+              backgroundColor: themeMode === 'light' ? '#fff' : '#0D1117'
           }
       }}
     >

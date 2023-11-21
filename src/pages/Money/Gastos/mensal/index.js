@@ -4,6 +4,10 @@ import firebase from '../../../../../database/FirebaseConnection'
 import CampoGasto from "./campogasto";
 import { AuthContext } from '../../../../contexts/auth'
 
+// Temas 
+import ThemeContext from '../../../../contexts/ThemeContext'
+import appTheme from '../../../../themes/Themes'
+
 const SLIDER_WIDTH = Dimensions.get('window').width
 const ITEM_WIDTH = SLIDER_WIDTH * 0.95
 
@@ -12,7 +16,7 @@ export default function Mensal(){
     const { user } = useContext(AuthContext)
     const [valor, setValor] = useState(null)
     const [valorTotal, setValorTotal] = useState()
-    //const [dataAtual, setDataAtual] = useState(new Date().getFullYear())
+    const [themeMode] = useContext(ThemeContext)
     
     useEffect( () => {
 
@@ -76,7 +80,7 @@ export default function Mensal(){
     }
 
     return(
-        <View style={ styles.container }>
+        <View style={ [styles.container, appTheme[themeMode]] }>
             <View style={ styles.registros }>
 
                 <View style={ styles.areaMes }>
@@ -94,7 +98,7 @@ export default function Mensal(){
             </View>
 
             <View style={ styles.areaTotal }>
-                <Text style={{ color: '#000', fontSize: 25, fontWeight: '600'}}>TOTAL R$ { valorTotal } </Text>
+                <Text style={{ color: '#161F4E', fontSize: 25, fontWeight: '600'}}>TOTAL R$ 92,00 </Text>
             </View>
         </View>
     )

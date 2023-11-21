@@ -1,22 +1,26 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useNavigation } from '@react-navigation/native'
 import { AntDesign } from '@expo/vector-icons';
 
+import ThemeContext from "../../contexts/ThemeContext";
+import appTheme from "../../themes/Themes";
+
 export default function Money(){
 
     const navigation = useNavigation()
+    const [themeMode] = useContext(ThemeContext)
 
     return(
-        <View style={ styles.container }>
+        <View style={ [styles.container, appTheme[themeMode]] }>
 
             <View style={ styles.areaBtn }>
 
-                <Text style={{ textAlign: 'center', fontSize: 25, color: '#161F4E', fontWeight: '600'}}>O que gostaria de ver?</Text>
+                <Text style={[{ textAlign: 'center', fontSize: 25, color: '#161F4E', fontWeight: '600' }, appTheme[themeMode]]}>O que gostaria de ver?</Text>
 
-                <TouchableOpacity onPress={ () => navigation.navigate('Objetivo') } style={ styles.btn }>
+                <TouchableOpacity onPress={ () => navigation.navigate('Objetivo') } style={ [styles.btn, { borderColor: themeMode === 'light' ? '#161F4E' : '#5C20B6' }] }>
 
-                    <View style={ styles.view } >
+                    <View style={ [styles.view, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#5C20B6', borderColor: themeMode === 'light' ? '#161F4E' : '#5C20B6'  }] } >
                         <View style={ styles.viewBtn }>
                             <Text style={ styles.textoBtn }>OBJETIVOS</Text>
                             <View style={ styles.icon }>
@@ -25,13 +29,13 @@ export default function Money(){
                         </View>
                     </View>
 
-                    <Text style={{ fontSize: 20, margin: 15, color: '#161F4E'}}>Demonstrativo de metas estabelecidas no planejamento</Text>
+                    <Text style={[{ fontSize: 20, margin: 15, color: '#161F4E'}, appTheme[themeMode]]}>Demonstrativo de metas estabelecidas no planejamento</Text>
 
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={ () => navigation.navigate('Gasto') } style={ styles.btn }>
+                <TouchableOpacity onPress={ () => navigation.navigate('Gasto') } style={ [styles.btn, { borderColor: themeMode === 'light' ? '#161F4E' : '#5C20B6' }] }>
 
-                    <View style={ styles.view } >
+                    <View style={ [styles.view, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#5C20B6',  borderColor: themeMode === 'light' ? '#161F4E' : '#5C20B6' }] } >
                         <View style={ styles.viewBtn }>
                             <Text style={ styles.textoBtn }>GASTOS</Text>
                             <View style={ styles.icon }>
@@ -40,7 +44,7 @@ export default function Money(){
                         </View>
                     </View>
 
-                    <Text style={{ fontSize: 20, margin: 15, color: '#161F4E'}}>Controle financeiro ligado diretamente a datas</Text>
+                    <Text style={[{ fontSize: 20, margin: 15, color: '#161F4E'}, appTheme[themeMode]]}>Controle financeiro ligado diretamente a datas</Text>
 
                 </TouchableOpacity>
             </View>

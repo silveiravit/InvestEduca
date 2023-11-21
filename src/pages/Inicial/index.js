@@ -1,7 +1,10 @@
-import react, { useState } from 'react'
+import react, { useState, useContext } from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, ActivityIndicator, Modal, Dimensions } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native'
+
+// Tema
+import ThemeContext from '../../contexts/ThemeContext'
 
 const SLIDER_WIDTH = Dimensions.get('window').width
 const ITEM_WIDTH = SLIDER_WIDTH * 0.1
@@ -10,6 +13,7 @@ export default function Inicio(){
 
     const navigation = useNavigation()
     const [loading, setLoading] = useState(false)
+    const [themeMode] = useContext(ThemeContext)
 
     function proximo(){
         setLoading(true)
@@ -20,7 +24,7 @@ export default function Inicio(){
     }
 
     return(
-        <View style={ styles.container }>
+        <View style={ [styles.container, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#0D1117'}] }>
 
             <Modal transparent visible={loading}>
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
@@ -40,7 +44,7 @@ export default function Inicio(){
                 </View>
 
                 <TouchableOpacity style={ styles.btn } onPress={ proximo }>
-                    <AntDesign name="arrowright" size={50} color="#161F4E" />
+                    <AntDesign name="arrowright" size={50} color={ themeMode === 'light' ? '#161F4E' : '#0D1117' } />
                 </TouchableOpacity>
 
             </View>

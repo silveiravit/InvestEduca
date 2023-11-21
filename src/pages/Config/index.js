@@ -1,10 +1,16 @@
 import React, { useState, useContext } from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity, StatusBar, Dimensions } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions } from "react-native";
 import firebase from '../../../database/FirebaseConnection'
 import { useNavigation } from '@react-navigation/native'
 import { AntDesign } from '@expo/vector-icons';
 import { AuthContext } from "../../contexts/auth";
 import Loading from "../../components/Loading";
+
+import { Switch } from "react-native-switch";
+
+// Tema
+import ThemeContext from "../../contexts/ThemeContext";
+import appTheme from "../../themes/Themes";
 
 const WIDTH = Dimensions.get('window').width * 1
 
@@ -13,6 +19,7 @@ export default function Config(){
     const navigation = useNavigation()
     const { username } = useContext(AuthContext)
     const [loading, setLoading] = useState(false)
+    const [themeMode, setThemeMode] = useContext(ThemeContext)
 
     function sair(){
         setLoading(true)
@@ -26,7 +33,7 @@ export default function Config(){
     }
 
     return(
-        <View style={ styles.container }>
+        <View style={ [styles.container, appTheme[themeMode]] }>
 
             <Loading visible={loading} />
 
@@ -36,31 +43,35 @@ export default function Config(){
             />
 
             <View style={ styles.nomeUsuario }>
-                <Text style={{ fontSize: 25}}>Bem-vindo, { username }!</Text>
+                <Text style={[{ fontSize: 25, fontWeight: '600', color: '#161F4E' }, appTheme[themeMode]]}>Bem-vindo, { username }!</Text>
             </View>
 
             <View style={ styles.config }>
                 <Text style={ styles.titulo }>Aparência</Text>
 
-                <TouchableOpacity style={ styles.btn } onPress={ () => navigation.navigate('Tema')}>
-                    <View style={ styles.areaBtn }>
-                        <Text style={ styles.subtitulo }>Tema</Text>
-                        <AntDesign name="right" size={25} color="#EE990A" />
-                    </View>
-                </TouchableOpacity>
+                <View style={ [styles.areaBtn, { borderBottomWidth: 1, borderBottomColor: '#ccc' }] }>
+                    <Text style={ [styles.subtitulo, appTheme[themeMode] ]}>Tema Escuro</Text>
+                    <Switch
+                        value={themeMode === 'light' ? false : true }
+                        onValueChange={ () => setThemeMode(themeMode === 'light' ? 'dark' : 'light')}
+                        circleSize={35}
+                        activeText={'ON'}
+                        inActiveText={'OFF'}
+                    />
+                </View>               
 
                 <Text style={ styles.titulo }>Conta</Text>
 
                 <TouchableOpacity style={ styles.btn } onPress={ () => navigation.navigate('Suporte')}>
                     <View style={ styles.areaBtn }>
-                        <Text style={ styles.subtitulo }>Ajuda e Suporte</Text>
+                        <Text style={ [styles.subtitulo, appTheme[themeMode]] }>Ajuda e Suporte</Text>
                         <AntDesign name="right" size={25} color="#EE990A" />
                     </View>
                 </TouchableOpacity>
 
                 <TouchableOpacity style={ styles.btn } onPress={ () => navigation.navigate('InformConta')}>
                     <View style={ styles.areaBtn }>
-                        <Text style={ styles.subtitulo }>Informações da Conta</Text>
+                        <Text style={ [styles.subtitulo, appTheme[themeMode]] }>Informações da Conta</Text>
                         <AntDesign name="right" size={25} color="#EE990A" />
                     </View>
                 </TouchableOpacity>

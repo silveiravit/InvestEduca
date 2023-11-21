@@ -1,11 +1,11 @@
 import React from "react";
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 
 export default function Meses({ data, handleMes }){
 
     return(
         <View>
-            <TouchableOpacity onPress={ () => handleMes(data.mes) }>
+            <TouchableOpacity style={ styles.btn } onPress={ () => handleMes(data.mes) }>
                 <Text style={{ marginHorizontal: 10, marginVertical: 10, color: '#fff', fontSize: 25, fontWeight: '600'}}>
                     { data.mes }
                 </Text>
@@ -13,3 +13,13 @@ export default function Meses({ data, handleMes }){
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    btn: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        borderBottomWidth: 2,
+        borderBottomColor: '#E9AB43'
+    },
+})

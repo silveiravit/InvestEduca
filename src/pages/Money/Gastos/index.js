@@ -1,6 +1,5 @@
 import React from "react"
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
-import { NavigationContainer } from '@react-navigation/native'
 
 import Diario from './diario'
 import Anual from './anual'
@@ -11,21 +10,17 @@ const Tab = createMaterialTopTabNavigator()
 export default function Gasto(){
 
     return(
-        <Tab.Navigator
+        <Tab.Navigator   
             screenOptions={{
                 headerShown: false,
                 tabBarLabelStyle: { fontSize: 20, fontWeight: '600'},
                 tabBarStyle: {
                     backgroundColor: '#E9AB43',
-                    borderColor: '#000',
-                    borderWidth: 2,
-                    borderRadius: 10,
-                    margin: 10,
                     height: 100,
                     justifyContent: 'center',
+                    borderBottomWidth: 2,
                 },      
             }}
-            
         >
             <Tab.Screen
                 name="Diário"

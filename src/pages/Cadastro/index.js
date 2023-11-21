@@ -1,9 +1,12 @@
-import react, { useState } from 'react' // Hook de estados
+import react, { useState, useContext } from 'react' // Hook de estados
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image, StatusBar } from 'react-native'; // Componentes
 import { useNavigation } from '@react-navigation/native' // Hook de navegação
 import firebase from '../../../database/FirebaseConnection'; // Importação do firebase
 import Loading from '../../components/Loading'; //Componente de Loading 
 import { Entypo } from '@expo/vector-icons';
+
+// Tema
+import ThemeContext from '../../contexts/ThemeContext'
 
 export default function Cadastro() {
 
@@ -15,6 +18,7 @@ export default function Cadastro() {
     const [loading, setLoading] = useState(false)
     const [hidePass, setHidePass] = useState(true)
     const [hidePass1, setHidePass1] = useState(true)
+    const [themeMode] = useContext(ThemeContext)
 
     // Acima foi declarado as states de navegação e de usuário
 
@@ -70,7 +74,7 @@ export default function Cadastro() {
     // Acima é feito a autenticação no banco de dados firebase para efetuar o cadastro
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#0D1117'}]}>
 
             <View style={ styles.viewCont }>
 

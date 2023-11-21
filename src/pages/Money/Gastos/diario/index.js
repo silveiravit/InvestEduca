@@ -2,13 +2,19 @@ import React, { useState, useContext, Component } from "react";
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Dimensions, FlatList, Modal, TouchableWithoutFeedback, Alert } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 
+// Banco de Dados
 import firebase from '../../../../../database/FirebaseConnection'
+
+// Tema
+import ThemeContext from '../../../../contexts/ThemeContext'
+import appTheme from '../../../../themes/Themes'
 
 import { AuthContext } from "../../../../contexts/auth";
 import Categoria from "./categoria";
 
 export default function Diario(){
 
+    const [themeMode] = useContext(ThemeContext)
     const [modalVisible, setModalVisible] = useState(false)
     const { user } = useContext(AuthContext)
     const [novoValor, setNovoValor] = useState('')
@@ -80,7 +86,7 @@ export default function Diario(){
     }
 
     return(
-        <View style={ styles.container }>
+        <View style={ [styles.container, appTheme[themeMode]] }>
             <View style={ styles.campoValor }>
                 
                 <TextInput
@@ -97,11 +103,11 @@ export default function Diario(){
             </View>
 
             <View style={ styles.viewCategoria } > 
-                <View style={ styles.campoCategoria }>
+                <View style={ [styles.campoCategoria, { borderWidth: themeMode === 'light' ? 2 : 0 }] }>
                     <Text style={{ fontSize: 30, color: '#161F4E', fontWeight: '600'}}>CATEGORIA</Text>
                 </View>
 
-                <View style={ styles.campoCategoria1 }>
+                <View style={ [styles.campoCategoria1, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#5C20B6', borderColor: '#E9AB43'}] }>
                         
                     <FlatList
                         data={categoria}
@@ -113,7 +119,7 @@ export default function Diario(){
                         
                 </View>
 
-                <TouchableOpacity style={ styles.btnOutros } onPress={ () => setModalVisible(true) }>
+                <TouchableOpacity style={ [styles.btnOutros, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#5C20B6', borderLeftWidth: 0, borderRightWidth: 0, borderBottomWidth: 0,}] } onPress={ () => setModalVisible(true) }>
                     <Text style={ styles.textOutros }>Adicionar outra categoria</Text>
                 </TouchableOpacity>
             </View> 
@@ -201,6 +207,7 @@ const styles = StyleSheet.create({
         borderBottomLeftRadius: 10,
         borderLeftWidth: 2,
         borderRightWidth: 2,
+        borderBottomWidth: 2,
         padding: 10,
     },
     textOutros: {

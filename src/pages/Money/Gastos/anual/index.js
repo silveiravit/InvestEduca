@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions, FlatList, Modal, TouchableWithoutFeedback } from "react-native";
 import Meses from "./meses";
 import { AntDesign } from '@expo/vector-icons';
+
+// Tema
+import ThemeContext from "../../../../contexts/ThemeContext";
+import appTheme from "../../../../themes/Themes";
 
 const SLIDER_WIDTH = Dimensions.get('window').width
 const ITEM_WIDTH = SLIDER_WIDTH * 0.95
@@ -25,6 +29,7 @@ export default function Anual(){
     const [modalVisible, setModalVisible] = useState(false)
     const [mesPress, setMesPress] = useState('')
     const [valor, setValor] = useState('')
+    const [themeMode] = useContext(ThemeContext)
 
     function handleMes(mes){
         setModalVisible(true)
@@ -32,14 +37,14 @@ export default function Anual(){
     }
 
     return(
-        <View style={ styles.container }>
+        <View style={ [styles.container, appTheme[themeMode]] }>
             <View style={ styles.registros }>
 
                 <View style={ styles.areaAno }>
                     <Text style={ styles.ano }>2023</Text>
                 </View>
 
-                <View style={ styles.areaMes }>                
+                <View style={ [styles.areaMes, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#5C20B6', borderColor: '#E9AB43'}] }>                
                     <TouchableOpacity>
                         <FlatList
                             data={meses}

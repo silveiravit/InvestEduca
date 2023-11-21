@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions } from "react-native";
 import Conversor from "../../../services/conversor"; // Importado o arquivo de conversor de moeda
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native'
 import Carousel from 'react-native-snap-carousel'
+
+import ThemeContext from "../../contexts/ThemeContext";
+import appTheme from "../../themes/Themes";
 
 const SLIDER_WIDTH = Dimensions.get('window').width
 const ITEM_WIDTH = SLIDER_WIDTH * 1
@@ -13,6 +16,7 @@ const ITEM_WIDTH = SLIDER_WIDTH * 1
 export default function Home(){
 
     const navigation = useNavigation()
+    const [themeMode] = useContext(ThemeContext)
 
     const carouselMoeda = [
         { moeda: ( <Conversor moedaA="USD" moedaB="BRL" /> ) },
@@ -45,13 +49,13 @@ export default function Home(){
         {   
             key: 1,
             title: 'Investindo da melhor forma',
-            text: 'Chega um momento das nossas vidas que precisamos investir em algo para termos retorno no futuro. Aqui você está no lugar certo.',
+            text: 'Chega um momento das nossas vidas que precisamos investir em algo para termos retorno no futuro, como um carro ou até mesmo um imóvel. Aqui você está no lugar certo.',
             image:  'https://assets-blog.pagseguro.uol.com.br/wp-content/2022/05/real-digital.jpg' 
         },
         {   
             key: 2,
             title: 'Estabelecendo metas',
-            text: 'Você já pensou sobre o que quer fazer daqui a 5 anos? Está certo sobre qual é o seu objetivo principal no momento? Sabe o que você quer ter alcançado ',
+            text: 'Você já pensou sobre o que quer fazer daqui a 5 anos? Está certo sobre qual é o seu objetivo principal no momento? Para essas perguntas precisamos estabelecer metas. ',
             image:  'https://images.pexels.com/photos/6368833/pexels-photo-6368833.jpeg?auto=compress&cs=tinysrgb&w=600' 
         },
         {   
@@ -64,7 +68,7 @@ export default function Home(){
 
     function renderMoeda({ item }){
         return(
-            <View style={ styles.areaCotacao }>     
+            <View style={ [styles.areaCotacao, { backgroundColor: themeMode === 'light' ? '#000' : '#0D1117'}] }>     
                 {item.moeda}
             </View> 
         )
@@ -83,32 +87,21 @@ export default function Home(){
 
     function renderItemCentro({ item }){
         return(
-            <View style={ styles.carouselItemContainerCentro }>     
-                <Image 
-                    source={{ uri: `${item.image}` }} 
+            <View style={ styles.carouselItemContainerCentro }> 
+
+                <Image
+                    source={{ uri: `${item.image}` }}
                     style={ styles.imageCentro }
                 />
+
                 <Text style={ styles.title }>{ item.title }</Text>
                 <Text style={ styles.text }>{ item.text }</Text>
             </View> 
         )
     }
 
-    function mudarPagina(key){
-
-        console.log(key.key)
-
-        if( key === 1 ){
-            navigation.navigate('EducaFinan')
-        }
-        else if( key === 2 ){
-            navigation.navigate('Dividas')
-        }
-
-    }
-
     return(
-        <View style={ styles.container }>        
+        <View style={ [styles.container, appTheme[themeMode]] }>        
 
             <View style={ styles.viewPrincipalCotacao }>
                 <Carousel
@@ -135,24 +128,22 @@ export default function Home(){
                 />
             </View>
 
-            <View style={ styles.viewCentroImagem }>
-                <TouchableOpacity>
-                    <Carousel
-                        data={carouselImagemCentro}
-                        sliderWidth={SLIDER_WIDTH}
-                        itemWidth={ITEM_WIDTH}
-                        renderItem={renderItemCentro}
-                        autoplay={true}
-                        loop={true}
-                        autoplayInterval={5000}
-                        layout="stack"
-                    />
-                </TouchableOpacity>
+            <View style={ [styles.viewCentroImagem, appTheme[themeMode]] }>
+                <Carousel
+                    data={carouselImagemCentro}
+                    sliderWidth={SLIDER_WIDTH}
+                    itemWidth={ITEM_WIDTH}
+                    renderItem={renderItemCentro}
+                    autoplay={true}
+                    loop={true}
+                    autoplayInterval={5000}
+                    layout="stack"
+                />
             </View>
 
             <View style={ styles.areaBtn }>
                 <TouchableOpacity 
-                    style={ styles.btn } 
+                    style={ [styles.btn, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#5C20B6' }] } 
                     onPress={ () => navigation.navigate('Objetivo') }
                 >   
                     <View style={ styles.viewBtn }>
@@ -164,7 +155,7 @@ export default function Home(){
                 </TouchableOpacity>
 
                 <TouchableOpacity 
-                    style={ styles.btn } 
+                    style={ [styles.btn, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#5C20B6' }] } 
                     onPress={ () => navigation.navigate('Gasto') }
                 >
                     <View style={ styles.viewBtn }>
