@@ -1,13 +1,23 @@
 import React, { useContext } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions } from "react-native";
-import Conversor from "../../../services/conversor"; // Importado o arquivo de conversor de moeda
+
+// Importado o arquivo de conversor de moeda
+import Conversor from "../../services/conversor"; 
+
+// Biblioteca de icones
 import { AntDesign } from '@expo/vector-icons';
+
+// Hook de navegação
 import { useNavigation } from '@react-navigation/native'
+
+// Biblioteca de slider/carousel
 import Carousel from 'react-native-snap-carousel'
 
+// Temas
 import ThemeContext from "../../contexts/ThemeContext";
 import appTheme from "../../themes/Themes";
 
+// Dimensões da tela
 const SLIDER_WIDTH = Dimensions.get('window').width
 const ITEM_WIDTH = SLIDER_WIDTH * 1
 
@@ -15,7 +25,10 @@ const ITEM_WIDTH = SLIDER_WIDTH * 1
 
 export default function Home(){
 
+    // Constate de navegação
     const navigation = useNavigation()
+
+    // Context do tema
     const [themeMode] = useContext(ThemeContext)
 
     const carouselMoeda = [
@@ -168,7 +181,6 @@ export default function Home(){
             </View>
 
         </View>
-
     )
 }
 

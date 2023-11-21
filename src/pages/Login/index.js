@@ -1,12 +1,11 @@
 import react, { useState, useContext } from 'react'
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image } from 'react-native';
-import { useNavigation } from '@react-navigation/native' // Hook de navegação
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image, Modal, ActivityIndicator } from 'react-native';
+
+// Hook de navegação
+import { useNavigation } from '@react-navigation/native' 
 
 // Tema
 import ThemeContext from '../../contexts/ThemeContext'
-
-// Componente de carregamento de página
-import Loading from '../../components/Loading';
 
 // Componente de autenticação
 import { AuthContext } from '../../contexts/auth';
@@ -17,15 +16,26 @@ import { AntDesign } from '@expo/vector-icons';
 
 export default function Login() {
 
+    // Context logar e resetsenha
     const { logar, resetPassword } = useContext(AuthContext)
-    const navigation = useNavigation()
-    const [email, setEmail] = useState('investeduca07@gmail.com')
-    const [senha, setSenha] = useState('123456')
-    const [loading, setLoading] = useState(false)
-    const [hidePass, setHidePass] = useState(true)
-    const [themeMode] = useContext(ThemeContext)
 
-    // Acima foi declarado as states de navegação e de usuário
+    // Constante de navegação
+    const navigation = useNavigation()
+
+    // State de email
+    const [email, setEmail] = useState('investeduca07@gmail.com')
+
+    // State de senha
+    const [senha, setSenha] = useState('123456')
+
+    // State de loading
+    const [loading, setLoading] = useState(false)
+
+    // State de ocultar senha
+    const [hidePass, setHidePass] = useState(true)
+
+    // Context de tema
+    const [themeMode] = useContext(ThemeContext)
 
     // Função de login para acessar a home do aplicativo
     function acessar(){
@@ -44,9 +54,17 @@ export default function Login() {
     return (
         <View style={[styles.container, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#0D1117'}]}>
 
-            <View style={ styles.viewCont }>
+            <Modal transparent visible={loading}>
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                    <ActivityIndicator 
+                        size={100}
+                        color={ themeMode === 'light' ? '#161F4E' : '#000' }
+                        animating={true}
+                    />
+                </View>
+            </Modal>
 
-                <Loading visible={loading} />
+            <View style={ styles.viewCont }>
 
                 <View style={ styles.areaTitulo }>
                     <Text style={ styles.text }>Invest</Text>

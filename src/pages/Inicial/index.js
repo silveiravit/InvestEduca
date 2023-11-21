@@ -1,18 +1,28 @@
 import react, { useState, useContext } from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, ActivityIndicator, Modal, Dimensions } from 'react-native';
+
+// Biblioteca de icones
 import { AntDesign } from '@expo/vector-icons';
+
+// Hook de navegação
 import { useNavigation } from '@react-navigation/native'
 
 // Tema
 import ThemeContext from '../../contexts/ThemeContext'
 
+// Dimensões da tela
 const SLIDER_WIDTH = Dimensions.get('window').width
 const ITEM_WIDTH = SLIDER_WIDTH * 0.1
 
 export default function Inicio(){
 
+    // Constante de navegação
     const navigation = useNavigation()
+
+    // State de loading
     const [loading, setLoading] = useState(false)
+
+    // Context do tema
     const [themeMode] = useContext(ThemeContext)
 
     function proximo(){

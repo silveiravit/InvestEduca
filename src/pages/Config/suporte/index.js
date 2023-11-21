@@ -1,8 +1,13 @@
 import React, { useState, useContext } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, Alert, ScrollView } from "react-native"; // componentes
-import email from "react-native-email"; // pacote de envio de email
-import { Feather } from '@expo/vector-icons'; // biblioteca do icones
 
+// pacote de envio de email
+import email from "react-native-email"; 
+
+// biblioteca de icones
+import { Feather } from '@expo/vector-icons'; 
+
+// Temas
 import ThemeContext from '../../../contexts/ThemeContext'
 import appTheme from '../../../themes/Themes'
 
@@ -23,7 +28,6 @@ export default function Suporte(){
 
     return(
         <View style={ [styles.container, appTheme[themeMode]] }>
-
             <ScrollView>
                 <View style={ [styles.faleConosco, { borderColor: themeMode === 'light' ? '#161F4E' : '#fff' }] }>
                     <Text style={ [styles.titulo, appTheme[themeMode]] }>Fale Conosco</Text>

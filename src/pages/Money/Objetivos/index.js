@@ -1,6 +1,8 @@
 import React, { useState, useContext } from "react";
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Dimensions, ScrollView, Modal, Alert } from "react-native";
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Dimensions, ScrollView, Modal } from "react-native";
 import { Picker } from '@react-native-picker/picker'
+
+// Biblioteca de icones
 import { AntDesign } from '@expo/vector-icons';
 
 // Autenticação e Banco de Dados
@@ -19,6 +21,7 @@ import appTheme from '../../../themes/Themes'
 // Navegação
 import { useNavigation } from "@react-navigation/native";
 
+// Dimensões da tela
 const SLIDER_WIDTH = Dimensions.get('window').width
 const ITEM_WIDTH = SLIDER_WIDTH * 0.90
 

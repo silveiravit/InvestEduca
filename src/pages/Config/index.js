@@ -1,24 +1,40 @@
 import React, { useState, useContext } from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions } from "react-native";
-import firebase from '../../../database/FirebaseConnection'
-import { useNavigation } from '@react-navigation/native'
-import { AntDesign } from '@expo/vector-icons';
-import { AuthContext } from "../../contexts/auth";
-import Loading from "../../components/Loading";
+import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, ActivityIndicator, Modal } from "react-native";
 
+// Conexão Firebase
+import firebase from '../../../database/FirebaseConnection'
+
+// Hook de navegação
+import { useNavigation } from '@react-navigation/native'
+
+// Biblioteca de icones
+import { AntDesign } from '@expo/vector-icons';
+
+// Componente de autenticação
+import { AuthContext } from "../../contexts/auth";
+
+// Biblioteca do switch para alterar o tema
 import { Switch } from "react-native-switch";
 
 // Tema
 import ThemeContext from "../../contexts/ThemeContext";
 import appTheme from "../../themes/Themes";
 
+// Dimensões da tela
 const WIDTH = Dimensions.get('window').width * 1
 
 export default function Config(){
 
+    // Constante de navegação
     const navigation = useNavigation()
+
+    // Context username
     const { username } = useContext(AuthContext)
+
+    // Constante de loading
     const [loading, setLoading] = useState(false)
+
+    // Constante do tema
     const [themeMode, setThemeMode] = useContext(ThemeContext)
 
     function sair(){
@@ -28,6 +44,9 @@ export default function Config(){
             .then( () => {
                 navigation.navigate('Login')
                 setLoading(false)
+            })
+            .catch( () => {
+                alert('Ops, algo deu errado.')
             })   
         }, 2000)
     }
@@ -35,7 +54,15 @@ export default function Config(){
     return(
         <View style={ [styles.container, appTheme[themeMode]] }>
 
-            <Loading visible={loading} />
+            <Modal transparent visible={loading}>
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                    <ActivityIndicator 
+                        size={100}
+                        color={ themeMode === 'light' ? '#161F4E' : '#fff' }
+                        animating={true}
+                    />
+                </View>
+            </Modal>
 
             <Image
                 source={require('../../images/PorcoConfig.png')}

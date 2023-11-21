@@ -8,9 +8,13 @@ import firebase from '../../../../database/FirebaseConnection'
 import ThemeContext from '../../../contexts/ThemeContext'
 import appTheme from '../../../themes/Themes'
 
+// Componente de consulta
 import CampoConsulta from './campoconsulta';
 
+// Componente de autenticação
 import { AuthContext } from '../../../contexts/auth';
+
+// Hook de navegação
 import { useNavigation } from '@react-navigation/native';
 
 export default function Consultar(){

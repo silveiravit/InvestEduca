@@ -1,14 +1,19 @@
-import React, { useState, useContext } from "react";
-import { View, Text, StyleSheet, StatusBar, ScrollView, Image, TouchableOpacity } from "react-native";
+import React, { useContext } from "react";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 
+// Hook de navegação
 import { useNavigation } from '@react-navigation/native'
 
+// Temas
 import ThemeContext from "../../contexts/ThemeContext";
 import appTheme from "../../themes/Themes";
 
 export default function Learn(){
 
+    // Constante de navegação
     const navigation = useNavigation()
+
+    // Context do tema
     const [themeMode] = useContext(ThemeContext)
 
     return(

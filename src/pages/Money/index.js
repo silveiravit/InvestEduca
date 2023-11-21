@@ -1,14 +1,22 @@
 import React, { useContext } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+
+// Hook de navegação
 import { useNavigation } from '@react-navigation/native'
+
+// Biblioteca de navegação
 import { AntDesign } from '@expo/vector-icons';
 
+// Tema
 import ThemeContext from "../../contexts/ThemeContext";
 import appTheme from "../../themes/Themes";
 
 export default function Money(){
 
+    // Constante de navegação
     const navigation = useNavigation()
+
+    // Context de tema
     const [themeMode] = useContext(ThemeContext)
 
     return(

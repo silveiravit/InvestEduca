@@ -1,7 +1,16 @@
+import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native' // Componente para efetuar a navegação entre telas
 import { createNativeStackNavigator } from '@react-navigation/native-stack' //Biblioteca de navegação
-import React, { useState } from 'react';
 
+// Paletas de cores
+// Azul: #161F4E
+// Amarelo: #E9AB43
+// Preto: #000000
+// Preto/Cinza: #0D1117
+// Branco: #ffffff
+// Roxo: #5C20B6
+
+// Autenticação
 import AuthProvider from './src/contexts/auth';
 
 // Tema
@@ -22,7 +31,8 @@ import Organizar from './src/pages/Learn/organizar';
 import Suporte from './src/pages/Config/suporte';
 import Consultar from './src/pages/Money/Objetivos/consultar';
 
-const Stack = createNativeStackNavigator() // Constante de navegação
+// Constante de navegação
+const Stack = createNativeStackNavigator() 
 
 export default function App () {
 
@@ -43,21 +53,21 @@ export default function App () {
                 name='Inicio'
                 component={Inicio}
                 options={{
-                  statusBarColor: themeHook === 'light' ? '#0D1117' : '#161F4E'
+                  statusBarColor: themeHook === 'light' ? '#161F4E' : '#0D1117'
                 }}
               />
               <Stack.Screen
                 name='Cadastro'
                 component={Cadastro}
                 options={{
-                  statusBarColor: themeHook === 'light' ? '#0D1117' : '#161F4E'
+                  statusBarColor: themeHook === 'light' ? '#161F4E' : '#0D1117'
                 }}
               />
               <Stack.Screen
                 name='Login'
                 component={Login}
                 options={{
-                  statusBarColor: themeHook === 'light' ? '#0D1117' : '#161F4E'
+                  statusBarColor: themeHook === 'light' ? '#161F4E' : '#0D1117'
                 }}
               />
               {/* Navegação onde terá as telas de home, aprender, dinheiro e configuração */}

@@ -1,4 +1,4 @@
-import react, { useState, useContext } from 'react'
+import react, { useContext } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 
 // Tema

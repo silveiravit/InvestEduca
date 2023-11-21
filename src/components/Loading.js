@@ -1,4 +1,4 @@
-import react, { useState } from 'react'
+import react from 'react'
 import { View, ActivityIndicator, Modal } from 'react-native';
 
 export default function Loading({ visible }){

@@ -1,8 +1,16 @@
 import react, { useState, useContext } from 'react' // Hook de estados
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image, StatusBar } from 'react-native'; // Componentes
-import { useNavigation } from '@react-navigation/native' // Hook de navegação
-import firebase from '../../../database/FirebaseConnection'; // Importação do firebase
-import Loading from '../../components/Loading'; //Componente de Loading 
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image } from 'react-native'; // Componentes
+
+// Hook de navegação
+import { useNavigation } from '@react-navigation/native' 
+
+// Importação do firebase
+import firebase from '../../../database/FirebaseConnection';
+
+//Componente de Loading 
+import Loading from '../../components/Loading'; 
+
+// Biblioteca de navegação
 import { Entypo } from '@expo/vector-icons';
 
 // Tema
@@ -10,17 +18,32 @@ import ThemeContext from '../../contexts/ThemeContext'
 
 export default function Cadastro() {
 
+    // Constante de navegação
     const navigation = useNavigation()
-    const [email, setEmail] = useState('')
-    const [senha, setSenha] = useState('')
-    const [confirmSenha, setConfirmSenha] = useState('')
-    const [username, setUsername] = useState('')
-    const [loading, setLoading] = useState(false)
-    const [hidePass, setHidePass] = useState(true)
-    const [hidePass1, setHidePass1] = useState(true)
-    const [themeMode] = useContext(ThemeContext)
 
-    // Acima foi declarado as states de navegação e de usuário
+    // State de email
+    const [email, setEmail] = useState('')
+
+    // State de senha
+    const [senha, setSenha] = useState('')
+
+    // State de confirmação de senha
+    const [confirmSenha, setConfirmSenha] = useState('')
+
+    // State de username
+    const [username, setUsername] = useState('')
+
+    // State de Loading
+    const [loading, setLoading] = useState(false)
+
+    // State de ocultar senha
+    const [hidePass, setHidePass] = useState(true)
+
+    // State de ocultar confirmação de senha
+    const [hidePass1, setHidePass1] = useState(true)
+
+    // Context do tema
+    const [themeMode] = useContext(ThemeContext)
 
     function cadastrar(){
 
@@ -37,7 +60,7 @@ export default function Cadastro() {
                     alert('Foi enviado um e-mail de verificação para '+email+'.')
                 })
                 .catch( (error) => {
-                    
+                    alert('Ops, algo deu errado.')
                 })
 
                 firebase.database().ref('usuarios').child(user.user.uid).set({
@@ -58,7 +81,6 @@ export default function Cadastro() {
                     case 'auth/weak-password':
                         alert('Sua senha deve ter pelo menos 6 caracteres.')
                         break
-                    
                 }
 
                 setLoading(false)

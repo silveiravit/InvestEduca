@@ -1,14 +1,16 @@
+import React, { useContext } from "react";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
+// Biblioteca de icones
 import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
-import React, { useContext } from "react";
 
+// Autenticação
 import { AuthContext } from '../contexts/auth';
 
 // Tema
 import ThemeContext from '../contexts/ThemeContext';
-import appTheme from '../themes/Themes';
 
 // Páginas da navegação principal
 import Login from '../pages/Login';
@@ -17,6 +19,7 @@ import Learn from '../pages/Learn';
 import Money from '../pages/Money';
 import Config from '../pages/Config';
 
+// Constante de navegação
 const Tab = createBottomTabNavigator()
 
 export default function Routes(){
@@ -52,7 +55,7 @@ export default function Routes(){
         component={Home} 
         options={{
           tabBarIcon: ({color, size}) => {
-            return <AntDesign name="home" size={38} color={ color } />
+            return <AntDesign name="home" size={40} color={ color } />
           }
         }}
       />
@@ -62,7 +65,7 @@ export default function Routes(){
         component={Learn} 
         options={{
           tabBarIcon: ({color, size}) => {
-            return <Entypo name="book" size={38} color={ color } />
+            return <Entypo name="book" size={40} color={ color } />
           },
         }}
       />
@@ -72,7 +75,7 @@ export default function Routes(){
         component={Money} 
         options={{
           tabBarIcon: ({color, size}) => {
-            return <MaterialIcons name="monetization-on" size={38} color={ color } />
+            return <MaterialIcons name="monetization-on" size={40} color={ color } />
           },
         }}
       />
@@ -82,7 +85,7 @@ export default function Routes(){
         component={Config} 
         options={{
           tabBarIcon: ({color, size}) => {
-            return <MaterialIcons name="settings" size={38} color={ color } />
+            return <MaterialIcons name="settings" size={40} color={ color } />
           }
         }}
       />

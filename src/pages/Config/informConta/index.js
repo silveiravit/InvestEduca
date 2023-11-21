@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
+// Componente de autenticação
 import { AuthContext } from "../../../contexts/auth";
 
 // Tema

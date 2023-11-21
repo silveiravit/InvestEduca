@@ -1,10 +1,12 @@
 import React from "react"
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 
+// Componentes das telas
 import Diario from './diario'
 import Anual from './anual'
 import Mensal from './mensal'
 
+// Constante de navegação
 const Tab = createMaterialTopTabNavigator()
 
 export default function Gasto(){
