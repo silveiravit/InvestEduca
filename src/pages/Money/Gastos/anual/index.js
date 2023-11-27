@@ -1,50 +1,80 @@
-import React, { useContext, useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions, FlatList, Modal, TouchableWithoutFeedback } from "react-native";
+import React, { useContext, useEffect, useState } from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions, FlatList, Modal, TouchableWithoutFeedback, Platform } from "react-native";
+
+// Componente dos meses
 import Meses from "./meses";
+
+
+// Biblioteca de icones
 import { AntDesign } from '@expo/vector-icons';
+
+// Biblioteca de data
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 // Tema
 import ThemeContext from "../../../../contexts/ThemeContext";
 import appTheme from "../../../../themes/Themes";
 
+// Dimensões da tela
 const SLIDER_WIDTH = Dimensions.get('window').width
 const ITEM_WIDTH = SLIDER_WIDTH * 0.95
 
 export default function Anual(){
 
     const [meses] = useState([
-        { key: 1, mes: 'Janeiro'},
-        { key: 2, mes: 'Fevereiro'},
-        { key: 3, mes: 'Março'},
-        { key: 4, mes: 'Abril'},
-        { key: 5, mes: 'Maio'},
-        { key: 6, mes: 'Junho'},
-        { key: 7, mes: 'Julho'},
-        { key: 8, mes: 'Agosto'},
-        { key: 9, mes: 'Setembro'},
-        { key: 10, mes: 'Outubro'},
-        { key: 11, mes: 'Novembro'},
-        { key: 12, mes: 'Dezembro'},
+        { key: 0, mes: 'Janeiro'},
+        { key: 1, mes: 'Fevereiro'},
+        { key: 2, mes: 'Março'},
+        { key: 3, mes: 'Abril'},
+        { key: 4, mes: 'Maio'},
+        { key: 5, mes: 'Junho'},
+        { key: 6, mes: 'Julho'},
+        { key: 7, mes: 'Agosto'},
+        { key: 8, mes: 'Setembro'},
+        { key: 9, mes: 'Outubro'},
+        { key: 10, mes: 'Novembro'},
+        { key: 11, mes: 'Dezembro'},
     ])
     const [modalVisible, setModalVisible] = useState(false)
     const [mesPress, setMesPress] = useState('')
-    const [valor, setValor] = useState('')
+    const [valor, setValor] = useState()
     const [themeMode] = useContext(ThemeContext)
+    const [anoAtual, setAnoAtual] = useState(new Date())
+    const [showAno, setShowAno] = useState(false)
 
     function handleMes(mes){
         setModalVisible(true)
         setMesPress(mes)
     }
 
+    function ano(){
+        setShowAno(!showAno)
+    }
+
+    function anoSelecionado({ type }, selectDate){
+        if( type == 'set' ){
+            const currentDate = selectDate
+            setAnoAtual(currentDate)
+
+            if(Platform.OS === "android"){
+                ano()
+                setAnoAtual(formatDate(currentDate))
+            }
+        } else {
+            ano()
+        }
+    }
+
     return(
         <View style={ [styles.container, appTheme[themeMode]] }>
             <View style={ styles.registros }>
+                
+                <TouchableOpacity style={ styles.areaAno } onPress={ ano }>
+                    <Text style={ styles.ano }>{ anoAtual.getFullYear() }</Text>
+                    <AntDesign name="downcircleo" size={25} color="black" />
+                </TouchableOpacity>
 
-                <View style={ styles.areaAno }>
-                    <Text style={ styles.ano }>2023</Text>
-                </View>
-
-                <View style={ [styles.areaMes, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#5C20B6', borderColor: '#E9AB43'}] }>                
+                <View style={ [styles.areaMes, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#481298', borderColor: '#E9AB43'}] }>                
                     <TouchableOpacity>
                         <FlatList
                             data={meses}
@@ -64,9 +94,9 @@ export default function Anual(){
                 </TouchableWithoutFeedback>
 
                 <View style={ styles.mesModal }>
-                    <Text style={ styles.textMes }> Seu orçamento no mes de { mesPress }: </Text>
+                    <Text style={ styles.textMes }> Orçamento no mês de { mesPress }: </Text>
 
-                    <Text style={ [styles.totalMes, { color: valor > 0 ? '#27E309' : '#ff0000'} ] }>R$ 100</Text>
+                    <Text style={ [styles.totalMes, { color: valor > 0 ? '#27E309' : '#ff0000'} ] }>R$ { valor }</Text>
 
                     <TouchableOpacity style={ styles.btnFeito } onPress={ () => setModalVisible(false) } >
                         <Text style={{ fontSize: 20, color: '#fff', fontWeight: '600'}}>CONCLUÍDO</Text>
@@ -74,6 +104,18 @@ export default function Anual(){
                     </TouchableOpacity>
                 </View>
             </Modal>
+
+            { showAno && (
+                <DateTimePicker 
+                    mode="date"
+                    value={anoAtual}
+                    display="default"
+                    dateFormat="yyyy"
+                    maximumDate={new Date()}
+                    onChange={anoSelecionado}
+                />
+            )}
+
         </View>
     )
 }
@@ -94,7 +136,7 @@ const styles = StyleSheet.create({
     areaMes: {
         backgroundColor: '#161F4E',
         margin: 10,
-        borderRadius: 20,
+        borderRadius: 10,
         padding: 10,
         height: 250
     },
@@ -102,10 +144,14 @@ const styles = StyleSheet.create({
         color: '#000',
         textAlign: 'center',
         fontSize: 25,
-        fontWeight: '600'
+        fontWeight: '600',
+        marginHorizontal: 10
     },
     areaAno: {
-        marginBottom: 20
+        marginBottom: 20,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     mesModal: {
         height: 200,

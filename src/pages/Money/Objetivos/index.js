@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Dimensions, ScrollView, Modal } from "react-native";
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Dimensions, ScrollView, Modal, Platform, ActivityIndicator } from "react-native";
 import { Picker } from '@react-native-picker/picker'
 
 // Biblioteca de icones
@@ -27,31 +27,58 @@ const ITEM_WIDTH = SLIDER_WIDTH * 0.90
 
 export default function Objetivo(){
 
+    // Constante de navegação
     const navigation = useNavigation()
+
+    // Context de usuário
     const { user } = useContext(AuthContext)
+
+    // State de datas
     const [date, setDate] = useState(new Date())
+
+    // State para mostrar a data
     const [showDate, setShowDate] = useState(false)
+
+    // State para definir a data prevista
     const [dataPrevista, setDataPrevista] = useState('')
+
+    // Context de Tema
     const [themeMode] = useContext(ThemeContext)
 
+    // State de array de objetos de objetivos
     const [objetivos] = useState([
         {key: 0, nome: 'Escolha uma opção'},
         {key: 1, nome: 'Imóvel'}, 
         {key: 2, nome: 'Carro'},
         {key: 2, nome: 'Moto'},  
-        {key: 3, nome: 'Viagem'}, 
-        {key: 4, nome: 'Outro'}
+        {key: 3, nome: 'Viagem'},
     ])
-    const [objetivoSelect, setObjetivoSelect] = useState([])    
-    const [modalVisible, setModalVisible] = useState(false)
-    const [valorMensal, setValorMensal] = useState('')
-    const [renda, setRenda] = useState('')
 
-    const onChange = ({ type }, selectDate) => {
+    // State que define o objetivo selecionado
+    const [objetivoSelect, setObjetivoSelect] = useState([])    
+
+    // State para exibir o modal
+    const [modalVisible, setModalVisible] = useState(false)
+
+    // State do valor mensal registrado
+    const [valorMensal, setValorMensal] = useState('')
+
+    // State da renda do usuário
+    const [valorObjetivo, setValorObjetivo] = useState('')
+
+    // State de loading
+    const [loading, setLoading] = useState(false)
+
+    function dataSelecionada({ type }, selectDate){
         if( type == 'set'){
             const currentDate = selectDate
             setDate(currentDate)
-            setDataPrevista(formatDate(currentDate))
+            
+            if(Platform.OS === "android"){
+                dateFunc()
+                setDataPrevista(formatDate(currentDate))
+            }
+
         } else {
             dateFunc()
         }
@@ -73,41 +100,60 @@ export default function Objetivo(){
 
     function adicionarObjetivo(){
 
-        if( valorMensal === '' || renda === '' || objetivos[0] === 'Escolha uma opção' || dataPrevista === '' ){
-            alert('Preencha os campos corretamente.')
+        if( valorMensal === '' ){
+            alert('Preencha o campo valor mensal.')
+            return
+        } else if( valorObjetivo === '' ){
+            alert('Preencha o campo valor do seu objetivo.')
+            return
+        } else if( dataPrevista === '' ){
+            alert('Preencha o campo de data prevista.')
             return
         }
 
-        setModalVisible(true)
+        setLoading(true)
+        setTimeout( () => {
+            
+            setModalVisible(true)
 
-        let objetivo = firebase.database().ref('objetivos').child(user)
-        let chave = objetivo.push().key
+            let objetivo = firebase.database().ref('objetivos').child(user)
+            let chave = objetivo.push().key
 
-        objetivo.child(chave).set({
-            nomeObjetivo: objetivoSelect,
-            valorMensal: valorMensal,
-            renda: renda,
-            dataPrevista: dataPrevista
-        })
-        .then( () => {
-            const data = {
-                key: chave,
+            objetivo.child(chave).set({
                 nomeObjetivo: objetivoSelect,
                 valorMensal: valorMensal,
-                renda: renda,
+                valorObjetivo: valorObjetivo,
                 dataPrevista: dataPrevista
-            }
-
-        })
-        .catch( () => {
-            alert('Ops, algo deu errado.')
-        })
-
+            })
+            .then( () => {
+                const data = {
+                    key: chave,
+                    nomeObjetivo: objetivoSelect,
+                    valorMensal: valorMensal,
+                    valorObjetivo: valorObjetivo,
+                    dataPrevista: dataPrevista
+                }
+                setLoading(false)
+            })
+            .catch( () => {
+                alert('Ops, algo deu errado.')
+            })
+        }, 5000)
     }
 
     return(
         <View style={ styles.container }>
             <View style={ [styles.viewCont, appTheme[themeMode]] }>
+                <Modal transparent visible={loading}>
+                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffffffcc'}}>
+                        <ActivityIndicator 
+                            size={150}
+                            color={themeMode === 'light' ? '#161F4E' :'#0D1117'}
+                            animating={true}
+                        />
+                        <Text style={{ fontSize: 25, marginTop: 50, fontWeight: 'bold', color: themeMode === 'light' ? '#161F4E' :'#0D1117' }}>SIMULANDO</Text>
+                    </View>
+                </Modal>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={ [styles.view1, appTheme[themeMode]] }>
                         <Text style={ [styles.titulo, appTheme[themeMode]] }>Estabeleça seus Objetivos</Text>
@@ -140,6 +186,7 @@ export default function Objetivo(){
                         <View style={ styles.form }>
                             <Text style={ [styles.subtitulo, appTheme[themeMode]] }>DATA PREVISTA</Text>
             
+                            
                             <TouchableOpacity style={ [styles.btnDate, { backgroundColor: '#fff'}] } onPress={ dateFunc }>
                                 <Text style={{ flex: 1, textAlign: 'center', fontSize: 20, color: '#777'}}>
                                     { dataPrevista == '' ? `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}` : dataPrevista }
@@ -147,25 +194,36 @@ export default function Objetivo(){
             
                                 <AntDesign name="calendar" size={30} color="#FF0000" />
                             </TouchableOpacity>
+                            
+
+                            { showDate && (
+                                <DateTimePicker 
+                                    mode="date"
+                                    value={date}
+                                    display="default"
+                                    onChange={dataSelecionada}
+                                    minimumDate={new Date()}
+                                />
+                            ) }     
             
                         </View>
                         <View style={ styles.form }>
-                            <Text style={ [styles.subtitulo, appTheme[themeMode]] }>RENDA</Text>
+                            <Text style={ [styles.subtitulo, appTheme[themeMode]] }>VALOR DO SEU OBJETIVO</Text>
                             <TextInput
                                 style={ [styles.input, { backgroundColor: '#fff'}] }
                                 keyboardType="numeric"
-                                placeholder="Sua renda mensal"
-                                onChangeText={ (value) => setRenda(value) }
+                                placeholder="Valor do seu objetivo desejado"
+                                onChangeText={ (value) => setValorObjetivo(value) }
                             />
                         </View>
                         <View style={ styles.areaBtn }>
-                            <TouchableOpacity style={ [styles.btn, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#5C20B6'}] } onPress={ adicionarObjetivo } >
+                            <TouchableOpacity style={ [styles.btn, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#481298'}] } onPress={ adicionarObjetivo } >
                                 <Text style={ styles.textoBtn }>SIMULAR</Text>
                             </TouchableOpacity>
                         </View>
 
-                        <View style={ [styles.areaBtn1, { borderTopColor: themeMode === 'light' ? '#161F4E' : '#5C20B6'}] }>
-                            <TouchableOpacity style={ [styles.simBtn, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#5C20B6'} ] } onPress={ () => navigation.navigate('Consultar') } >
+                        <View style={ [styles.areaBtn1, { borderTopColor: themeMode === 'light' ? '#161F4E' : '#481298'}] }>
+                            <TouchableOpacity style={ [styles.simBtn, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#481298'} ] } onPress={ () => navigation.navigate('Consultar') } >
                                 <Text style={ styles.textoSimBtn }>Consulte suas simulações</Text>
                             </TouchableOpacity>
                         </View>
@@ -177,21 +235,10 @@ export default function Objetivo(){
                 <Simular 
                     setVisible={ () => setModalVisible(false)}
                     data={objetivoSelect}
-                    valorMensal={valorMensal}
-                    renda={renda}
                     dataPrevista={dataPrevista}
+                    valorMensal={valorMensal}
                 />
-            </Modal>
-
-            { showDate && (
-                <DateTimePicker 
-                    mode="date"
-                    value={date}
-                    display="default"
-                    onChange={onChange}
-                    minimumDate={new Date()}
-                />
-            ) }                
+            </Modal>                
             
         </View>
     )

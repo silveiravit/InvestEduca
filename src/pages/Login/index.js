@@ -267,7 +267,9 @@ const styles = StyleSheet.create({
         fontSize: 23, 
         textAlign: 'center',
         marginLeft: 5,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        textDecorationLine: 'underline',
+        textDecorationColor: '#E9AB43'
     },
     cadastre: {
         flexDirection: 'row',

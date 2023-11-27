@@ -15,6 +15,7 @@ export default function Gasto(){
         <Tab.Navigator   
             screenOptions={{
                 headerShown: false,
+                tabBarActiveTintColor: '#161F4E',
                 tabBarLabelStyle: { fontSize: 20, fontWeight: '600'},
                 tabBarStyle: {
                     backgroundColor: '#E9AB43',

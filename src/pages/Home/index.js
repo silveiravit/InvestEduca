@@ -10,8 +10,9 @@ import { AntDesign } from '@expo/vector-icons';
 // Hook de navegação
 import { useNavigation } from '@react-navigation/native'
 
-// Biblioteca de slider/carousel
-import Carousel from 'react-native-snap-carousel'
+// Biblioteca de animação/carousel
+import Carousel from 'react-native-reanimated-carousel'
+// import Animated, { Easing } from 'react-native-reanimated';
 
 // Temas
 import ThemeContext from "../../contexts/ThemeContext";
@@ -19,7 +20,7 @@ import appTheme from "../../themes/Themes";
 
 // Dimensões da tela
 const SLIDER_WIDTH = Dimensions.get('window').width
-const ITEM_WIDTH = SLIDER_WIDTH * 1
+//const ITEM_WIDTH = SLIDER_WIDTH * 1
 
 // Acima faremos com que os componentes da tela se adaptem de acordo com a tela do celular
 
@@ -41,6 +42,7 @@ export default function Home(){
         { moeda: ( <Conversor moedaA="CHF" moedaB="BRL" /> ) },
         { moeda: ( <Conversor moedaA="CNY" moedaB="BRL" /> ) },
         { moeda: ( <Conversor moedaA="ARS" moedaB="BRL" /> ) },
+        { moeda: ( <Conversor moedaA="JPY" moedaB="BRL" /> ) },
     ]
 
     const carouselImagem = [
@@ -76,6 +78,12 @@ export default function Home(){
             title: 'Saindo das dívidas',
             text: 'Sabe aquele momento que parece que suas dívidas não tem fim? Não fique desesperado, com o organizamento financeiro correto você conseguirá sair delas.',
             image:  'https://www.tupi.fm/wp-content/uploads/Endividamento-do-brasileiro-em-2019-Blog-Consignet.png' 
+        },
+        {   
+            key: 4,
+            title: 'Aprendendo com quem sabe',
+            text: 'Entenda e compreenda os principais assuntos sobre educação financeira com as melhores fontes, como por exemplo a Caixa e o Serasa e você ainda poderá registrar seus gastos.',
+            image:  'https://noticiasdab3.com.br/wordpress/wp-content/files/noticiasdab3.com.br/2023/09/educacao-financeira-o-caminho-para-a-prosperidade.jpg' 
         },
     ]
 
@@ -119,62 +127,80 @@ export default function Home(){
             <View style={ styles.viewPrincipalCotacao }>
                 <Carousel
                     data={carouselMoeda}
-                    sliderWidth={SLIDER_WIDTH}
-                    itemWidth={ITEM_WIDTH}
                     renderItem={renderMoeda}
-                    autoplay={true}
+                    width={SLIDER_WIDTH}
+                    height={50}
                     loop={true}
-                    autoplayInterval={3000}
                     scrollAnimationDuration={3000}
+                    autoPlay
+                    withAnimation={{
+                        type: "timing",
+                        config: {
+                          duration: 2000,
+                        },
+                    }}
+                    enabled={false}
                 />
             </View>
 
             <View style={ styles.viewPrincipalImagem }>
                 <Carousel
                     data={carouselImagem}
-                    sliderWidth={SLIDER_WIDTH}
-                    itemWidth={ITEM_WIDTH}
                     renderItem={renderItem}
-                    autoplay={true}
+                    width={SLIDER_WIDTH}
+                    height={150}
                     loop={true}
-                    autoplayInterval={5000}
+                    scrollAnimationDuration={1000}
+                    autoPlay
+                    withAnimation={{
+                        type: "spring",
+                        config: {
+                          duration: 5000,
+                        },
+                    }}
+                    enabled={false}
                 />
             </View>
 
             <View style={ [styles.viewCentroImagem, appTheme[themeMode]] }>
                 <Carousel
                     data={carouselImagemCentro}
-                    sliderWidth={SLIDER_WIDTH}
-                    itemWidth={ITEM_WIDTH}
                     renderItem={renderItemCentro}
-                    autoplay={true}
+                    width={SLIDER_WIDTH}
+                    height={SLIDER_WIDTH/1.055}
                     loop={true}
-                    autoplayInterval={5000}
-                    layout="stack"
+                    scrollAnimationDuration={5000}
+                    autoPlay
+                    withAnimation={{
+                        type: "spring",
+                        config: {
+                          duration: 2000,
+                        },
+                    }}
                 />
             </View>
 
             <View style={ styles.areaBtn }>
                 <TouchableOpacity 
-                    style={ [styles.btn, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#5C20B6' }] } 
+                    style={ [styles.btn, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#481298' }] } 
                     onPress={ () => navigation.navigate('Objetivo') }
                 >   
                     <View style={ styles.viewBtn }>
                         <Text style={ styles.textoBtn }>OBJETIVOS</Text>
                         <View style={ styles.icon }>
-                            <AntDesign name="arrowright" size={30} color="black" /> 
+                            <AntDesign name="arrowright" size={30} color={ themeMode === 'light' ? '#161F4E' : '#481298' } /> 
                         </View>
                     </View>
                 </TouchableOpacity>
 
                 <TouchableOpacity 
-                    style={ [styles.btn, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#5C20B6' }] } 
+                    style={ [styles.btn, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#481298' }] } 
                     onPress={ () => navigation.navigate('Gasto') }
                 >
                     <View style={ styles.viewBtn }>
                         <Text style={ styles.textoBtn }>GASTOS</Text>
                         <View style={ styles.icon }>
-                            <AntDesign name="arrowright" size={30} color="black" /> 
+                            <AntDesign name="arrowright" size={30} color={ themeMode === 'light' ? '#161F4E' : '#481298' } /> 
                         </View>
                     </View>
                 </TouchableOpacity>
@@ -218,12 +244,12 @@ const styles = StyleSheet.create({
     },
     carouselItemContainerCentro: {
         padding: 20,
-        marginVertical: '5%',
+        marginVertical: '4%',
         marginHorizontal: '3%',
         borderRadius: 10,
-        borderWidth: 2,
+        borderWidth: 3,
         borderColor: '#161F4E',
-        backgroundColor: '#F7FFE5'
+        backgroundColor: '#FFF'
     },
     imageCentro : {
         width: '100%',
@@ -231,13 +257,13 @@ const styles = StyleSheet.create({
         borderRadius: 10
     },
     viewCentroImagem : {
-        backgroundColor: '#fff'
+        backgroundColor: '#fff',
     },
     title: {
         fontSize: 18,
         color: '#161F4E',
         fontWeight: '400',
-        marginTop: 8
+        marginTop: 10
     }, 
     text: {
         fontSize: 14,

@@ -1,11 +1,7 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, TouchableWithoutFeedback, Alert } from 'react-native'
-import { AntDesign } from '@expo/vector-icons';
-//<AntDesign name="check" size={30} color="white" />
+import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native'
 
 export default function Categoria({ data, add }){
-
-    const [checked, setChecked] = useState(false)
 
     function adicionar(){
         Alert.alert(

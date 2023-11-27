@@ -17,14 +17,17 @@
         "foregroundImage": "./assets/PorcoConfig.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.vitorsil22.InvestEduca"
+      "package": "com.vitorsil22.InvestEduca",
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/Porco.png"
     },
     "extra": {
       "eas": {
-        "projectId": "5fdeb38a-b6cf-4eeb-bfc9-457f7e135beb"
+        "projectId": "c3bb5ff7-9522-4257-b6b9-d2763e77ad54"
       }
     },
     "plugins": [

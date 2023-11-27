@@ -25,7 +25,7 @@ export default function Learn(){
 
             <View style={ styles.areaAssunto }>
 
-                <TouchableOpacity style={ [styles.assunto, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#5C20B6'}] } onPress={ () => navigation.navigate('EducaFinan')}>
+                <TouchableOpacity style={ [styles.assunto, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#481298'}] } onPress={ () => navigation.navigate('EducaFinan')}>
                     <View style={ styles.areaImg }>
                         <Image
                             source={ require('../../images/ef4.png')}
@@ -37,7 +37,7 @@ export default function Learn(){
                     </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={ [styles.assunto, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#5C20B6'}] } onPress={ () => navigation.navigate('Dividas') }>
+                <TouchableOpacity style={ [styles.assunto, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#481298'}] } onPress={ () => navigation.navigate('Dividas') }>
                     <View style={ styles.areaImg }>
                         <Image
                             source={ require('../../images/ef5.jpg')}
@@ -49,7 +49,7 @@ export default function Learn(){
                     </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={ [styles.assunto, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#5C20B6'}] } onPress={ () => navigation.navigate('Investimento') }>
+                <TouchableOpacity style={ [styles.assunto, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#481298'}] } onPress={ () => navigation.navigate('Investimento') }>
                     <View style={ styles.areaImg }>
                         <Image
                             source={ require('../../images/ef3.jpg')}
@@ -62,7 +62,7 @@ export default function Learn(){
                     </View>
                 </TouchableOpacity> 
 
-                <TouchableOpacity style={ [styles.assunto, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#5C20B6'}] } onPress={ () => navigation.navigate('Organizar') }>
+                <TouchableOpacity style={ [styles.assunto, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#481298'}] } onPress={ () => navigation.navigate('Organizar') }>
                     <View style={ styles.areaImg }>
                         <Image
                             source={ require('../../images/ef6.jpg')}

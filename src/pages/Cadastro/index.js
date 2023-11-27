@@ -1,14 +1,11 @@
 import react, { useState, useContext } from 'react' // Hook de estados
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image } from 'react-native'; // Componentes
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image, Modal, ActivityIndicator } from 'react-native';
 
 // Hook de navegação
 import { useNavigation } from '@react-navigation/native' 
 
 // Importação do firebase
 import firebase from '../../../database/FirebaseConnection';
-
-//Componente de Loading 
-import Loading from '../../components/Loading'; 
 
 // Biblioteca de navegação
 import { Entypo } from '@expo/vector-icons';
@@ -100,7 +97,15 @@ export default function Cadastro() {
 
             <View style={ styles.viewCont }>
 
-                <Loading visible={loading} />
+                <Modal transparent visible={loading}>
+                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                        <ActivityIndicator 
+                            size={100}
+                            color={ themeMode === 'light' ? '#161F4E' : '#000' }
+                            animating={true}
+                        />
+                    </View>
+                </Modal>
 
                 <View style={ styles.areaTitulo }>
                     <Text style={ styles.text }>Invest</Text>
@@ -296,7 +301,9 @@ const styles = StyleSheet.create({
         fontSize: 23, 
         textAlign: 'center',
         marginLeft: 5,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        textDecorationLine: 'underline',
+        textDecorationColor: '#E9AB43'
     },
     cadastre: {
         flexDirection: 'row',

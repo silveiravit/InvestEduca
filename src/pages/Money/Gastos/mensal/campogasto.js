@@ -15,7 +15,7 @@ export default function CampoGasto({ data, deleteItem, editItem }){
                 
                     <TouchableWithoutFeedback >
                         <Text style={[ styles.valor, { color: valor > 0 ? '#27E309' : '#ff0000'} ]}>
-                            R$ { data.valorGasto }
+                            R$ { valor }
                         </Text>
                     </TouchableWithoutFeedback>
                 </View>

@@ -1,5 +1,6 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, ActivityIndicator, Modal } from "react-native";
+// import * as ImagePicker from 'expo-image-picker';
 
 // Conexão Firebase
 import firebase from '../../../database/FirebaseConnection'
@@ -37,6 +38,17 @@ export default function Config(){
     // Constante do tema
     const [themeMode, setThemeMode] = useContext(ThemeContext)
 
+    // Imagem usuário
+    // const [img, setImage] = useState(null);
+
+    // useEffect( () => {
+        
+    //     firebase.database().ref('imagemUsuario').child(user).on('value', (snapshot) => {
+    //         setImage(snapshot.val().imagemUsuario)
+    //     })
+
+    // }, [user])
+
     function sair(){
         setLoading(true)
         setTimeout( () => {
@@ -51,6 +63,37 @@ export default function Config(){
         }, 2000)
     }
 
+    // async function uploadImg(){
+    //     try{
+    //         let result = await ImagePicker.launchImageLibraryAsync({
+    //             mediaTypes: ImagePicker.MediaTypeOptions.All,
+    //             allowsEditing: true,
+    //             aspect: [4, 3],
+    //             quality: 1,
+    //           });
+
+    //         if(!result.canceled){
+    //             saveImg(result.assets[0].uri)
+    //         }
+    //     } catch(error){
+    //         alert('Erro ao fazer o upload da imagem.')
+    //     }
+    // }
+
+    // function saveImg(image){
+        
+    //     firebase.database().ref('imagemUsuario').child(user).set({
+    //         imagemUsuario: image
+    //     })
+    //     .then( () => {
+    //         alert('Imagem salva.')
+    //     })
+    //     .catch( () => {
+    //         alert('Não foi possivel salvar a imagem.')
+    //     })
+        
+    // }
+
     return(
         <View style={ [styles.container, appTheme[themeMode]] }>
 
@@ -64,10 +107,14 @@ export default function Config(){
                 </View>
             </Modal>
 
-            <Image
-                source={require('../../images/PorcoConfig.png')}
-                style={ styles.img }
-            />
+            <View style={ styles.areaImg }>
+                
+                <Image
+                    source={ require('../../images/PorcoConfig.png') }
+                    style={ styles.img }
+                />
+                
+            </View>
 
             <View style={ styles.nomeUsuario }>
                 <Text style={[{ fontSize: 25, fontWeight: '600', color: '#161F4E' }, appTheme[themeMode]]}>Bem-vindo, { username }!</Text>
@@ -104,7 +151,7 @@ export default function Config(){
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={ sair }>
-                    <Text style={ [styles.subtitulo, { color: '#EE990A'}] }>Sair</Text>
+                    <Text style={ [styles.subtitulo, { color: '#EE990A', textDecorationLine: 'underline', textDecorationColor: '#EE990A'}] }>Sair</Text>
                 </TouchableOpacity>
             </View>
             
@@ -124,12 +171,20 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
     },
     img: {
+        width: 141,
+        height: 141,
+        borderRadius: 80,
+        margin: 0.5
+    },
+    areaImg: {
+        marginVertical: 20,
+        justifyContent: 'center',
+        alignItems: 'flex-end',
+        borderWidth: 4,
+        borderColor: '#EE990A',
+        borderRadius: 80,
         width: 150,
         height: 150,
-        marginVertical: 40,
-        borderWidth: 1,
-        borderColor: '#EE990A',
-        borderRadius: 80
     },
     titulo: {
         color: '#EE990A',
@@ -156,6 +211,6 @@ const styles = StyleSheet.create({
         borderBottomColor: '#ccc'
     },
     nomeUsuario: {
-        
+        marginVertical: 20
     }
 })

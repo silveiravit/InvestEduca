@@ -27,7 +27,7 @@ export default function Dividas(){
                         <Text style={ [styles.titulo, appTheme[themeMode]] }>Economizando para construir um bom controle financeiro</Text>
                     </View>
 
-                    <View style={{ borderLeftWidth: 10, borderLeftColor: themeMode === 'light' ? '#161F4E' : '#E9AB43', backgroundColor: themeMode === 'light' ? '#E9AB4333' : '#5C20B6' , marginTop: 20, padding: 15}}>
+                    <View style={{ borderLeftWidth: 10, borderLeftColor: themeMode === 'light' ? '#161F4E' : '#E9AB43', backgroundColor: themeMode === 'light' ? '#E9AB4333' : '#481298' , marginTop: 20, padding: 15}}>
                         <Text style={{ textAlign: 'center', fontSize: 23, fontWeight: '600', color: themeMode === 'light' ? '#000' : '#fff'}}>Conheça sua realidade financeira</Text>
                     </View>
 
@@ -54,10 +54,37 @@ export default function Dividas(){
                     </View>
 
                     <View style={ styles.areaEstudo1 }>
+                        <Text style={ [styles.titulo, appTheme[themeMode]] }>O que é grau de endividamento?</Text>
+
+                        <Text style={ [styles.paragrafo1, appTheme[themeMode]] }>
+                        Grau de endividamento pessoal, ou índice de endividamento, é uma medida que ajuda a avaliar o comprometimento da renda doméstica para pagamento de dívidas. Quanto mais alto for esse índice, maiores as chances de inadimplência.
+                        {'\n'}
+                        {'\n'}
+                        Ou seja, o endividamento por si (mesmo que as contas estejam em dia) já abre uma porta para a inadimplência. Por isso o excesso de dívidas pode ser uma ameaça à tranquilidade financeira.
+                        </Text>
+
+                    </View>
+
+                    <View style={ styles.areaEstudo1 }>
+                        <Text style={ [styles.titulo, appTheme[themeMode]] }>Como calcular o grau de endividamento?</Text>
+
+                        <Text style={ [styles.paragrafo1, appTheme[themeMode]] }>
+                        Para calcular o grau de endividamento, é preciso somar todas as dívidas mensais e saber exatamente quanto dinheiro entra por mês. Considere como dívidas as prestações do carro, da casa, parcelas de empréstimo, crediários de loja e faturas de cartão de crédito.
+                        {'\n'}
+                        {'\n'}
+                        Com os dois valores em mãos, basta dividir o total das dívidas pelo total dos ganhos e depois multiplicar por 100. O resultado é a porcentagem do seu grau de endividamento.
+                        {'\n'}
+                        {'\n'}
+                        Se o resultado for igual ou inferior a 30%, parabéns! Essa é a taxa considerada ideal, na qual as dívidas podem ser administradas com tranquilidade. Se for entre 30% e 35%, é preciso cautela. Caso esse índice esteja entre 35% e 40%, reveja seu orçamento e mude seus hábitos para não ficar inadimplente. Um grau acima de 40% é um indicador de endividamento grave, já que compromete quase metade da renda.
+                        </Text>
+
+                    </View>
+
+                    <View style={ styles.areaEstudo1 }>
                         
                         <Text style={ [styles.tituloParagrafo1, { textAlign: 'center', fontSize: 25, marginVertical: 20}, appTheme[themeMode] ] }>Como lidar com as dívidas em 4 passos</Text>
                         
-                        <View style={ [styles.paragrafo, {borderLeftColor: themeMode === 'light' ? '#161F4E' : '#E9AB43', backgroundColor: themeMode === 'light' ? '#E9AB4333' : '#5C20B6'} ] }>
+                        <View style={ [styles.paragrafo, {borderLeftColor: themeMode === 'light' ? '#161F4E' : '#E9AB43', backgroundColor: themeMode === 'light' ? '#E9AB4333' : '#481298'} ] }>
                             <Text style={ [styles.tituloParagrafo1, {color: themeMode === 'light' ? '#000' : '#fff'}] }>1º Faça um planejamento financeiro</Text>
                         </View>
 
@@ -65,7 +92,7 @@ export default function Dividas(){
                         Esse primeiro passo é indispensável para quem precisa assumir o controle da vida financeira. Entenda exatamente quais são as despesas fixas, as dívidas que ainda precisa pagar e quanto dinheiro está disponível para isso por mês. A partir desse panorama, será possível planejar prioridades. 
                         </Text>
 
-                        <View style={ [styles.paragrafo, {borderLeftColor: themeMode === 'light' ? '#161F4E' : '#E9AB43', backgroundColor: themeMode === 'light' ? '#E9AB4333' : '#5C20B6'} ] }>
+                        <View style={ [styles.paragrafo, {borderLeftColor: themeMode === 'light' ? '#161F4E' : '#E9AB43', backgroundColor: themeMode === 'light' ? '#E9AB4333' : '#481298'} ] }>
                             <Text style={ [styles.tituloParagrafo1, {color: themeMode === 'light' ? '#000' : '#fff'}] }>2º Não ultrapasse 30% de grau de endividamento</Text>
                         </View>
 
@@ -73,7 +100,7 @@ export default function Dividas(){
                         Se hoje a renda tiver um comprometimento mensal maior de 30%, reveja os gastos e avalie o que pode ser feito para mudar esse índice. Por exemplo, compre roupas novas só quando tiver dinheiro à vista ou diminua o uso de aplicativos que cobram o valor da compra no cartão de crédito.
                         </Text>
 
-                        <View style={ [styles.paragrafo, {borderLeftColor: themeMode === 'light' ? '#161F4E' : '#E9AB43', backgroundColor: themeMode === 'light' ? '#E9AB4333' : '#5C20B6'} ] }>
+                        <View style={ [styles.paragrafo, {borderLeftColor: themeMode === 'light' ? '#161F4E' : '#E9AB43', backgroundColor: themeMode === 'light' ? '#E9AB4333' : '#481298'} ] }>
                             <Text style={ [styles.tituloParagrafo1, {color: themeMode === 'light' ? '#000' : '#fff'}] }>3º Diminua os gastos do mês</Text>
                         </View>
 
@@ -83,7 +110,7 @@ export default function Dividas(){
 
                         </Text>
 
-                        <View style={ [styles.paragrafo, {borderLeftColor: themeMode === 'light' ? '#161F4E' : '#E9AB43', backgroundColor: themeMode === 'light' ? '#E9AB4333' : '#5C20B6'} ] }>
+                        <View style={ [styles.paragrafo, {borderLeftColor: themeMode === 'light' ? '#161F4E' : '#E9AB43', backgroundColor: themeMode === 'light' ? '#E9AB4333' : '#481298'} ] }>
                             <Text style={ [styles.tituloParagrafo1, {color: themeMode === 'light' ? '#000' : '#fff'}] }>4º Renegocie as dívidas</Text>
                         </View>
 

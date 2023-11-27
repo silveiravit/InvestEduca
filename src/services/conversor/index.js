@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet, Image } from 'react-native'
+import { View, Text, StyleSheet, Image, ActivityIndicator } from 'react-native'
 
 import api from "../api/api";
 
@@ -14,19 +14,19 @@ export default class Conversor extends Component{
         }
     }
 
-    // async componentDidMount(){
+    async componentDidMount(){
 
-    //     const valor = this.state.moedaA + '_' + this.state.moedaB
+        const valor = this.state.moedaA + '_' + this.state.moedaB
 
-    //     const cotacao = await api.get(`convert?q=${valor}&compact=ultra&apiKey=f18e5ed01731c7e9aa73`)
+        const cotacao = await api.get(`convert?q=${valor}&compact=ultra&apiKey=e2808abb288d729c7fb4`)
 
-    //     const response = cotacao.data[valor]
+        const response = cotacao.data[valor]
 
-    //     this.setState({
-    //         valorConvertido: 'R$ '+ response.toFixed(2).replace('.',',')
-    //     })
+        this.setState({
+            valorConvertido: 'R$ '+ response.toFixed(2).replace('.',',')
+        })
 
-    // }
+    }
 
     render(){
 
@@ -42,53 +42,62 @@ export default class Conversor extends Component{
             suico: require('../../icons/suica.png'),
             china: require('../../icons/china.png'),
             argentina: require('../../icons/argentina.png'),
+            japao: require('../../icons/japao.png'),
         }
 
         if( this.state.moedaA === 'USD'){
-            moedaA = 'Cotação do Dólar'
+            moedaA = 'DÓLAR'
             bandeira = bandeira.usd
             
         }else if( this.state.moedaA === 'EUR' ){
-            moedaA = 'Cotação do Euro'
+            moedaA = 'EURO'
             bandeira = bandeira.euro
 
         }else if( this.state.moedaA === 'GBP' ){
-            moedaA = 'Cotação da Libra Esterlina'
+            moedaA = 'LIBRA'
             bandeira = bandeira.libra
 
         }else if( this.state.moedaA === 'CAD' ){
-            moedaA = 'Cotação do Dólar Canadense'
+            moedaA = 'DÓLAR CANADENSE'
             bandeira = bandeira.dolarcanad
 
         }else if( this.state.moedaA === 'SEK' ){
-            moedaA = 'Cotação da Coroa Sueca'
+            moedaA = 'COROA SUECA'
             bandeira = bandeira.sek
 
         }else if( this.state.moedaA === 'AUD' ){
-            moedaA = 'Cotação do Dólar Australiano'
+            moedaA = 'DÓLAR AUSTRALIANO'
             bandeira = bandeira.dolaraust
 
         }else if( this.state.moedaA === 'CHF'){
-            moedaA = 'Cotação do Franco Suíço'
+            moedaA = 'FRANCO SUÍÇO'
             bandeira = bandeira.suico
 
         }else if( this.state.moedaA === 'CNY'){
-            moedaA = 'Cotação do Yuan Renminbi'
+            moedaA = 'YUAN CHINÊS'
             bandeira = bandeira.china
 
         }else if( this.state.moedaA === 'ARS'){
-            moedaA = 'Cotação do Peso Argentino'
+            moedaA = 'PESO ARGENTINO'
             bandeira = bandeira.argentina
+
+        }else if( this.state.moedaA === 'JPY'){
+            moedaA = 'IENE JAPONÊS'
+            bandeira = bandeira.japao
         }
 
         return(
             <View>
                 <View style={styles.view1}>
                     
-                    <Text style={styles.cotacao}>
-                        { moedaA } { cotacaoReal }
+                    <Text style={styles.textMoeda}>
+                        { moedaA }
                     </Text>
                     
+                    <Text style={styles.cotacao}>
+                        { cotacaoReal === 0 ? <ActivityIndicator size={30} color={'#fff'} /> : cotacaoReal }
+                    </Text>
+
                     <Image 
                         source={ bandeira }
                         style={ styles.bandeira }
@@ -100,11 +109,16 @@ export default class Conversor extends Component{
 }
 
 const styles = StyleSheet.create({
+    textMoeda: {
+        fontWeight: '600',
+        fontSize: 20,
+        color: '#fff',
+    },
     cotacao: {
         fontWeight: '600',
         fontSize: 20,
         color: '#fff',
-        marginHorizontal: 10
+        marginHorizontal: 10,
     },
     view1: {
         flexDirection: 'row', 

@@ -1,10 +1,11 @@
 import React, { useContext } from "react";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Image } from "react-native";
 
 // Biblioteca de icones
 import { MaterialIcons } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
-import { Entypo } from '@expo/vector-icons';
+import { Octicons } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 
 // Autenticação
 import { AuthContext } from '../contexts/auth';
@@ -55,7 +56,7 @@ export default function Routes(){
         component={Home} 
         options={{
           tabBarIcon: ({color, size}) => {
-            return <AntDesign name="home" size={40} color={ color } />
+            return <Octicons name="home" size={40} color={ color } />
           }
         }}
       />
@@ -65,7 +66,7 @@ export default function Routes(){
         component={Learn} 
         options={{
           tabBarIcon: ({color, size}) => {
-            return <Entypo name="book" size={40} color={ color } />
+            return <Feather name="book" size={40} color={ color } />
           },
         }}
       />
@@ -75,7 +76,7 @@ export default function Routes(){
         component={Money} 
         options={{
           tabBarIcon: ({color, size}) => {
-            return <MaterialIcons name="monetization-on" size={40} color={ color } />
+            return <Image source={require('../icons/Iconmoeda.png')} style={{ height: 40, width: 40, tintColor: color }}/>
           },
         }}
       />

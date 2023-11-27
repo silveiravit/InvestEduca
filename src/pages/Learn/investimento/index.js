@@ -27,7 +27,7 @@ export default function Investimento(){
                         <Text style={ [styles.titulo, appTheme[themeMode]] }>Economizando para construir um bom controle financeiro</Text>
                     </View>
 
-                    <View style={{ borderLeftWidth: 10, borderLeftColor: themeMode === 'light' ? '#161F4E' : '#E9AB43', backgroundColor: themeMode === 'light' ? '#E9AB4333' : '#5C20B6' , marginTop: 20, padding: 15}}>
+                    <View style={{ borderLeftWidth: 10, borderLeftColor: themeMode === 'light' ? '#161F4E' : '#E9AB43', backgroundColor: themeMode === 'light' ? '#E9AB4333' : '#481298' , marginTop: 20, padding: 15}}>
                         <Text style={{ textAlign: 'center', fontSize: 23, fontWeight: '600', color: themeMode === 'light' ? '#000' : '#fff'}}>Conheça sua realidade financeira</Text>
                     </View>
 
@@ -59,7 +59,7 @@ export default function Investimento(){
                         
                         <Text style={ [styles.tituloParagrafo1, { textAlign: 'center', fontSize: 25, marginVertical: 20}, appTheme[themeMode] ] }>Como começar a investir?</Text>
                         
-                        <View style={ [styles.paragrafo, {borderLeftColor: themeMode === 'light' ? '#161F4E' : '#E9AB43', backgroundColor: themeMode === 'light' ? '#E9AB4333' : '#5C20B6'} ] }>
+                        <View style={ [styles.paragrafo, {borderLeftColor: themeMode === 'light' ? '#161F4E' : '#E9AB43', backgroundColor: themeMode === 'light' ? '#E9AB4333' : '#481298'} ] }>
                             <Text style={ [styles.tituloParagrafo1, {color: themeMode === 'light' ? '#000' : '#fff'}] }>1º Estabeleça os seus objetivos</Text>
                         </View>
 
@@ -70,7 +70,7 @@ export default function Investimento(){
                         Vamos nos aprofundar um pouco mais no que são investimentos de curto, médio e longo prazo:
                         </Text>
 
-                        <View style={ [styles.paragrafo, {borderLeftColor: themeMode === 'light' ? '#161F4E' : '#E9AB43', backgroundColor: themeMode === 'light' ? '#E9AB4333' : '#5C20B6'} ] }>
+                        <View style={ [styles.paragrafo, {borderLeftColor: themeMode === 'light' ? '#161F4E' : '#E9AB43', backgroundColor: themeMode === 'light' ? '#E9AB4333' : '#481298'} ] }>
                             <Text style={ [styles.tituloParagrafo1, {color: themeMode === 'light' ? '#000' : '#fff'}] }>Curto prazo — Reserva emergencial</Text>
                         </View>
 
@@ -84,7 +84,7 @@ export default function Investimento(){
                         O objetivo é ter uma quantia referente ao total de seus gastos de três a seis meses. Quanto mais gastos financeiros você tiver, maior deve ser a sua reserva emergencial.
                         </Text>
                         
-                        <View style={ [styles.paragrafo, {borderLeftColor: themeMode === 'light' ? '#161F4E' : '#E9AB43', backgroundColor: themeMode === 'light' ? '#E9AB4333' : '#5C20B6'} ] }>
+                        <View style={ [styles.paragrafo, {borderLeftColor: themeMode === 'light' ? '#161F4E' : '#E9AB43', backgroundColor: themeMode === 'light' ? '#E9AB4333' : '#481298'} ] }>
                             <Text style={ [styles.tituloParagrafo1, {color: themeMode === 'light' ? '#000' : '#fff'}] }>Médio prazo — Objetivos de vida</Text>
                         </View>
 
@@ -92,7 +92,7 @@ export default function Investimento(){
                         As metas de médio prazo. Elas variam de acordo com seu objetivo. Pode ser pagar uma pós-graduação, comprar um carro, fazer uma viagem com a família, comemorar aniversário, casamento, etc. São objetivos ou investimentos que podem complementar sua caminhada financeira e dar mais conforto.
                         </Text>
 
-                        <View style={ [styles.paragrafo, {borderLeftColor: themeMode === 'light' ? '#161F4E' : '#E9AB43', backgroundColor: themeMode === 'light' ? '#E9AB4333' : '#5C20B6'} ] }>
+                        <View style={ [styles.paragrafo, {borderLeftColor: themeMode === 'light' ? '#161F4E' : '#E9AB43', backgroundColor: themeMode === 'light' ? '#E9AB4333' : '#481298'} ] }>
                             <Text style={ [styles.tituloParagrafo1, {color: themeMode === 'light' ? '#000' : '#fff'}] }>Longo prazo — Aposentadoria</Text>
                         </View>
 
@@ -103,7 +103,7 @@ export default function Investimento(){
                         Logo, se você quer parar de trabalhar aos 65 anos, é preciso ter dinheiro para se manter por mais 20 ou 30 anos. Montar um patrimônio que garanta renda prolongada demanda muita disciplina, portanto, quanto antes começar, melhor.
                         </Text>
 
-                        <View style={ [styles.paragrafo, { borderLeftColor: themeMode === 'light' ? '#161F4E' : '#E9AB43', backgroundColor: themeMode === 'light' ? '#E9AB4333' : '#5C20B6'} ] }>
+                        <View style={ [styles.paragrafo, { borderLeftColor: themeMode === 'light' ? '#161F4E' : '#E9AB43', backgroundColor: themeMode === 'light' ? '#E9AB4333' : '#481298'} ] }>
                             <Text style={ [styles.tituloParagrafo1, {color: themeMode === 'light' ? '#000' : '#fff'}] }>2º Determine a quantia ideal</Text>
                         </View>
 
@@ -114,7 +114,7 @@ export default function Investimento(){
                         Por exemplo, quando receber seu dinheiro, separe uma parcela e invista em seguida. Não importa a quantia, com R$50,00, R$70,00 ou R$100,00 é possível começar.
                         </Text>
 
-                        <View style={ [styles.paragrafo, {borderLeftColor: themeMode === 'light' ? '#161F4E' : '#E9AB43', backgroundColor: themeMode === 'light' ? '#E9AB4333' : '#5C20B6'} ] }>
+                        <View style={ [styles.paragrafo, {borderLeftColor: themeMode === 'light' ? '#161F4E' : '#E9AB43', backgroundColor: themeMode === 'light' ? '#E9AB4333' : '#481298'} ] }>
                             <Text style={ [styles.tituloParagrafo1, {color: themeMode === 'light' ? '#000' : '#fff'}] }>3º Conheça o seu perfil de investidor</Text>
                         </View>
 
@@ -122,7 +122,7 @@ export default function Investimento(){
                         Tão importante quanto entender o que são investimentos é entender o seu perfil de investidor. Isso porque cada pessoa apresenta características, comportamentos e necessidades próprias. Quando relacionamos esse contexto com o universo dos investimentos, estamos falando da maneira como cada um lida com os riscos. Sendo assim, os perfis são classificados em três categorias:
                         </Text>
 
-                        <View style={ [styles.paragrafo, {borderLeftColor: themeMode === 'light' ? '#161F4E' : '#E9AB43', backgroundColor: themeMode === 'light' ? '#E9AB4333' : '#5C20B6'} ] }>
+                        <View style={ [styles.paragrafo, {borderLeftColor: themeMode === 'light' ? '#161F4E' : '#E9AB43', backgroundColor: themeMode === 'light' ? '#E9AB4333' : '#481298'} ] }>
                             <Text style={ [styles.tituloParagrafo1, {color: themeMode === 'light' ? '#000' : '#fff'}] }>Conservador</Text>
                         </View>
 
@@ -130,7 +130,7 @@ export default function Investimento(){
                         Não abre mão da segurança, mesmo que isso leve a uma rentabilidade reduzida.
                         </Text>
 
-                        <View style={ [styles.paragrafo, {borderLeftColor: themeMode === 'light' ? '#161F4E' : '#E9AB43', backgroundColor: themeMode === 'light' ? '#E9AB4333' : '#5C20B6'} ] }>
+                        <View style={ [styles.paragrafo, {borderLeftColor: themeMode === 'light' ? '#161F4E' : '#E9AB43', backgroundColor: themeMode === 'light' ? '#E9AB4333' : '#481298'} ] }>
                             <Text style={ [styles.tituloParagrafo1, {color: themeMode === 'light' ? '#000' : '#fff'}] }>Moderado</Text>
                         </View>
 
@@ -146,7 +146,7 @@ export default function Investimento(){
                         Valoriza a rentabilidade no longo prazo e compreende que as variações do processo fazem parte do fluxo normal do mercado.
                         </Text>
 
-                        <View style={ [styles.paragrafo, {borderLeftColor: themeMode === 'light' ? '#161F4E' : '#E9AB43', backgroundColor: themeMode === 'light' ? '#E9AB4333' : '#5C20B6'} ] }>
+                        <View style={ [styles.paragrafo, {borderLeftColor: themeMode === 'light' ? '#161F4E' : '#E9AB43', backgroundColor: themeMode === 'light' ? '#E9AB4333' : '#481298'} ] }>
                             <Text style={ [styles.tituloParagrafo1, {color: themeMode === 'light' ? '#000' : '#fff'}] }>4º Avalie os tipos de investimentos</Text>
                         </View>
 

@@ -1,6 +1,11 @@
-import React, { useState, useContext, Component } from "react";
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Dimensions, FlatList, Modal, TouchableWithoutFeedback, Alert } from "react-native";
+import React, { useState, useContext } from "react";
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Dimensions, FlatList, Modal, TouchableWithoutFeedback, Alert, ActivityIndicator } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
+import CurrencyInput from 'react-native-currency-input';
+
+// Dimensões da tela
+const SLIDER_WIDTH = Dimensions.get('window').width
+const ITEM_WIDTH = SLIDER_WIDTH * 0.90
 
 // Banco de Dados
 import firebase from '../../../../../database/FirebaseConnection'
@@ -16,12 +21,13 @@ export default function Diario(){
 
     const [themeMode] = useContext(ThemeContext)
     const [modalVisible, setModalVisible] = useState(false)
+    const [modalCadastro, setModalCadastro] = useState(false)
     const { user } = useContext(AuthContext)
     const [novoValor, setNovoValor] = useState('')
     const [valor, setValor] = useState('')
     const [nomeGasto, setNomeGasto] = useState('')
-    const [dataAtual, setDataAtual] = useState(Date())
     const [categoria] = useState([
+        { key: 0, categoria: 'Salário'},
         { key: 1, categoria: 'Veículo'},
         { key: 2, categoria: 'Imovél'},
         { key: 3, categoria: 'Empréstimo'},
@@ -35,7 +41,7 @@ export default function Diario(){
             alert('Preencha os campos corretamente.')
             return
         }
-        
+
         Alert.alert(
             "Confirme o gasto e o valor:",
             `Gasto: ${nomeGasto} \nValor: R$ ${novoValor}`,
@@ -48,22 +54,24 @@ export default function Diario(){
                 { 
                     text: "OK", 
                     onPress: () => { 
+                        setModalCadastro(true)
                         let gastos = firebase.database().ref('gastos').child(user)
                         let chave = gastos.push().key
 
                         gastos.child(chave).set({
                             nomeGasto: nomeGasto,
                             valorGasto: Number(novoValor),
-                            dataCadastro: dataAtual
+                            dataCadastro: new Date().getMonth()
                         })
                         .then( () => {
                             const data = {
                                 key: chave,
                                 nomeGasto: nomeGasto,
                                 valorGasto: novoValor,
-                                dataCadastro: dataAtual
+                                dataCadastro: new Date()
                             }
                             setValor(oldValor => [...oldValor, data].reverse())
+                            setModalCadastro(false)
                         })
                         .catch( (error) => {
                             alert('Digite um valor para adicionar.')
@@ -104,10 +112,10 @@ export default function Diario(){
 
             <View style={ styles.viewCategoria } > 
                 <View style={ [styles.campoCategoria, { borderWidth: themeMode === 'light' ? 2 : 0 }] }>
-                    <Text style={{ fontSize: 30, color: '#161F4E', fontWeight: '600'}}>CATEGORIA</Text>
+                    <Text style={{ fontSize: 30, color: '#161F4E', fontWeight: '700'}}>CATEGORIA</Text>
                 </View>
 
-                <View style={ [styles.campoCategoria1, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#5C20B6', borderColor: '#E9AB43'}] }>
+                <View style={ [styles.campoCategoria1, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#481298', borderColor: '#E9AB43'}] }>
                         
                     <FlatList
                         data={categoria}
@@ -119,7 +127,7 @@ export default function Diario(){
                         
                 </View>
 
-                <TouchableOpacity style={ [styles.btnOutros, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#5C20B6', borderLeftWidth: 0, borderRightWidth: 0, borderBottomWidth: 0,}] } onPress={ () => setModalVisible(true) }>
+                <TouchableOpacity style={ [styles.btnOutros, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#481298', borderLeftWidth: 0, borderRightWidth: 0, borderBottomWidth: 0,}] } onPress={ () => setModalVisible(true) }>
                     <Text style={ styles.textOutros }>Adicionar outra categoria</Text>
                 </TouchableOpacity>
             </View> 
@@ -131,17 +139,27 @@ export default function Diario(){
 
                 <View style={ styles.viewOutros }>
                     <Text style={ styles.tituloOutros }>Informe outra categoria</Text>
-
+                            
                     <TextInput 
                         placeholder="Digite aqui"
                         style={ styles.inputOutros }
                         onChangeText={ (value) => setNomeGasto(value) }
                     />
-
+                        
                     <TouchableOpacity style={ styles.btnFeito } onPress={ concluido }>
                         <Text style={{ fontSize: 25, color: '#fff', fontWeight: '600'}}>FEITO</Text>
                         <AntDesign name="check" size={30} color="white" />
                     </TouchableOpacity>
+                </View>
+            </Modal>
+
+            <Modal visible={modalCadastro} animationType="fade" transparent={true}>
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#dddddd99'}}>
+                    <ActivityIndicator 
+                        size={150}
+                        color={ themeMode === 'light' ? '#161F4E' : '#0D1117' }
+                        animating={true}
+                    />
                 </View>
             </Modal>
         </View>
@@ -246,5 +264,20 @@ const styles = StyleSheet.create({
         padding: 10,
         flexDirection: 'row',
         justifyContent: 'center'
-    }
+    },
+    btnDate: {
+        marginHorizontal: 10,
+        flexDirection: 'row',
+        width: ITEM_WIDTH,
+        justifyContent: 'space-between',
+        borderWidth: 2,
+        borderRadius: 10,
+        padding: 8
+    },
+    viewData: {
+        height: '40%',
+        backgroundColor: '#fff',
+        justifyContent: 'space-around',
+        alignItems: 'center'
+    },
 })

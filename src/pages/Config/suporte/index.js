@@ -44,7 +44,7 @@ export default function Suporte(){
                         textAlignVertical="top"
                         onChangeText={ (value) => setPergunta(value) }
                     />
-                    <TouchableOpacity style={ [styles.btn, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#5C20B6' }] } onPress={ enviar }>
+                    <TouchableOpacity style={ [styles.btn, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#481298' }] } onPress={ enviar }>
                         <Text style={ styles.textBtn }>ENVIAR</Text>
                     </TouchableOpacity>
                 </View>
@@ -67,11 +67,12 @@ const styles = StyleSheet.create({
     },
     input: {
         borderWidth: 2,
-        borderRadius: 5,
+        borderRadius: 10,
         marginVertical: 20,
         padding: 10,
         alignItems: 'flex-start',
-        fontSize: 20
+        fontSize: 20,
+        borderColor: '#bbb'
     },
     btn: {
         borderRadius: 10,

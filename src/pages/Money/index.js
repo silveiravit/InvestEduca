@@ -26,13 +26,13 @@ export default function Money(){
 
                 <Text style={[{ textAlign: 'center', fontSize: 25, color: '#161F4E', fontWeight: '600' }, appTheme[themeMode]]}>O que gostaria de ver?</Text>
 
-                <TouchableOpacity onPress={ () => navigation.navigate('Objetivo') } style={ [styles.btn, { borderColor: themeMode === 'light' ? '#161F4E' : '#5C20B6' }] }>
+                <TouchableOpacity onPress={ () => navigation.navigate('Objetivo') } style={ [styles.btn, { borderColor: themeMode === 'light' ? '#161F4E' : '#481298' }] }>
 
-                    <View style={ [styles.view, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#5C20B6', borderColor: themeMode === 'light' ? '#161F4E' : '#5C20B6'  }] } >
+                    <View style={ [styles.view, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#481298', borderColor: themeMode === 'light' ? '#161F4E' : '#481298'  }] } >
                         <View style={ styles.viewBtn }>
                             <Text style={ styles.textoBtn }>OBJETIVOS</Text>
                             <View style={ styles.icon }>
-                                <AntDesign name="arrowright" size={30} color="black" /> 
+                                <AntDesign name="arrowright" size={30} color={themeMode === 'light' ? '#161F4E' : '#481298'} /> 
                             </View>
                         </View>
                     </View>
@@ -41,13 +41,13 @@ export default function Money(){
 
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={ () => navigation.navigate('Gasto') } style={ [styles.btn, { borderColor: themeMode === 'light' ? '#161F4E' : '#5C20B6' }] }>
+                <TouchableOpacity onPress={ () => navigation.navigate('Gasto') } style={ [styles.btn, { borderColor: themeMode === 'light' ? '#161F4E' : '#481298' }] }>
 
-                    <View style={ [styles.view, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#5C20B6',  borderColor: themeMode === 'light' ? '#161F4E' : '#5C20B6' }] } >
+                    <View style={ [styles.view, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#481298',  borderColor: themeMode === 'light' ? '#161F4E' : '#481298' }] } >
                         <View style={ styles.viewBtn }>
                             <Text style={ styles.textoBtn }>GASTOS</Text>
                             <View style={ styles.icon }>
-                                <AntDesign name="arrowright" size={30} color="black" /> 
+                                <AntDesign name="arrowright" size={30} color={themeMode === 'light' ? '#161F4E' : '#481298'} /> 
                             </View>
                         </View>
                     </View>

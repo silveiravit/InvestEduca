@@ -1,45 +1,74 @@
-import react, { useContext } from 'react'
+import react, { useContext, useEffect } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
-
+import { differenceInDays, format } from 'date-fns'
 // Tema
 import ThemeContext from '../../../contexts/ThemeContext'
 import appTheme from '../../../themes/Themes'
+import { useState } from 'react';
 
-export default function Simular({ setVisible, data, valorMensal, renda, dataPrevista }){
+export default function Simular({ setVisible, data, dataPrevista, valorMensal }){
 
+    // Context de tema
     const [themeMode] = useContext(ThemeContext)
+
+    // Objetos de imagens
     const imagem = {
-        casa: require('../../../images/casas.png'),
+        imovel: require('../../../images/casas.png'),
         carro: require('../../../images/carro.png'),
         moto: require('../../../images/moto.png'),
         viagem: require('../../../images/viagem.png')
     }
+    
+    // State para renderizar as imagens
+    const [img, setImg] = useState()
+
+    // State do valor mensal
+    const [valor] = useState(valorMensal)
+
+    // State das taxas
+    const [taxa, setTaxa] = useState('')
+
+    // State data
+
+    
+    useEffect(() => {
+
+        if( data === 'Imóvel' ){
+            setImg(imagem.imovel)
+            setTaxa('Taxa média para imóvel: 8,5% ao ano.')
+        } else if( data === 'Carro' ){
+            setImg(imagem.carro)
+            setTaxa('Taxa média para carro: 2,03% ao mês.')
+        } else if( data === 'Moto' ){
+            setImg(imagem.moto)
+            setTaxa('Taxa média para moto: 1,5% ao mês.')
+        } else {
+            setImg(imagem.viagem)
+        }
+        
+    }, [])
 
     return(
         <View style={[{ flex: 1, alignItems: 'center', justifyContent: 'center'}, appTheme[themeMode]]}>
             <View style={ styles.view }>
 
-                <View style={{ alignItems: 'center', marginVertical: 20 }}>
+                <View style={ styles.areaText }>
+                    <Text style={ [{ color: '#000', fontSize: 25, textAlign: 'center', marginHorizontal: 20}, appTheme[themeMode]] }>Objetivo desejado: { data }</Text>
+                </View>
+
+                <View style={{ justifyContent: 'flex-start', alignItems: 'center', marginVertical: 20 }}>
                     <Image 
-                        source={ imagem.carro }
+                        source={ img }
                         style={ styles.img }
                     />
                 </View>
 
                 <View style={ styles.areaText }>
-                    <Text style={ [styles.text, appTheme[themeMode]] }>O seu objetivo é: { data }</Text>
+                    <Text style={ [styles.text, appTheme[themeMode]] }>{ taxa }</Text>
                 </View>
 
                 <View style={ styles.areaText }>
-                    <Text style={ [styles.text, appTheme[themeMode]] }>Investimento: R$ { valorMensal }</Text>
-                </View>
-
-                <View style={ styles.areaText }>
-                    <Text style={ [styles.text, appTheme[themeMode]] }>Data prevista: { dataPrevista }</Text>
-                </View>
-
-                <View style={ styles.areaText }>
-                    <Text style={ [styles.text, appTheme[themeMode]] }>Renda mensal R$: { renda }</Text>
+                    <Text style={ [styles.text, appTheme[themeMode]] }>Ao final da data prevista de { dataPrevista }, o valor que você terá é de R$ { valor }</Text>
                 </View>
 
             </View>
@@ -70,16 +99,18 @@ const styles = StyleSheet.create({
         fontWeight: '600'
     },
     img: {
-        width: 350,
-        height: 300,
+        width: 250,
+        height: 200,
         borderRadius: 500
     },
     text: {
         fontSize: 25,
         fontFamily: '',
-        textAlign: 'center'
+        textAlign: 'justify',
+        marginHorizontal: 20
     },
     areaText: {
-        marginVertical: 10
+        marginVertical: 10,
+        
     }
 })

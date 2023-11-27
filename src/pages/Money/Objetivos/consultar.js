@@ -1,5 +1,5 @@
 import react, { useState, useEffect, useContext } from 'react'
-import { View, Text, TouchableOpacity, StyleSheet, FlatList, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, FlatList, Alert, Modal, ActivityIndicator } from 'react-native';
 
 // Banco de Dados
 import firebase from '../../../../database/FirebaseConnection'
@@ -23,6 +23,7 @@ export default function Consultar(){
     const [objetivo, setObjetivo] = useState([])
     const navigation = useNavigation()
     const [themeMode] = useContext(ThemeContext)
+    const [loading, setLoading] = useState(false)
 
     useEffect( () => {
 
@@ -38,7 +39,7 @@ export default function Consultar(){
                     let data = {
                         key: childItem.key,
                         nomeObjetivo: childItem.val().nomeObjetivo,
-                        renda: childItem.val().renda,
+                        valorObjetivo: childItem.val().valorObjetivo,
                         valorMensal: childItem.val().valorMensal,
                         dataPrevista: childItem.val().dataPrevista
                     }
@@ -66,10 +67,12 @@ export default function Consultar(){
                 { 
                     text: "SIM", 
                     onPress: () => { 
+                        setLoading(true)
                         firebase.database().ref('objetivos').child(user).child(key).remove()
                         .then( () => {
                             const findObjetivos = objetivo.filter( item => item.key !== key)
                             setObjetivo(findObjetivos)
+                            setLoading(false)
                         })
                     } 
                 }
@@ -97,10 +100,20 @@ export default function Consultar(){
             </View>
 
             <View style={ styles.areaBtn }>
-                <TouchableOpacity style={ [styles.btn, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#5C20B6' }] } onPress={ () => navigation.navigate('Objetivo')}>
+                <TouchableOpacity style={ [styles.btn, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#481298' }] } onPress={ () => navigation.navigate('Objetivo')}>
                     <Text style={ styles.textBtn }>VOLTAR</Text>
                 </TouchableOpacity>
             </View>
+
+            <Modal transparent visible={loading}>
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffffff99'}}>
+                    <ActivityIndicator 
+                        size={100}
+                        color={ themeMode === 'light' ? '#161F4E' : '#fff' }
+                        animating={true}
+                    />
+                </View>
+            </Modal>
         </View>
     )
 }

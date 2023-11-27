@@ -1,6 +1,10 @@
-import React, { useState } from 'react';
-import { NavigationContainer } from '@react-navigation/native' // Componente para efetuar a navegação entre telas
-import { createNativeStackNavigator } from '@react-navigation/native-stack' //Biblioteca de navegação
+import React, { useState, useContext } from 'react';
+
+// Componente para efetuar a navegação entre telas
+import { NavigationContainer } from '@react-navigation/native' 
+
+//Biblioteca de navegação
+import { createNativeStackNavigator } from '@react-navigation/native-stack' 
 
 // Paletas de cores
 // Azul: #161F4E
@@ -8,7 +12,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack' //Bi
 // Preto: #000000
 // Preto/Cinza: #0D1117
 // Branco: #ffffff
-// Roxo: #5C20B6
+// Roxo: #481298
 
 // Autenticação
 import AuthProvider from './src/contexts/auth';
@@ -53,21 +57,21 @@ export default function App () {
                 name='Inicio'
                 component={Inicio}
                 options={{
-                  statusBarColor: themeHook === 'light' ? '#161F4E' : '#0D1117'
+                  statusBarColor: '#0D1117'
                 }}
               />
               <Stack.Screen
                 name='Cadastro'
                 component={Cadastro}
                 options={{
-                  statusBarColor: themeHook === 'light' ? '#161F4E' : '#0D1117'
+                  statusBarColor: '#0D1117'
                 }}
               />
               <Stack.Screen
                 name='Login'
                 component={Login}
                 options={{
-                  statusBarColor: themeHook === 'light' ? '#161F4E' : '#0D1117'
+                  statusBarColor: '#0D1117'
                 }}
               />
               {/* Navegação onde terá as telas de home, aprender, dinheiro e configuração */}
@@ -75,7 +79,7 @@ export default function App () {
                 name='Routes'
                 component={Routes}
                 options={{
-                  statusBarColor: themeHook === 'light' ? '#000' : '#0D1117',
+                  statusBarColor: '#000',
                   statusBarStyle: 'light'
                 }}
               />
