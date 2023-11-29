@@ -121,7 +121,7 @@ export default function Objetivo(){
 
             objetivo.child(chave).set({
                 nomeObjetivo: objetivoSelect,
-                valorMensal: valorMensal,
+                valorMensal: Number(valorMensal.replace(',','.')),
                 valorObjetivo: valorObjetivo,
                 dataPrevista: dataPrevista
             })
@@ -129,7 +129,7 @@ export default function Objetivo(){
                 const data = {
                     key: chave,
                     nomeObjetivo: objetivoSelect,
-                    valorMensal: valorMensal,
+                    valorMensal: Number(valorMensal.replace(',','.')),
                     valorObjetivo: valorObjetivo,
                     dataPrevista: dataPrevista
                 }
@@ -179,7 +179,7 @@ export default function Objetivo(){
                                 style={ [styles.input, { backgroundColor: '#fff'}] }
                                 keyboardType="numeric"
                                 placeholder="Valor mensal que pode investir"
-                                onChangeText={ (value) => setValorMensal(value) }
+                                onChangeText={ (value) => setValorMensal(value.replace('.',',')) }
                             />
                         </View>
             
@@ -213,7 +213,7 @@ export default function Objetivo(){
                                 style={ [styles.input, { backgroundColor: '#fff'}] }
                                 keyboardType="numeric"
                                 placeholder="Valor do seu objetivo desejado"
-                                onChangeText={ (value) => setValorObjetivo(value) }
+                                onChangeText={ (value) => setValorObjetivo(value.replace('.',',')) }
                             />
                         </View>
                         <View style={ styles.areaBtn }>

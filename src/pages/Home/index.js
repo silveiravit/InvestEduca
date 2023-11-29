@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions, TouchableWithoutFeedback } from "react-native";
 
 // Importado o arquivo de conversor de moeda
 import Conversor from "../../services/conversor"; 
@@ -20,7 +20,6 @@ import appTheme from "../../themes/Themes";
 
 // Dimensões da tela
 const SLIDER_WIDTH = Dimensions.get('window').width
-//const ITEM_WIDTH = SLIDER_WIDTH * 1
 
 // Acima faremos com que os componentes da tela se adaptem de acordo com a tela do celular
 
@@ -63,13 +62,13 @@ export default function Home(){
     const carouselImagemCentro = [
         {   
             key: 1,
-            title: 'Investindo da melhor forma',
+            title: 'O que é investimento?',
             text: 'Chega um momento das nossas vidas que precisamos investir em algo para termos retorno no futuro, como um carro ou até mesmo um imóvel. Aqui você está no lugar certo.',
             image:  'https://assets-blog.pagseguro.uol.com.br/wp-content/2022/05/real-digital.jpg' 
         },
         {   
             key: 2,
-            title: 'Estabelecendo metas',
+            title: 'Dicas para organizar suas finanças',
             text: 'Você já pensou sobre o que quer fazer daqui a 5 anos? Está certo sobre qual é o seu objetivo principal no momento? Para essas perguntas precisamos estabelecer metas. ',
             image:  'https://images.pexels.com/photos/6368833/pexels-photo-6368833.jpeg?auto=compress&cs=tinysrgb&w=600' 
         },
@@ -81,9 +80,9 @@ export default function Home(){
         },
         {   
             key: 4,
-            title: 'Aprendendo com quem sabe',
+            title: 'O que é educação financeira?',
             text: 'Entenda e compreenda os principais assuntos sobre educação financeira com as melhores fontes, como por exemplo a Caixa e o Serasa e você ainda poderá registrar seus gastos.',
-            image:  'https://noticiasdab3.com.br/wordpress/wp-content/files/noticiasdab3.com.br/2023/09/educacao-financeira-o-caminho-para-a-prosperidade.jpg' 
+            image:  'https://noticiasdab3.com.br/wordpress/wp-content/files/noticiasdab3.com.br/2023/09/educacao-financeira-o-caminho-para-a-prosperidade.jpg',
         },
     ]
 
@@ -108,17 +107,37 @@ export default function Home(){
 
     function renderItemCentro({ item }){
         return(
-            <View style={ styles.carouselItemContainerCentro }> 
+            <View style={ [styles.carouselItemContainerCentro, { borderColor: themeMode === 'light' ? '#161F4E' : '#481298' }] }> 
 
-                <Image
-                    source={{ uri: `${item.image}` }}
-                    style={ styles.imageCentro }
-                />
+                <TouchableWithoutFeedback onPress={ () => mudarTela(item.title) }>
+                    <Image
+                        source={{ uri: `${item.image}` }}
+                        style={ styles.imageCentro }
+                    />
+                </TouchableWithoutFeedback>
 
                 <Text style={ styles.title }>{ item.title }</Text>
                 <Text style={ styles.text }>{ item.text }</Text>
             </View> 
         )
+    }
+
+    function mudarTela(navegar){
+
+        if( navegar === 'O que é investimento?' ){
+            navigation.navigate('Investimento')
+            
+        } else if( navegar === 'Dicas para organizar suas finanças' ){
+            navigation.navigate('Organizar')
+
+        } else if( navegar === 'O que é educação financeira?' ){
+            navigation.navigate('EducaFinan')
+
+        } else if( navegar === 'Saindo das dívidas' ){
+            navigation.navigate('Dividas')
+            
+        }
+
     }
 
     return(
@@ -131,12 +150,11 @@ export default function Home(){
                     width={SLIDER_WIDTH}
                     height={50}
                     loop={true}
-                    scrollAnimationDuration={3000}
                     autoPlay
                     withAnimation={{
                         type: "timing",
                         config: {
-                          duration: 2000,
+                          duration: 3000,
                         },
                     }}
                     enabled={false}
@@ -150,12 +168,12 @@ export default function Home(){
                     width={SLIDER_WIDTH}
                     height={150}
                     loop={true}
-                    scrollAnimationDuration={1000}
                     autoPlay
+                    scrollAnimationDuration={5000}
                     withAnimation={{
                         type: "spring",
                         config: {
-                          duration: 5000,
+                          duration: 2000,
                         },
                     }}
                     enabled={false}
@@ -169,12 +187,11 @@ export default function Home(){
                     width={SLIDER_WIDTH}
                     height={SLIDER_WIDTH/1.055}
                     loop={true}
-                    scrollAnimationDuration={5000}
                     autoPlay
                     withAnimation={{
                         type: "spring",
                         config: {
-                          duration: 2000,
+                          duration: 5000,
                         },
                     }}
                 />
@@ -248,7 +265,6 @@ const styles = StyleSheet.create({
         marginHorizontal: '3%',
         borderRadius: 10,
         borderWidth: 3,
-        borderColor: '#161F4E',
         backgroundColor: '#FFF'
     },
     imageCentro : {

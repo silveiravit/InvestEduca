@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Dimensions, FlatList, Modal, TouchableWithoutFeedback, Alert, ActivityIndicator } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
-import CurrencyInput from 'react-native-currency-input';
 
 // Dimensões da tela
 const SLIDER_WIDTH = Dimensions.get('window').width
@@ -14,18 +13,28 @@ import firebase from '../../../../../database/FirebaseConnection'
 import ThemeContext from '../../../../contexts/ThemeContext'
 import appTheme from '../../../../themes/Themes'
 
+// Componente de autenticação
 import { AuthContext } from "../../../../contexts/auth";
+
+// Componente categoria
 import Categoria from "./categoria";
 
 export default function Diario(){
-
+    
+    // Context de usuário e tema
+    const { user } = useContext(AuthContext)
     const [themeMode] = useContext(ThemeContext)
+
+    // Exibir modal
     const [modalVisible, setModalVisible] = useState(false)
     const [modalCadastro, setModalCadastro] = useState(false)
-    const { user } = useContext(AuthContext)
+    
+    // States de valores
     const [novoValor, setNovoValor] = useState('')
     const [valor, setValor] = useState('')
     const [nomeGasto, setNomeGasto] = useState('')
+
+    // State de categorias
     const [categoria] = useState([
         { key: 0, categoria: 'Salário'},
         { key: 1, categoria: 'Veículo'},
@@ -44,7 +53,7 @@ export default function Diario(){
 
         Alert.alert(
             "Confirme o gasto e o valor:",
-            `Gasto: ${nomeGasto} \nValor: R$ ${novoValor}`,
+            `Gasto: ${nomeGasto} \nValor: R$ ${novoValor.replace('.',',')}`,
             [
                 {
                     text: "Cancelar",
@@ -60,15 +69,17 @@ export default function Diario(){
 
                         gastos.child(chave).set({
                             nomeGasto: nomeGasto,
-                            valorGasto: Number(novoValor),
-                            dataCadastro: new Date().getMonth()
+                            valorGasto: Number(novoValor.replace(',','.')),
+                            mesCadastro: new Date().getMonth(),
+                            anoCadastro: new Date().getFullYear()
                         })
                         .then( () => {
                             const data = {
                                 key: chave,
                                 nomeGasto: nomeGasto,
-                                valorGasto: novoValor,
-                                dataCadastro: new Date()
+                                valorGasto: Number(novoValor.replace(',','.')),
+                                mesCadastro: new Date(),
+                                anoCadastro: new Date().getFullYear()
                             }
                             setValor(oldValor => [...oldValor, data].reverse())
                             setModalCadastro(false)
@@ -97,16 +108,22 @@ export default function Diario(){
         <View style={ [styles.container, appTheme[themeMode]] }>
             <View style={ styles.campoValor }>
                 
-                <TextInput
-                    placeholder="R$"
-                    onChangeText={ (valor) => setNovoValor(valor) }
-                    style={ styles.input }
-                    keyboardType="decimal-pad"
-                    value={novoValor}
-                />
-                
+                <View style={ styles.areaInputMoeda }>
+                    <TouchableOpacity >                               
+                        <Text style={{ fontSize: 25, fontWeight: '600'}}>R$ </Text>
+                    </TouchableOpacity>
+
+                    <TextInput 
+                        style={ styles.input }
+                        onChangeText={ (valor) => setNovoValor(valor.replace('.',',')) }
+                        keyboardType="numeric"
+                        value={novoValor}
+                    /> 
+
+                </View> 
+
                 <TouchableOpacity style={ styles.icon } onPress={ handleAdd }>
-                    <AntDesign name="plus" size={25} color="white" />
+                    <AntDesign name="plus" size={30} color="white" />
                 </TouchableOpacity>
             </View>
 
@@ -147,7 +164,7 @@ export default function Diario(){
                     />
                         
                     <TouchableOpacity style={ styles.btnFeito } onPress={ concluido }>
-                        <Text style={{ fontSize: 25, color: '#fff', fontWeight: '600'}}>FEITO</Text>
+                        <Text style={{ fontSize: 25, color: '#fff', fontWeight: '600'}}>FEITO </Text>
                         <AntDesign name="check" size={30} color="white" />
                     </TouchableOpacity>
                 </View>
@@ -182,14 +199,21 @@ const styles = StyleSheet.create({
         paddingHorizontal: 40
     },
     input: {
-        width: '80%',
-        backgroundColor: '#ffffffbb',
-        borderRadius: 10,
-        marginVertical: 50,
-        padding: 5,
-        marginHorizontal: 10,
         fontSize: 25,
         textAlign: 'center',
+        color: '#000',
+        width: '70%',
+        height: 50
+    },
+    areaInputMoeda: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderRadius: 10,
+        justifyContent: 'center',      
+        marginVertical: 40,
+        width: '75%',
+        marginHorizontal: 10,
+        backgroundColor: '#ffffff77',
     },
     icon: {
         backgroundColor: '#161F4E',

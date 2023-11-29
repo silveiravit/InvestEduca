@@ -1,23 +1,33 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
-export default function CampoGasto({ data, deleteItem, editItem }){
+export default function CampoGasto({ data, deleteItem, editItem, chave, editValor }){
 
-    const [valor] = useState(data.valorGasto)
+    const [valor] = useState(Number(data.valorGasto).toFixed(2).replace('.',','))
+
+    function acoesEditChave(){
+        editItem(data.nomeGasto)
+        chave(data.key)
+    }
+
+    function acaoEditValor(){
+        editValor(data.valorGasto)
+        chave(data.key)
+    }
 
     return(
         <View style={ styles.container }>
             <TouchableOpacity onPress={ () => deleteItem(data.key) }>
                 <View style={ styles.campoRegisto }>
-                    <TouchableWithoutFeedback onPress={ () => editItem(data) }>
+                    <TouchableOpacity onPress={ acoesEditChave }>
                         <Text style={ styles.text }> { data.nomeGasto } </Text>
-                    </TouchableWithoutFeedback>
+                    </TouchableOpacity>
                 
-                    <TouchableWithoutFeedback >
-                        <Text style={[ styles.valor, { color: valor > 0 ? '#27E309' : '#ff0000'} ]}>
+                    <TouchableOpacity onPress={ acaoEditValor }>
+                        <Text style={[ styles.valor, { color: valor.replace(',','.') > 0 ? '#27E309' : '#ff0000'} ]}>
                             R$ { valor }
                         </Text>
-                    </TouchableWithoutFeedback>
+                    </TouchableOpacity>
                 </View>
             </TouchableOpacity>
         </View>

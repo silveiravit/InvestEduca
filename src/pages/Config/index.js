@@ -1,6 +1,5 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, ActivityIndicator, Modal } from "react-native";
-// import * as ImagePicker from 'expo-image-picker';
 
 // Conexão Firebase
 import firebase from '../../../database/FirebaseConnection'
@@ -38,17 +37,6 @@ export default function Config(){
     // Constante do tema
     const [themeMode, setThemeMode] = useContext(ThemeContext)
 
-    // Imagem usuário
-    // const [img, setImage] = useState(null);
-
-    // useEffect( () => {
-        
-    //     firebase.database().ref('imagemUsuario').child(user).on('value', (snapshot) => {
-    //         setImage(snapshot.val().imagemUsuario)
-    //     })
-
-    // }, [user])
-
     function sair(){
         setLoading(true)
         setTimeout( () => {
@@ -62,37 +50,6 @@ export default function Config(){
             })   
         }, 2000)
     }
-
-    // async function uploadImg(){
-    //     try{
-    //         let result = await ImagePicker.launchImageLibraryAsync({
-    //             mediaTypes: ImagePicker.MediaTypeOptions.All,
-    //             allowsEditing: true,
-    //             aspect: [4, 3],
-    //             quality: 1,
-    //           });
-
-    //         if(!result.canceled){
-    //             saveImg(result.assets[0].uri)
-    //         }
-    //     } catch(error){
-    //         alert('Erro ao fazer o upload da imagem.')
-    //     }
-    // }
-
-    // function saveImg(image){
-        
-    //     firebase.database().ref('imagemUsuario').child(user).set({
-    //         imagemUsuario: image
-    //     })
-    //     .then( () => {
-    //         alert('Imagem salva.')
-    //     })
-    //     .catch( () => {
-    //         alert('Não foi possivel salvar a imagem.')
-    //     })
-        
-    // }
 
     return(
         <View style={ [styles.container, appTheme[themeMode]] }>

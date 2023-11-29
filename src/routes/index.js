@@ -3,7 +3,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Image } from "react-native";
 
 // Biblioteca de icones
-import { MaterialIcons } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 
@@ -43,7 +42,7 @@ export default function Routes(){
           tabBarActiveTintColor: '#E9AB43',
           tabBarInactiveTintColor: themeMode === 'light' ? '#161F4E' : '#fff',
           tabBarStyle: {
-              height: 55,
+              height: 60,
               borderTopWidth: 1,
               borderTopColor: themeMode === 'light' ? '#161F4E' : '#fff',
               backgroundColor: themeMode === 'light' ? '#fff' : '#0D1117'
@@ -76,7 +75,7 @@ export default function Routes(){
         component={Money} 
         options={{
           tabBarIcon: ({color, size}) => {
-            return <Image source={require('../icons/Iconmoeda.png')} style={{ height: 40, width: 40, tintColor: color }}/>
+            return <Image source={require('../icons/Iconmoeda.png')} style={{ height: 44, width: 44, tintColor: color }}/>
           },
         }}
       />
@@ -86,7 +85,7 @@ export default function Routes(){
         component={Config} 
         options={{
           tabBarIcon: ({color, size}) => {
-            return <MaterialIcons name="settings" size={40} color={ color } />
+            return <Image source={require('../icons/Iconconfig.png')} style={{ height: 44, width: 44, tintColor: color }}/>
           }
         }}
       />

@@ -128,5 +128,8 @@ const styles = StyleSheet.create({
     bandeira: {
         width: 25,
         height: 25,
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius:50
     }
 })
