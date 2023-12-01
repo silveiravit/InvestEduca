@@ -60,7 +60,7 @@ export default function Cadastro() {
                     alert('Ops, algo deu errado.')
                 })
 
-                firebase.database().ref('usuarios').child(user.user.uid).set({
+                firebase.database().ref('Usuarios').child(user.user.uid).set({
                     username: username
                 })
                 navigation.navigate('Login')

@@ -64,7 +64,7 @@ export default function Diario(){
                     text: "OK", 
                     onPress: () => { 
                         setModalCadastro(true)
-                        let gastos = firebase.database().ref('gastos').child(user)
+                        let gastos = firebase.database().ref('Gastos').child(user)
                         let chave = gastos.push().key
 
                         gastos.child(chave).set({

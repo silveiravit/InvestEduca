@@ -26,7 +26,7 @@ export default function Login() {
     const [email, setEmail] = useState('investeduca07@gmail.com')
 
     // State de senha
-    const [senha, setSenha] = useState('123456')
+    const [senha, setSenha] = useState('investeduca2023')
 
     // State de loading
     const [loading, setLoading] = useState(false)

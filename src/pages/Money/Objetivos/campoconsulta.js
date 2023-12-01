@@ -1,15 +1,10 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
-import { FontAwesome } from '@expo/vector-icons';
-
 export default function CampoConsulta({ data, deleteItem }){
 
     const valorMensal = Number(data.valorMensal).toFixed(2).replace('.',',')
     const valorObjetivo = Number(data.valorObjetivo).toFixed(2).replace('.',',')
-    const [icon, setIcon] = useState()
-
-         
 
     return(
         <View style={ styles.container }>

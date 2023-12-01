@@ -1,12 +1,14 @@
-import react, { useContext, useEffect } from 'react'
+import react, { useState, useContext, useEffect } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
-import { differenceInDays, format } from 'date-fns'
+import { differenceInCalendarMonths } from 'date-fns'
+
+import { FontAwesome5 } from '@expo/vector-icons';
+
 // Tema
 import ThemeContext from '../../../contexts/ThemeContext'
 import appTheme from '../../../themes/Themes'
-import { useState } from 'react';
 
-export default function Simular({ setVisible, data, dataPrevista, valorMensal }){
+export default function Simular({ setVisible, data, dataPrevista, valorMensal, dataFormat, valorObjetivo }){
 
     // Context de tema
     const [themeMode] = useContext(ThemeContext)
@@ -25,25 +27,77 @@ export default function Simular({ setVisible, data, dataPrevista, valorMensal })
     // State do valor mensal
     const [valor] = useState(valorMensal)
 
+    // State valor objetivo
+    const [valorObj] = useState(valorObjetivo)
+
     // State das taxas
     const [taxa, setTaxa] = useState('')
 
-    // State data
+    // State de sugestão
+    const [sugestao, setSugestao] = useState('')
 
+    // State data
+    let data1 = new Date(dataFormat)
+    let data2 = new Date()
+    let diferencaDias = differenceInCalendarMonths(data1, data2)
+    let total = diferencaDias * valor
+
+    // Objetivos
+    let casa = valorObj * 20/100
+    let veiculo = valorObj * 10/100
     
     useEffect(() => {
 
         if( data === 'Imóvel' ){
             setImg(imagem.imovel)
             setTaxa('Taxa média para imóvel: 8,5% ao ano.')
+
+            if( total >= casa && total < valorObjetivo ){
+                setSugestao('Seu valor investido é 20% do valor do imóvel. Você pode financiar um imóvel.')
+                
+            } else if( total >= valorObjetivo){
+                setSugestao('Parabéns, você pode comprar o seu imóvel tranquilamente.')
+
+            }else {
+                setSugestao('Seu valor investido é inferior a 20% do valor do imóvel. Aguarde mais um pouco.')
+            }
+
         } else if( data === 'Carro' ){
             setImg(imagem.carro)
             setTaxa('Taxa média para carro: 2,03% ao mês.')
+
+            if( total >= veiculo && total < valorObjetivo ){
+                setSugestao('Seu valor investido é 10% do valor do carro. Você pode financiar um carro.')
+                
+            } else if( total >= valorObjetivo){
+                setSugestao('Parabéns, você pode comprar o seu carro tranquilamente.')
+
+            }else {
+                setSugestao('Seu valor investido é inferior a 10% do valor do carro. Aguarde mais um pouco.')
+            }
+
         } else if( data === 'Moto' ){
             setImg(imagem.moto)
             setTaxa('Taxa média para moto: 1,5% ao mês.')
-        } else {
+
+            if( total >= veiculo && total < valorObjetivo ){
+                setSugestao('Seu valor investido é 10% do valor do moto. Você pode financiar um moto.')
+                
+            } else if( total >= valorObjetivo){
+                setSugestao('Parabéns, você pode comprar a sua moto tranquilamente.')
+
+            }else {
+                setSugestao('Seu valor investido é inferior a 10% do valor do moto. Aguarde mais um pouco.')
+            }
+
+        } else if( data === 'Viagem' ){
             setImg(imagem.viagem)
+
+            if( valor < valorObjetivo ){
+                setSugestao('Continue investindo e pague a viagem à vista.')
+            } else {
+                setSugestao('Parabéns você poderá fazer uma viagem tranquilamente.')
+            }
         }
         
     }, [])
@@ -53,6 +107,7 @@ export default function Simular({ setVisible, data, dataPrevista, valorMensal })
             <View style={ styles.view }>
 
                 <View style={ styles.areaText }>
+                    <Text style={ [{ color: '#000', fontSize: 25, textAlign: 'center', marginHorizontal: 20}, appTheme[themeMode]] }>Valor do Objetivo: { Number(valorObj).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}) }</Text>
                     <Text style={ [{ color: '#000', fontSize: 25, textAlign: 'center', marginHorizontal: 20}, appTheme[themeMode]] }>Objetivo desejado: { data }</Text>
                 </View>
 
@@ -68,7 +123,15 @@ export default function Simular({ setVisible, data, dataPrevista, valorMensal })
                 </View>
 
                 <View style={ styles.areaText }>
-                    <Text style={ [styles.text, appTheme[themeMode]] }>Ao final da data prevista de { dataPrevista }, o valor que você terá é de R$ { valor }</Text>
+                    <Text style={ [styles.text, appTheme[themeMode]] }>Ao final da data prevista de { dataPrevista }, o valor que você terá é de { total.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}) }.</Text>
+                </View>
+
+                <View style={ styles.areaText }>
+                    { total > valorObj ? '' :
+                        <Text style={ [styles.text, appTheme[themeMode], { textAlign: 'center' }] }>Sugestão:</Text>
+                    }
+                
+                    <Text style={ [styles.text, appTheme[themeMode]] }>{ sugestao }</Text>
                 </View>
 
             </View>

@@ -25,7 +25,7 @@ export default function CampoGasto({ data, deleteItem, editItem, chave, editValo
                 
                     <TouchableOpacity onPress={ acaoEditValor }>
                         <Text style={[ styles.valor, { color: valor.replace(',','.') > 0 ? '#27E309' : '#ff0000'} ]}>
-                            R$ { valor }
+                            { Number(data.valorGasto).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}) }
                         </Text>
                     </TouchableOpacity>
                 </View>

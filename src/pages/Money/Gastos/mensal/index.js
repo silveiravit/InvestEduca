@@ -53,7 +53,7 @@ export default function Mensal(){
                 return
             }
 
-            firebase.database().ref('gastos').child(user).orderByChild('mesCadastro').equalTo(mesCad).on('value', (snapshot) => {
+            firebase.database().ref('Gastos').child(user).orderByChild('mesCadastro').equalTo(mesCad).on('value', (snapshot) => {
                 
                 setValor([])
                 let gasto = []
@@ -93,7 +93,7 @@ export default function Mensal(){
                     text: "SIM", 
                     onPress: () => { 
                         setloading(true)
-                        firebase.database().ref('gastos').child(user).child(key).remove()
+                        firebase.database().ref('Gastos').child(user).child(key).remove()
                         .then( () => {
                             const findGastos = valor.filter( item => item.key !== key)
                             setValor(findGastos)
@@ -108,7 +108,7 @@ export default function Mensal(){
     function atualizarCampoValor(){
 
         setloading(true)
-        firebase.database().ref('gastos').child(user).child(Key).update({
+        firebase.database().ref('Gastos').child(user).child(Key).update({
             valorGasto: Number(novoValorGasto.replace(',','.'))
         })
         .then( () => {
@@ -133,7 +133,7 @@ export default function Mensal(){
     function atualizarCampo(){
 
         setloading(true)
-        firebase.database().ref('gastos').child(user).child(Key).update({
+        firebase.database().ref('Gastos').child(user).child(Key).update({
             nomeGasto: novoGasto
         })
         .then( () => {
@@ -231,7 +231,7 @@ export default function Mensal(){
                 </Text>
 
                 <Text style={{ color: valorTotal > 0 ? '#12870C' : '#ff0000', fontSize: 25, fontWeight: '600'}}>
-                    R$ { valorTotal.toFixed(2).replace('.',',') } 
+                    { valorTotal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}) } 
                 </Text>
             </View>
 

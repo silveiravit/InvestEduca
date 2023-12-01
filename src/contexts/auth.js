@@ -21,7 +21,7 @@ export default function AuthProvider({ children }){
                 return
             }
 
-            firebase.database().ref('usuarios').child(user.user.uid).on('value', (snapshot) => {
+            firebase.database().ref('Usuarios').child(user.user.uid).on('value', (snapshot) => {
                 setUsername(snapshot.val().username)
             })
   

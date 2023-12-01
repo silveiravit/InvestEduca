@@ -65,7 +65,7 @@ export default function Anual(){
     
     useEffect( () => {
 
-        firebase.database().ref('gastos').child(user).orderByChild('mesCadastro').equalTo(mesCad).on('value', (snapshot) => {
+        firebase.database().ref('Gastos').child(user).orderByChild('mesCadastro').equalTo(mesCad).on('value', (snapshot) => {
 
             setValorMensal([])
             let gasto = []
@@ -143,7 +143,7 @@ export default function Anual(){
                 <View style={ styles.mesModal }>
                     <Text style={ styles.textMes }> Extrato do mês de { mesPress }: </Text>
 
-                    <Text style={ [styles.totalMes, { color: valorMensal > 0 ? '#27E309' : '#ff0000'} ] }>R$ { Number(valorMensal).toFixed(2).replace('.',',') }</Text>
+                    <Text style={ [styles.totalMes, { color: valorMensal > 0 ? '#27E309' : '#ff0000'} ] }>{ Number(valorMensal).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}) }</Text>
 
                     <TouchableOpacity style={ styles.btnFeito } onPress={ () => setModalVisible(false) } >
                         <Text style={{ fontSize: 20, color: '#fff', fontWeight: '600'}}>CONCLUÍDO </Text>

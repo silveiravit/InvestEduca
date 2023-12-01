@@ -32,7 +32,7 @@ export default function Consultar(){
                 return
             }
 
-            firebase.database().ref('objetivos').child(user).on('value', (snapshot) => {
+            firebase.database().ref('Objetivos').child(user).on('value', (snapshot) => {
             setObjetivo([])
 
                 snapshot?.forEach( (childItem) => {
@@ -68,11 +68,12 @@ export default function Consultar(){
                     text: "SIM", 
                     onPress: () => { 
                         setLoading(true)
-                        firebase.database().ref('objetivos').child(user).child(key).remove()
+                        firebase.database().ref('Objetivos').child(user).child(key).remove()
                         .then( () => {
                             const findObjetivos = objetivo.filter( item => item.key !== key)
                             setObjetivo(findObjetivos)
                             setLoading(false)
+                            alert('Simulação apagada com successo.')
                         })
                     } 
                 }

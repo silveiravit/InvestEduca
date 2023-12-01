@@ -1,6 +1,5 @@
 import React, { useState, useContext } from "react";
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Dimensions, ScrollView, Modal, Platform, ActivityIndicator } from "react-native";
-import { Picker } from '@react-native-picker/picker'
 
 // Biblioteca de icones
 import { AntDesign } from '@expo/vector-icons';
@@ -9,9 +8,11 @@ import { AntDesign } from '@expo/vector-icons';
 import { AuthContext } from "../../../contexts/auth";
 import firebase from '../../../../database/FirebaseConnection'
 
-// Data
+// Data e escolha de objetivo
+import { Picker } from '@react-native-picker/picker'
 import DateTimePicker from '@react-native-community/datetimepicker';
 
+// Componente de simulação
 import Simular from "./simulacao";
 
 // Tema
@@ -47,9 +48,8 @@ export default function Objetivo(){
 
     // State de array de objetos de objetivos
     const [objetivos] = useState([
-        {key: 0, nome: 'Escolha uma opção'},
-        {key: 1, nome: 'Imóvel'}, 
-        {key: 2, nome: 'Carro'},
+        {key: 0, nome: 'Imóvel'}, 
+        {key: 1, nome: 'Carro'},
         {key: 2, nome: 'Moto'},  
         {key: 3, nome: 'Viagem'},
     ])
@@ -69,8 +69,11 @@ export default function Objetivo(){
     // State de loading
     const [loading, setLoading] = useState(false)
 
+    // State de data não formatado
+    const [dataFormat, setDataFormat] = useState()
+
     function dataSelecionada({ type }, selectDate){
-        if( type == 'set'){
+        if( type == 'set' ){
             const currentDate = selectDate
             setDate(currentDate)
             
@@ -86,6 +89,8 @@ export default function Objetivo(){
 
     function formatDate(dataSelect){
         let date = new Date(dataSelect)
+
+        setDataFormat(date)
 
         let ano = date.getFullYear()
         let mes = date.getMonth()+1
@@ -109,14 +114,14 @@ export default function Objetivo(){
         } else if( dataPrevista === '' ){
             alert('Preencha o campo de data prevista.')
             return
-        }
+        } 
 
         setLoading(true)
         setTimeout( () => {
             
             setModalVisible(true)
 
-            let objetivo = firebase.database().ref('objetivos').child(user)
+            let objetivo = firebase.database().ref('Objetivos').child(user)
             let chave = objetivo.push().key
 
             objetivo.child(chave).set({
@@ -134,11 +139,13 @@ export default function Objetivo(){
                     dataPrevista: dataPrevista
                 }
                 setLoading(false)
+                setValorMensal('')
+                setValorObjetivo('')
             })
             .catch( () => {
                 alert('Ops, algo deu errado.')
             })
-        }, 5000)
+        }, 3000)
     }
 
     return(
@@ -147,7 +154,7 @@ export default function Objetivo(){
                 <Modal transparent visible={loading}>
                     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffffffcc'}}>
                         <ActivityIndicator 
-                            size={150}
+                            size={100}
                             color={themeMode === 'light' ? '#161F4E' :'#0D1117'}
                             animating={true}
                         />
@@ -164,6 +171,7 @@ export default function Objetivo(){
                                     selectedValue={ objetivoSelect }
                                     onValueChange={ (itemvalue) => setObjetivoSelect(itemvalue) }
                                     style={{ width: ITEM_WIDTH }}
+                                    placeholder={'teste'}
                                 >
                                     {
                                         objetivos.map(obj => {
@@ -180,6 +188,7 @@ export default function Objetivo(){
                                 keyboardType="numeric"
                                 placeholder="Valor mensal que pode investir"
                                 onChangeText={ (value) => setValorMensal(value.replace('.',',')) }
+                                value={valorMensal}
                             />
                         </View>
             
@@ -214,6 +223,7 @@ export default function Objetivo(){
                                 keyboardType="numeric"
                                 placeholder="Valor do seu objetivo desejado"
                                 onChangeText={ (value) => setValorObjetivo(value.replace('.',',')) }
+                                value={valorObjetivo}
                             />
                         </View>
                         <View style={ styles.areaBtn }>
@@ -237,6 +247,8 @@ export default function Objetivo(){
                     data={objetivoSelect}
                     dataPrevista={dataPrevista}
                     valorMensal={valorMensal}
+                    dataFormat={dataFormat}
+                    valorObjetivo={valorObjetivo}
                 />
             </Modal>                
             
