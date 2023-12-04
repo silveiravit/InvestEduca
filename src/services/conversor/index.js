@@ -14,19 +14,19 @@ export default class Conversor extends Component{
         }
     }
 
-    // async componentDidMount(){
+    async componentDidMount(){
 
-    //     const valor = this.state.moedaA + '_' + this.state.moedaB
+        const valor = this.state.moedaA + '_' + this.state.moedaB
 
-    //     const cotacao = await api.get(`convert?q=${valor}&compact=ultra&apiKey=e2808abb288d729c7fb4`)
+        const cotacao = await api.get(`convert?q=${valor}&compact=ultra&apiKey=e2808abb288d729c7fb4`)
 
-    //     const response = cotacao.data[valor]
+        const response = cotacao.data[valor]
 
-    //     this.setState({
-    //         valorConvertido: 'R$ '+ response.toFixed(2).replace('.',',')
-    //     })
+        this.setState({
+            valorConvertido: 'R$ '+ response.toFixed(2).replace('.',',')
+        })
 
-    // }
+    }
 
     render(){
 

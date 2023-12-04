@@ -108,13 +108,13 @@ export default function Objetivo(){
         if( valorMensal === '' ){
             alert('Preencha o campo valor mensal.')
             return
-        } else if( valorObjetivo === '' ){
+        } else if( valorObjetivo === ''){
             alert('Preencha o campo valor do seu objetivo.')
             return
         } else if( dataPrevista === '' ){
             alert('Preencha o campo de data prevista.')
             return
-        } 
+        }
 
         setLoading(true)
         setTimeout( () => {
@@ -187,7 +187,7 @@ export default function Objetivo(){
                                 style={ [styles.input, { backgroundColor: '#fff'}] }
                                 keyboardType="numeric"
                                 placeholder="Valor mensal que pode investir"
-                                onChangeText={ (value) => setValorMensal(value.replace('.',',')) }
+                                onChangeText={ (value) => setValorMensal(value.replace(/[ #*;.<>\{\}\[\]\\\/]/gi, '')) }
                                 value={valorMensal}
                             />
                         </View>
@@ -222,7 +222,7 @@ export default function Objetivo(){
                                 style={ [styles.input, { backgroundColor: '#fff'}] }
                                 keyboardType="numeric"
                                 placeholder="Valor do seu objetivo desejado"
-                                onChangeText={ (value) => setValorObjetivo(value.replace('.',',')) }
+                                onChangeText={ (value) => setValorObjetivo(value.replace(/[ #*;.<>\{\}\[\]\\\/]/gi, '')) }
                                 value={valorObjetivo}
                             />
                         </View>

@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions, TouchableW
 
 // Importado o arquivo de conversor de moeda
 import Conversor from "../../services/conversor"; 
+import Saldo from "../../components/saldo";
 
 // Biblioteca de icones
 import { AntDesign } from '@expo/vector-icons';
@@ -45,17 +46,17 @@ export default function Home(){
     ]
 
     const carouselImagem = [
-        { 
-            image:  'https://investidorsardinha.r7.com/wp-content/uploads/2020/10/o-que-e-educacao-financeira-importancia-e-10-dicas-para-alcancar-1200x900.png' 
+        {   
+            key: 1,
+            text:  ( <Saldo /> )
         },
-        { 
+        {   
+            key: 2,
             image:  'https://futurofunsejem.org.br/online/wp-content/uploads/2021/09/120-edfinanceira-1920x1080px-1.jpg' 
         },
-        { 
+        {   
+            key: 3,
             image:  'https://www.sucessor.com.br/wp-content/uploads/2020/09/educa%C3%A7%C3%A3o-financeira-scaled.jpg' 
-        },
-        { 
-            image:  'https://querofinanciar.com/wp-content/uploads/2019/11/312463-conheca-6-incriveis-aplicativos-de-educacao-financeira.jpg' 
         },
     ]
 
@@ -96,11 +97,19 @@ export default function Home(){
 
     function renderItem({ item }){
         return(
-            <View style={ styles.carouselItemContainer }>     
+            <View style={ [styles.carouselItemContainer, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#481298'} ] }> 
+            { item.key !== 1 ? (
                 <Image
                     source={{ uri: `${item.image}`}}
                     style={ styles.image }
-                />
+                /> ) :
+
+                ( 
+                    <View style={{height: '100%', justifyContent: 'center', alignItems: 'center'}}>
+                        <Text>{item.text}</Text>
+                    </View>
+                )
+            }    
             </View> 
         )
     }
@@ -169,11 +178,11 @@ export default function Home(){
                     height={150}
                     loop={true}
                     autoPlay
-                    scrollAnimationDuration={5000}
+                    //scrollAnimationDuration={5000}
                     withAnimation={{
                         type: "spring",
                         config: {
-                          duration: 2000,
+                          duration: 3000,
                         },
                     }}
                     enabled={false}
@@ -191,7 +200,7 @@ export default function Home(){
                     withAnimation={{
                         type: "spring",
                         config: {
-                          duration: 5000,
+                          duration: 6000,
                         },
                     }}
                 />
@@ -241,6 +250,7 @@ const styles = StyleSheet.create({
     },
     carouselItemContainer: {
         marginHorizontal: '3%',
+        borderRadius: 10
     },
     image: {
         width: '100%',

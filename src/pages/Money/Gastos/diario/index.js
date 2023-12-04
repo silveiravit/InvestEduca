@@ -115,7 +115,7 @@ export default function Diario(){
 
                     <TextInput 
                         style={ styles.input }
-                        onChangeText={ (valor) => setNovoValor(valor.replace('.',',')) }
+                        onChangeText={ (valor) => setNovoValor(valor.replace(/[ #*;.<>\{\}\[\]\\\/]/gi, '')) }
                         keyboardType="numeric"
                         value={novoValor}
                     /> 

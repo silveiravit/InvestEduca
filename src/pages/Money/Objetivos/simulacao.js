@@ -53,13 +53,13 @@ export default function Simular({ setVisible, data, dataPrevista, valorMensal, d
             setTaxa('Taxa média para imóvel: 8,5% ao ano.')
 
             if( total >= casa && total < valorObjetivo ){
-                setSugestao('Seu valor investido é 20% do valor do imóvel. Você pode financiar um imóvel.')
+                setSugestao('Valor investido é superior a 20% do valor do imóvel. Você pode financiar um imóvel.')
                 
             } else if( total >= valorObjetivo){
                 setSugestao('Parabéns, você pode comprar o seu imóvel tranquilamente.')
 
             }else {
-                setSugestao('Seu valor investido é inferior a 20% do valor do imóvel. Aguarde mais um pouco.')
+                setSugestao('Valor investido é inferior a 20% do valor do imóvel. Aguarde mais um pouco.')
             }
 
         } else if( data === 'Carro' ){
@@ -67,13 +67,13 @@ export default function Simular({ setVisible, data, dataPrevista, valorMensal, d
             setTaxa('Taxa média para carro: 2,03% ao mês.')
 
             if( total >= veiculo && total < valorObjetivo ){
-                setSugestao('Seu valor investido é 10% do valor do carro. Você pode financiar um carro.')
+                setSugestao('Valor investido é superior a 10% do valor do carro. Você pode financiar um carro.')
                 
             } else if( total >= valorObjetivo){
                 setSugestao('Parabéns, você pode comprar o seu carro tranquilamente.')
 
             }else {
-                setSugestao('Seu valor investido é inferior a 10% do valor do carro. Aguarde mais um pouco.')
+                setSugestao('Valor investido é inferior a 10% do valor do carro. Aguarde mais um pouco.')
             }
 
         } else if( data === 'Moto' ){
@@ -81,13 +81,13 @@ export default function Simular({ setVisible, data, dataPrevista, valorMensal, d
             setTaxa('Taxa média para moto: 1,5% ao mês.')
 
             if( total >= veiculo && total < valorObjetivo ){
-                setSugestao('Seu valor investido é 10% do valor do moto. Você pode financiar um moto.')
+                setSugestao('Valor investido é superior a 10% do valor do moto. Você pode financiar um moto.')
                 
             } else if( total >= valorObjetivo){
                 setSugestao('Parabéns, você pode comprar a sua moto tranquilamente.')
 
             }else {
-                setSugestao('Seu valor investido é inferior a 10% do valor do moto. Aguarde mais um pouco.')
+                setSugestao('Valor investido é inferior a 10% do valor do moto. Aguarde mais um pouco.')
             }
 
         } else if( data === 'Viagem' ){

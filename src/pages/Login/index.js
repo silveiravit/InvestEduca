@@ -12,7 +12,6 @@ import { AuthContext } from '../../contexts/auth';
 
 // Biblioteca de icones
 import { Entypo } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
 
 export default function Login() {
 
@@ -23,10 +22,10 @@ export default function Login() {
     const navigation = useNavigation()
 
     // State de email
-    const [email, setEmail] = useState('investeduca07@gmail.com')
+    const [email, setEmail] = useState('')
 
     // State de senha
-    const [senha, setSenha] = useState('investeduca2023')
+    const [senha, setSenha] = useState('')
 
     // State de loading
     const [loading, setLoading] = useState(false)
@@ -102,6 +101,7 @@ export default function Login() {
                                 placeholder='Senha'
                                 placeholderTextColor={'#161F4E'}
                                 value={senha}
+                                autoCapitalize='none'
                             /> 
 
                             <TouchableOpacity onPress={ () => setHidePass(!hidePass)} >                               
@@ -116,11 +116,6 @@ export default function Login() {
                                 <Text style={{ fontSize: 20, color: '#161F4E', fontWeight: '500', borderBottomWidth: 1, borderBottomColor: '#161F4E' }}>Esqueceu a senha?</Text>
                             </TouchableOpacity>
 
-                            <Text style={{ marginVertical: 10, fontSize: 20, fontStyle: 'italic', color: '#161F4E', fontWeight: '500'}}>Ou entre com </Text>
-
-                            <TouchableOpacity style={{ backgroundColor: '#E9AB43', padding: 10, borderRadius: 50 }}>
-                                <AntDesign name="google" size={30} color="#161F4E" />
-                            </TouchableOpacity>
                         </View>
 
                     </View>

@@ -107,6 +107,11 @@ export default function Mensal(){
 
     function atualizarCampoValor(){
 
+        if( novoValorGasto === '' ){
+            alert('Preencha o campo corretamente.')
+            return
+        }
+
         setloading(true)
         firebase.database().ref('Gastos').child(user).child(Key).update({
             valorGasto: Number(novoValorGasto.replace(',','.'))
@@ -131,6 +136,11 @@ export default function Mensal(){
     }
 
     function atualizarCampo(){
+
+        if( novoGasto === '' ){
+            alert('Preencha o campo corretamente.')
+            return
+        }
 
         setloading(true)
         firebase.database().ref('Gastos').child(user).child(Key).update({
@@ -281,8 +291,9 @@ export default function Mensal(){
                     <TextInput 
                         placeholder="R$"
                         style={ styles.inputEdit }
-                        onChangeText={ (novo) => setNovoValorGasto(novo.replace('.',',')) }
+                        onChangeText={ (novo) => setNovoValorGasto(novo.replace(/[ #*;.<>\{\}\[\]\\\/]/gi, '')) }
                         keyboardType="numeric"
+                        value={novoValorGasto}
                     />
 
                     <TouchableOpacity style={ styles.btnFeito } onPress={ atualizarCampoValor } >

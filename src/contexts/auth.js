@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import { useNavigation } from '@react-navigation/native'
 import firebase from '../../database/FirebaseConnection'
 
@@ -10,6 +10,7 @@ export default function AuthProvider({ children }){
     const navigation = useNavigation()
     const [email, setEmail] = useState('')
     const [username, setUsername] = useState('')
+
 
     function logar(email, senha){
 
@@ -39,7 +40,7 @@ export default function AuthProvider({ children }){
                     console.log(e)
                     break
                 default:
-                    alert('Ops, algo deu errado!')
+                    alert('Ops, algo deu errado! Verifique seu e-mail e senha.')
             }
         })
 
