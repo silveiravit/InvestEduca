@@ -127,7 +127,7 @@ export default function Objetivo(){
             objetivo.child(chave).set({
                 nomeObjetivo: objetivoSelect,
                 valorMensal: Number(valorMensal.replace(',','.')),
-                valorObjetivo: valorObjetivo,
+                valorObjetivo: Number(valorObjetivo.replace(',','.')),
                 dataPrevista: dataPrevista
             })
             .then( () => {
@@ -135,7 +135,7 @@ export default function Objetivo(){
                     key: chave,
                     nomeObjetivo: objetivoSelect,
                     valorMensal: Number(valorMensal.replace(',','.')),
-                    valorObjetivo: valorObjetivo,
+                    valorObjetivo: Number(valorObjetivo.replace(',','.')),
                     dataPrevista: dataPrevista
                 }
                 setLoading(false)
@@ -187,7 +187,7 @@ export default function Objetivo(){
                                 style={ [styles.input, { backgroundColor: '#fff'}] }
                                 keyboardType="numeric"
                                 placeholder="Valor mensal que pode investir"
-                                onChangeText={ (value) => setValorMensal(value.replace(/[ #*;.<>\{\}\[\]\\\/]/gi, '')) }
+                                onChangeText={ (value) => setValorMensal(value.replace(/[- #*;,.<>\{\}\[\]\\\/]/, ',')) }
                                 value={valorMensal}
                             />
                         </View>
@@ -222,7 +222,7 @@ export default function Objetivo(){
                                 style={ [styles.input, { backgroundColor: '#fff'}] }
                                 keyboardType="numeric"
                                 placeholder="Valor do seu objetivo desejado"
-                                onChangeText={ (value) => setValorObjetivo(value.replace(/[ #*;.<>\{\}\[\]\\\/]/gi, '')) }
+                                onChangeText={ (value) => setValorObjetivo(value.replace(/[- #*;,.<>\{\}\[\]\\\/]/, ',')) }
                                 value={valorObjetivo}
                             />
                         </View>
@@ -246,9 +246,9 @@ export default function Objetivo(){
                     setVisible={ () => setModalVisible(false)}
                     data={objetivoSelect}
                     dataPrevista={dataPrevista}
-                    valorMensal={valorMensal}
+                    valorMensal={Number(valorMensal.replace(',','.'))}
                     dataFormat={dataFormat}
-                    valorObjetivo={valorObjetivo}
+                    valorObjetivo={Number(valorObjetivo.replace(',','.'))}
                 />
             </Modal>                
             
