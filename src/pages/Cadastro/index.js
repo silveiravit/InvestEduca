@@ -1,5 +1,28 @@
 import react, { useState, useContext } from 'react' // Hook de estados
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, Image, Modal, ActivityIndicator } from 'react-native';
+import { TouchableOpacity, Modal, ActivityIndicator } from 'react-native';
+
+// Styles
+import { 
+    Container,
+    ContainerModal,
+    ContainerInvestEduca,
+    TextInvest,
+    TextEduca,
+    ContainerForm,
+    ContainerImage,
+    ContainerCad,
+    FieldInput,
+    ContainerPassword,
+    Input,
+    ContainerButton,
+    ButtonCadastro,
+    TextButtonCadastro,
+    LinkLogin,
+    TextLogin1,
+    TextLogin2,
+    Image,
+    TextCadastrar
+ } from './styles/styles'
 
 // Hook de navegação
 import { useNavigation } from '@react-navigation/native' 
@@ -11,7 +34,7 @@ import firebase from '../../../database/FirebaseConnection';
 import { Entypo } from '@expo/vector-icons';
 
 // Tema
-import ThemeContext from '../../contexts/ThemeContext'
+import { AuthContext } from '../../contexts/auth';
 
 export default function Cadastro() {
 
@@ -40,7 +63,7 @@ export default function Cadastro() {
     const [hidePass1, setHidePass1] = useState(true)
 
     // Context do tema
-    const [themeMode] = useContext(ThemeContext)
+    const { themeMode } = useContext(AuthContext)
 
     function cadastrar(){
 
@@ -79,7 +102,6 @@ export default function Cadastro() {
                         alert('Sua senha deve ter pelo menos 6 caracteres.')
                         break
                 }
-
                 setLoading(false)
             })
 
@@ -93,239 +115,80 @@ export default function Cadastro() {
     // Acima é feito a autenticação no banco de dados firebase para efetuar o cadastro
 
     return (
-        <View style={[styles.container, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#0D1117'}]}>
-
-            <View style={ styles.viewCont }>
-
-                <Modal transparent visible={loading}>
-                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                        <ActivityIndicator 
-                            size={100}
-                            color={ themeMode === 'light' ? '#161F4E' : '#000' }
-                            animating={true}
-                        />
-                    </View>
-                </Modal>
-
-                <View style={ styles.areaTitulo }>
-                    <Text style={ styles.text }>Invest</Text>
-                    <Text style={ styles.text1 }>Educa</Text>
-                </View>
-
-                <View style={ styles.view1 }>
-
-                    <View style={ styles.areaImg }>
-                        <Image 
-                            source={require('../../images/Porco.png')}
-                            style={ styles.img }
-                        />
-                    </View>
-
-                    <View style={ styles.viewCad }>
-
-                        <Text style={ styles.titulo }>Cadastrar</Text>
-
-                        <TextInput 
-                            style={ styles.input }
-                            onChangeText={ (username) => setUsername(username) }
-                            placeholder='Username'
-                            placeholderTextColor={'#161F4E'}
-                            value={username}
-                        />
-
-                        <TextInput 
-                            style={ styles.input }
-                            onChangeText={ (email) => setEmail(email) }
-                            placeholder='E-mail'
-                            placeholderTextColor={'#161F4E'}
-                            value={email}
-                            autoCapitalize='none'
-                        />
-
-                        <View style={ styles.inputSenha }>
-
-                            <TextInput 
-                                style={ styles.input1 }
-                                onChangeText={ (senha) => setSenha(senha) }
-                                secureTextEntry={ hidePass }
-                                placeholder='Senha'
-                                placeholderTextColor={'#161F4E'}
-                                value={senha}
-                            /> 
-
-                            <TouchableOpacity onPress={ () => setHidePass(!hidePass)} >                               
-                                <Entypo name={ !hidePass ? 'eye-with-line' : 'eye'} size={30} color="black" />
-                            </TouchableOpacity>
-
-                        </View>
-
-                        <View style={ styles.inputSenha }>
-
-                            <TextInput 
-                                style={ styles.input1 }
-                                onChangeText={ (senha) => setConfirmSenha(senha) }
-                                secureTextEntry={ hidePass1 }
-                                placeholder='Confirme a senha'
-                                placeholderTextColor={'#161F4E'}
-                                value={confirmSenha}
-                            /> 
-
-                            <TouchableOpacity onPress={ () => setHidePass1(!hidePass1)} >                               
-                                <Entypo name={ !hidePass1 ? 'eye-with-line' : 'eye'} size={30} color="black" />
-                            </TouchableOpacity>
-
-                        </View> 
-
-                    </View>
-
-                </View>
-
-                <View style={ styles.view2 }>  
-                    <TouchableOpacity style={ styles.btn } onPress={ cadastrar }>
-                        <Text style={ styles.textoBtn }>CADASTRAR</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={ styles.cadastre } onPress={ () => navigation.navigate('Login') }>
-                        <Text style={ styles.textoCadastro }>
-                            Já possui conta? 
-                        </Text>
-
-                        <Text style={ styles.textoCadastro1 }>
-                            Faça o login
-                        </Text>
-                    </TouchableOpacity>
-                </View>
-
-            </View>
-        
-        </View>
+        <Container theme={themeMode}>
+            <Modal transparent visible={loading}>
+                <ContainerModal>
+                    <ActivityIndicator 
+                        size={100}
+                        color={themeMode === 'light' ? '#161F4E' : '#0D1117'}
+                        animating={true}
+                    />
+                </ContainerModal>
+            </Modal>
+            <ContainerInvestEduca>
+                <TextInvest>Invest</TextInvest>
+                <TextEduca>Educa</TextEduca>
+            </ContainerInvestEduca>
+            <ContainerForm>
+                <ContainerImage>
+                    <Image 
+                        source={require('../../images/Porco.png')}
+                    />
+                </ContainerImage>
+                <ContainerCad>
+                    <TextCadastrar theme={themeMode}>Cadastrar</TextCadastrar>
+                    <FieldInput 
+                        theme={themeMode}
+                        onChangeText={(username) => setUsername(username)}
+                        placeholder='Username'
+                        placeholderTextColor='#555' 
+                        value={username}
+                    />
+                    <FieldInput
+                        theme={themeMode} 
+                        onChangeText={(email) => setEmail(email)}
+                        placeholder='E-mail'
+                        placeholderTextColor='#555'
+                        value={email}
+                        autoCapitalize='none'
+                    />
+                    <ContainerPassword>
+                        <Input
+                            theme={themeMode} 
+                            onChangeText={(senha) => setSenha(senha)}
+                            secureTextEntry={hidePass}
+                            placeholder='Senha'
+                            placeholderTextColor='#555'
+                            value={senha}
+                        /> 
+                        <TouchableOpacity onPress={() => setHidePass(!hidePass)} >                               
+                            <Entypo name={!hidePass ? 'eye-with-line' : 'eye'} size={30} color="black"/>
+                        </TouchableOpacity>
+                    </ContainerPassword>
+                    <ContainerPassword>
+                        <Input
+                            theme={themeMode} 
+                            onChangeText={(senha) => setConfirmSenha(senha)}
+                            secureTextEntry={hidePass1}
+                            placeholder='Confirme a senha'
+                            placeholderTextColor='#555'
+                            value={confirmSenha}
+                        /> 
+                        <TouchableOpacity onPress={() => setHidePass1(!hidePass1)} >                               
+                            <Entypo name={!hidePass1 ? 'eye-with-line' : 'eye'} size={30} color="black"/>
+                        </TouchableOpacity>
+                    </ContainerPassword> 
+                </ContainerCad>
+            </ContainerForm>
+            <ContainerButton>  
+                <ButtonCadastro onPress={cadastrar}>
+                    <TextButtonCadastro theme={themeMode}>CADASTRAR</TextButtonCadastro>
+                </ButtonCadastro>
+                <LinkLogin onPress={() => navigation.navigate('Login')}>
+                    <TextLogin1>Já possui conta?</TextLogin1>
+                    <TextLogin2>Faça o login</TextLogin2>
+                </LinkLogin>
+            </ContainerButton>
+        </Container>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#161F4E',
-    },
-    view1: {
-        justifyContent: 'center',
-        backgroundColor: '#fff',
-        height: 400,
-        paddingHorizontal: '5%',
-        borderRadius: 15,
-        width: '90%'
-    },
-    view2: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: 30
-    },
-    viewCont:{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    viewCad: {
-        flex: 1,
-        justifyContent: 'flex-start'
-    },
-    texto: {
-        fontSize: 25,
-        color: '#fff',
-    },
-    input: {
-        borderWidth: 1,
-        borderColor: '#ccc',
-        fontSize: 25,
-        textAlign: 'left',
-        paddingHorizontal: 20,
-        paddingVertical: 5,
-        borderRadius: 30,
-        color: '#161F4E',
-        backgroundColor: '#E9AB43',
-        marginHorizontal: '2%',
-        marginVertical: '3%'
-    },
-    btn: {
-        backgroundColor: '#E9AB43',
-        padding: 10,
-        alignItems: 'center',
-        borderRadius: 30,
-        width: 200
-    },
-    textoBtn: {
-        color: '#fff',
-        fontSize: 25,
-        fontWeight: 'bold'
-    },
-    titulo: {
-        color: '#161F4E',
-        fontSize: 30,
-        textAlign: 'center',
-        marginVertical: '3%',
-        fontWeight: 'bold',
-        fontStyle: 'italic'
-    },
-    areaTitulo: {
-        flexDirection: 'row',
-        marginBottom: 20,
-    },
-    text: {
-        fontSize: 40,
-        color: '#fff',
-        marginBottom: 50,
-        fontWeight: 'bold',
-    },
-    text1: {
-        fontSize: 40,
-        color: '#E9AB43',
-        marginBottom: 50,
-        fontWeight: 'bold'
-    },
-    img: {
-        width: 130,
-        height: 130
-    },
-    areaImg: {
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        marginTop: '-25%'
-    },
-    textoCadastro: {
-        color: '#fff', 
-        fontSize: 23, 
-        textAlign: 'center'
-    },
-    textoCadastro1: {
-        color: '#E9AB43', 
-        fontSize: 23, 
-        textAlign: 'center',
-        marginLeft: 5,
-        fontWeight: 'bold',
-        textDecorationLine: 'underline',
-        textDecorationColor: '#E9AB43'
-    },
-    cadastre: {
-        flexDirection: 'row',
-        marginTop: 10
-    },
-    input1: {
-        fontSize: 25,
-        textAlign: 'left',
-        color: '#161F4E',
-        flex: 1
-    },
-    inputSenha: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: '#E9AB43',
-        borderWidth: 1,
-        borderColor: '#ccc',
-        borderRadius: 30,
-        paddingHorizontal: 20,
-        justifyContent: 'center',
-        paddingVertical: 5,
-        marginHorizontal: '2%',
-        margin: 10
-    },
-});

@@ -1,5 +1,15 @@
 import React, { useState, useContext } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, Alert, ScrollView } from "react-native"; // componentes
+import { View, StyleSheet, TextInput } from "react-native"; // componentes
+
+import {
+    Container,
+    ContainerFaleConosco,
+    TextFaleConosco,
+    ButtonEnviar,
+    Text,
+    ButtonText,
+    CampoDuvida
+} from './styles'
 
 // pacote de envio de email
 import email from "react-native-email"; 
@@ -8,14 +18,13 @@ import email from "react-native-email";
 import { Feather } from '@expo/vector-icons'; 
 
 // Temas
-import ThemeContext from '../../../contexts/ThemeContext'
-import appTheme from '../../../themes/Themes'
+import { AuthContext } from "../../../contexts/auth";
 
 export default function Suporte(){
 
     const to = ['investeduca07@gmail.com']
     const [pergunta, setPergunta] = useState('')
-    const [themeMode] = useContext(ThemeContext)
+    const {themeMode} = useContext(AuthContext)
 
     function enviar(){
         email(to, {
@@ -27,70 +36,30 @@ export default function Suporte(){
     // Função que fará o redirecionamento para o usuário entrar em contato conosco
 
     return(
-        <View style={ [styles.container, appTheme[themeMode]] }>
-            <ScrollView>
-                <View style={ [styles.faleConosco, { borderColor: themeMode === 'light' ? '#161F4E' : '#fff' }] }>
-                    <Text style={ [styles.titulo, appTheme[themeMode]] }>Fale Conosco</Text>
-                    <Feather name="phone-call" size={30} color={themeMode === 'light' ? '#161F4E' : '#fff'} />
-                </View>
-                
-                <View>
-                    <Text style={[{ fontSize: 20}, appTheme[themeMode]]}>Mande sua mensagem no campo abaixo:</Text>
-                    <TextInput
-                        placeholder="Digite sua dúvida aqui!"
-                        multiline={true}
-                        numberOfLines={12}
-                        style={ [styles.input, { backgroundColor: themeMode === 'light' ? '#fff' : '#fff'}] }
-                        textAlignVertical="top"
-                        onChangeText={ (value) => setPergunta(value) }
-                    />
-                    <TouchableOpacity style={ [styles.btn, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#481298' }] } onPress={ enviar }>
-                        <Text style={ styles.textBtn }>ENVIAR</Text>
-                    </TouchableOpacity>
-                </View>
-            </ScrollView>
-        </View>
+        <Container theme={themeMode}>
+            <ContainerFaleConosco theme={themeMode}>
+                <TextFaleConosco theme={themeMode}>Fale Conosco</TextFaleConosco>
+                <Feather name="phone-call" size={30} color={themeMode === 'light' ? '#161F4E' : '#fff'} />
+            </ContainerFaleConosco>
+            
+            <View>
+                <Text theme={themeMode}>Mande sua mensagem no campo abaixo:</Text>
+                <CampoDuvida
+                    placeholder="Digite sua dúvida aqui!"
+                    multiline={true}
+                    numberOfLines={12}
+                    textAlignVertical="top"
+                    onChangeText={ (value) => setPergunta(value) }
+                    theme={themeMode}
+                />
+                <ButtonEnviar onPress={ enviar } theme={themeMode}>
+                    <ButtonText>ENVIAR</ButtonText>
+                </ButtonEnviar>
+            </View>
+        </Container>
     )
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#eee',
-        paddingHorizontal: 20
-    },
-    titulo: {
-        fontSize: 30,
-        fontWeight: '600',
-        color: '#161F4E',
-        paddingRight: 20
-    },
-    input: {
-        borderWidth: 2,
-        borderRadius: 10,
-        marginVertical: 20,
-        padding: 10,
-        alignItems: 'flex-start',
-        fontSize: 20,
-        borderColor: '#bbb'
-    },
-    btn: {
-        borderRadius: 10,
-        backgroundColor: '#161F4E',
-        padding: 10
-    },
-    textBtn: {
-        color: '#fff',
-        textAlign: 'center',
-        fontSize: 20,
-        fontWeight: '600'
-    },
-    faleConosco: {
-        justifyContent: 'flex-start', 
-        alignItems: 'center', 
-        flexDirection: 'row', 
-        borderBottomWidth: 1, 
-        marginVertical: 20, 
-        borderBottomColor: '#161F4E'
-    }
+
 })

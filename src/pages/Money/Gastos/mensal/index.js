@@ -1,7 +1,30 @@
 import React, { useState, useEffect, useContext } from "react";
-import { View, Text, StyleSheet, Dimensions, FlatList, Alert, Modal, ActivityIndicator, TouchableWithoutFeedback, TouchableOpacity, TextInput } from "react-native";
+import { View, Text, FlatList, Alert, Modal, ActivityIndicator, TouchableWithoutFeedback, TouchableOpacity } from "react-native";
 
-import CampoGasto from "./campogasto";
+import DateTimePicker from "react-native-modal-datetime-picker";
+import format from "date-fns/format";
+import CurrencyInput from "react-native-currency-input";
+
+import { 
+    Container,
+    CampoTitulo,
+    Titulo,
+    ContainerRegistros,
+    ContainerMes,
+    TituloMes,
+    ContainerAreaTotal,
+    TextTotal,
+    TextSaldo,
+    ContainerCarregar1,
+    TextEditar,
+    ModalEditGastos,
+    ButtonOk,
+    ButtonTextOk,
+    InputEdit
+} from '../styles/styles'
+
+import CampoGasto from '../../../../components/CampoGasto'
+import RegisterTypes from "../../../../components/RegisterTypes";
 
 // Biblioteca de icones
 import { AntDesign } from '@expo/vector-icons';
@@ -10,78 +33,77 @@ import { AntDesign } from '@expo/vector-icons';
 import { AuthContext } from '../../../../contexts/auth'
 import firebase from '../../../../../database/FirebaseConnection'
 
-// Temas 
-import ThemeContext from '../../../../contexts/ThemeContext'
-import appTheme from '../../../../themes/Themes'
-
-// Dimensões da tela
-const SLIDER_WIDTH = Dimensions.get('window').width
-const ITEM_WIDTH = SLIDER_WIDTH * 0.95
-
 export default function Mensal(){
 
+    // Botões de receita e despesa
+    const [type, setType] = useState('Receita')
+
     // Context de usuário e tema
-    const { user } = useContext(AuthContext)
-    const [themeMode] = useContext(ThemeContext)
+    const { user, themeMode } = useContext(AuthContext)
 
     // State para exibir o modal
     const [modalEdit, setModalEdit] = useState(false)
     const [loading, setloading] = useState(false)
-    const [modalEditValor,setModalEditValor] = useState(false)
+    const [modalEditValor, setModalEditValor] = useState(false)
+
+    // Data
+    const [showDate, setShowDate] = useState(false)
+    const [data, setData] = useState(format(new Date(), "dd/MM/yyyy"))
 
     // State para valores
     const [novoGasto, setNovoGasto] = useState('')
+    const [novoValorGasto, setNovoValorGasto] = useState(0)   
     const [valor, setValor] = useState(null)
     const [valorTotal, setValorTotal] = useState(0)
-    const [novoValorGasto, setNovoValorGasto] = useState('')
-    
-    // Constante para mês
-    const [dataCad] = useState(new Date())
-    let mesCad = dataCad.getMonth()
-    let anoCad = dataCad.getFullYear()
-    let exibirMes = ''
 
     // Chave edição
     const [Key, setKey] = useState(0)
 
     useEffect( () => {
-        
         setloading(true)
-
-        function getUser(){
-            if( !user ){
-                return
-            }
-
-            firebase.database().ref('Gastos').child(user).orderByChild('mesCadastro').equalTo(mesCad).on('value', (snapshot) => {
-                
+        function filtroGastos(){
+            firebase.database().ref('Gastos').child(user).orderByChild('data').equalTo(data).on('value', (snapshot) => {
                 setValor([])
-                let gasto = []
                 snapshot?.forEach( (childItem) => {
                     let data = {
                         key: childItem.key,
                         nomeGasto: childItem.val().nomeGasto,
                         valorGasto: childItem.val().valorGasto,
-                        mesCadastro: childItem.val().mesCadastro,
-                        anoCadastro: childItem.val().anoCadastro
+                    }
+                    setValor(oldValor => [...oldValor, data])
+                })
+                setloading(false)
+            })
+        }
+        function saldoTotal(){
+            firebase.database().ref('Gastos').child(user).on('value', (snapshot) => {
+                let gasto = []
+                snapshot?.forEach( (childItem) => {
+                    let data = {
+                        valorGasto: childItem.val().valorGasto,
                     }
                     gasto.push(data.valorGasto)
-                    setValor(oldValor => [...oldValor, data].reverse())
                 })
                 let total = gasto.reduce((a, b) => a + b, 0)
                 setValorTotal(total)
                 setloading(false)
             })
-            
         }
-        
-        getUser()
+        filtroGastos()
+        saldoTotal()
+    }, [data])
 
-    }, [user])
-
+    function handleConfirm(date){
+        const formatData = format(new Date(date),"dd/MM/yyyy")
+        setData(formatData)
+        hideDatePicker()
+    }
+    function hideDatePicker(){
+        setShowDate(false)
+    }
     function handleDelete(key){
         Alert.alert(
-            "Confirmar exclusão?",
+            "Deseja excluir o gasto?",
             "",
             [
                 {
@@ -90,7 +112,7 @@ export default function Mensal(){
                     style: "cancel"
                 },
                 { 
-                    text: "SIM", 
+                    text: "Confirmar", 
                     onPress: () => { 
                         setloading(true)
                         firebase.database().ref('Gastos').child(user).child(key).remove()
@@ -104,17 +126,14 @@ export default function Mensal(){
             ]
         )
     }
-
     function atualizarCampoValor(){
-
         if( novoValorGasto === '' ){
             alert('Preencha o campo corretamente.')
             return
         }
-
         setloading(true)
         firebase.database().ref('Gastos').child(user).child(Key).update({
-            valorGasto: Number(novoValorGasto.replace(',','.'))
+            valorGasto: type === 'Receita'?Number(novoValorGasto.toFixed(2).replace('-','')):Number('-'+novoValorGasto.toFixed(2).replace('-',''))
         })
         .then( () => {
             alert('Alteração concluída.')
@@ -126,22 +145,15 @@ export default function Mensal(){
             setModalEditValor(false)
             setloading(false)
         })
-
     }
-
     function handleEditValor(){
-        
         setModalEditValor(true)
-
     }
-
     function atualizarCampo(){
-
         if( novoGasto === '' ){
             alert('Preencha o campo corretamente.')
             return
         }
-
         setloading(true)
         firebase.database().ref('Gastos').child(user).child(Key).update({
             nomeGasto: novoGasto
@@ -156,216 +168,115 @@ export default function Mensal(){
             setModalEdit(false)
             setloading(false)
         })
-
     }
-
     function handleEdit(){
-        
         setModalEdit(true)
-
-    }
-
-    switch (mesCad){
-        case 0: 
-            exibirMes = 'JANEIRO'
-            break
-        case 1: 
-            exibirMes = 'FEVEREIRO'
-            break
-        case 2: 
-            exibirMes = 'MARÇO'
-            break
-        case 3: 
-            exibirMes = 'ABRIL'
-            break
-        case 4:
-            exibirMes = 'MAIO'
-            break
-        case 5:
-            exibirMes = 'JUNHO'
-            break
-        case 6: 
-            exibirMes = 'JULHO'
-            break
-        case 7:
-            exibirMes = 'AGOSTO'
-            break
-        case 8:
-            exibirMes = 'SETEMBRO'
-            break
-        case 9:
-            exibirMes = 'OUTUBRO'
-            break
-        case 10:
-            exibirMes = 'NOVEMBRO'
-            break
-        case 11:
-            exibirMes = 'DEZEMBRO'
-            break
-        default:
-            alert('Ops, algo deu errado')
     }
 
     return(
-        <View style={ [styles.container, appTheme[themeMode]] }>
-
+        <Container theme={themeMode}>
+            <CampoTitulo>
+                <Titulo theme={themeMode}>Carteira</Titulo>
+            </CampoTitulo>
             <Modal visible={loading} animationType="fade" transparent={true}>
-                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#dddddd99'}}>
+                <ContainerCarregar1>
                     <ActivityIndicator 
                         size={100}
                         color={ themeMode === 'light' ? '#161F4E' : '#0D1117' }
                         animating={true}
                     />
-                </View>
+                </ContainerCarregar1>
             </Modal>
-
-            <View style={ styles.registros }>
-
-                <View style={ styles.areaMes }>
-                    <Text style={ styles.textMes }>{ exibirMes }</Text>
-                </View>
-
-                <FlatList 
-                    data={valor}
-                    keyExtractor={ (item) => item.key }
-                    renderItem={ ({item}) => (
-                        <CampoGasto data={item} deleteItem={handleDelete} editItem={handleEdit} chave={ (key) => setKey(key) } editValor={handleEditValor} />
-                    )}
+            <ContainerAreaTotal>
+                <TextSaldo>Saldo</TextSaldo>
+                <TextTotal color={valorTotal}>
+                    { isNaN(valorTotal)
+                    ? <ActivityIndicator size={70} color={themeMode === 'light'?'#161f4e':'#481298'} /> 
+                    : valorTotal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}) 
+                    } 
+                </TextTotal>
+            </ContainerAreaTotal>
+            <ContainerRegistros>
+                <ContainerMes onPress={() => setShowDate(true)}>
+                    <AntDesign name="calendar" size={25} color={ themeMode === 'light' ? '#161F4E' : '#fff' } />
+                    <TituloMes color={themeMode} numberOfLines={1}>Movimentações - {data}</TituloMes>
+                </ContainerMes>
+                <DateTimePicker
+                    mode="date"
+                    isVisible={showDate}
+                    onConfirm={handleConfirm}
+                    onCancel={hideDatePicker}
+                    maximumDate={new Date()}
                 />
-
-            </View>
-
-            <View style={ styles.areaTotal }>
-                <Text style={{ color: valorTotal > 0 ? '#12870C' : '#ff0000', fontSize: 25, fontWeight: '600', marginRight: 5}}>
-                    TOTAL 
-                </Text>
-
-                <Text style={{ color: valorTotal > 0 ? '#12870C' : '#ff0000', fontSize: 25, fontWeight: '600'}}>
-                    { valorTotal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}) } 
-                </Text>
-            </View>
-
+                { valor == 0 ? (
+                    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                        <Text style={{color: themeMode === 'light'?'#000':'#fff',fontSize: 20, fontWeight: 600}}>Não há movimentações para esse dia</Text>
+                    </View>
+                ) : (
+                    <FlatList 
+                    showsVerticalScrollIndicator={false}
+                    data={valor}
+                    keyExtractor={(item) => item.key}
+                    renderItem={({item}) => ( 
+                        <CampoGasto 
+                            data={item} 
+                            deleteItem={handleDelete} 
+                            editItem={handleEdit} 
+                            chave={(key) => setKey(key)} 
+                            editValor={handleEditValor}
+                        />
+                        )} 
+                    />
+                )}
+            </ContainerRegistros>
             <Modal visible={modalEdit} transparent={true} animationType="fade">
                 <TouchableWithoutFeedback onPress={ () => setModalEdit(false)}>
                     <View style={{ flex: 1, backgroundColor: '#ffffff88'}}></View>
                 </TouchableWithoutFeedback>
-
-                <View style={ styles.modalEdit }>
-
+                <ModalEditGastos>
                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-                        <Text style={ styles.textMes }>EDITAR GASTOS</Text>
-
+                        <TextEditar>EDITAR GASTOS</TextEditar>
                         <TouchableOpacity onPress={ () => setModalEdit(false) }>
-                            <AntDesign name="closecircleo" size={35} color="#ff0000" />
+                            <AntDesign name="closecircleo" size={30} color="#ff0000" />
                         </TouchableOpacity>
                     </View>
-
-                    <TextInput 
+                    <InputEdit 
                         placeholder="Digite aqui"
-                        style={ styles.inputEdit }
                         onChangeText={ (novo) => setNovoGasto(novo) }
                     />
-
-                    <TouchableOpacity style={ styles.btnFeito } onPress={ atualizarCampo } >
-                        <Text style={{ fontSize: 20, color: '#fff', fontWeight: '600'}}>CONCLUÍDO </Text>
-                        <AntDesign name="check" size={30} color="white" />
-                    </TouchableOpacity>
-                </View>
+                    <ButtonOk onPress={ atualizarCampo } >
+                        <ButtonTextOk>ok</ButtonTextOk>
+                    </ButtonOk>
+                </ModalEditGastos>
             </Modal>
-
             <Modal visible={modalEditValor} transparent={true} animationType="fade">
                 <TouchableWithoutFeedback onPress={ () => setModalEditValor(false) }>
-                    <View style={{ flex: 1, backgroundColor: '#ffffff88'}}></View>
+                    <View style={{ flex: 1, backgroundColor: '#ffffff77'}}></View>
                 </TouchableWithoutFeedback>
-
-                <View style={ styles.modalEdit }>
-
+                <ModalEditGastos>
                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-                        <Text style={ styles.textMes }>EDITAR VALORES</Text>
-
+                        <TextEditar>EDITAR VALORES</TextEditar>
                         <TouchableOpacity onPress={ () => setModalEditValor(false) }>
-                            <AntDesign name="closecircleo" size={35} color="#ff0000" />
+                            <AntDesign name="closecircleo" size={30} color="#ff0000" />
                         </TouchableOpacity>
                     </View>
-
-                    <TextInput 
-                        placeholder="R$"
-                        style={ styles.inputEdit }
-                        onChangeText={ (novo) => setNovoValorGasto(novo.replace(/[ #*;.<>\{\}\[\]\\\/]/gi, '')) }
+                    <CurrencyInput 
+                        value={Number(novoValorGasto)}
+                        onChangeValue={(value) => setNovoValorGasto(Number(value))}
+                        renderTextInput={textInputProps => <InputEdit {...textInputProps} variant='filled' />}
+                        prefix="R$ "
+                        delimiter="."
+                        separator=","
+                        precision={2}
+                        placeholder="Digite o valor"
                         keyboardType="numeric"
-                        value={novoValorGasto}
                     />
-
-                    <TouchableOpacity style={ styles.btnFeito } onPress={ atualizarCampoValor } >
-                        <Text style={{ fontSize: 20, color: '#fff', fontWeight: '600'}}>CONCLUÍDO </Text>
-                        <AntDesign name="check" size={30} color="white" />
-                    </TouchableOpacity>
-                </View>
+                    <RegisterTypes type={type} sendTypeChanged={(item) => setType(item)}/>
+                    <ButtonOk onPress={ atualizarCampoValor } >
+                        <ButtonTextOk>ok</ButtonTextOk>
+                    </ButtonOk>
+                </ModalEditGastos>
             </Modal>
-        </View>
+        </Container>
     )
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center'
-    },
-    registros: {
-        backgroundColor: '#E9AB43',
-        borderWidth: 2,
-        borderRadius: 10,
-        width: ITEM_WIDTH,
-        marginVertical: 20,
-        paddingVertical: 20,
-        height: '60%'
-    },
-    areaMes: {
-        marginBottom: 20,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    textMes: {
-        color: '#000',
-        textAlign: 'center',
-        fontSize: 25,
-        fontWeight: '600',
-        marginHorizontal: 10
-    },
-    areaTotal: {
-        backgroundColor: '#E9AB43',
-        width: ITEM_WIDTH,
-        borderWidth: 2,
-        borderRadius: 10,
-        height: '11%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'row'
-    },
-    btnFeito: {
-        backgroundColor: '#161F4E', 
-        marginTop: 20, 
-        marginHorizontal: 20,
-        borderRadius: 10, 
-        alignItems: 'center', 
-        padding: 10,
-        flexDirection: 'row',
-        justifyContent: 'center'
-    },
-    modalEdit: {
-        height: 250,
-        backgroundColor: '#fff',
-        justifyContent: 'space-around',
-        borderWidth: 1,
-        borderColor: '#161F4E'
-    },
-    inputEdit: {
-        borderWidth: 2,
-        marginHorizontal: 20,
-        borderRadius: 10,
-        padding: 10,
-        textAlign: 'center',
-        fontSize: 20,
-    },
-})

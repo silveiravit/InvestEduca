@@ -8,7 +8,7 @@ import { useNavigation } from '@react-navigation/native'
 import { AntDesign } from '@expo/vector-icons';
 
 // Tema
-import ThemeContext from "../../contexts/ThemeContext";
+import { AuthContext } from "../../contexts/auth";
 import appTheme from "../../themes/Themes";
 
 export default function Money(){
@@ -17,7 +17,7 @@ export default function Money(){
     const navigation = useNavigation()
 
     // Context de tema
-    const [themeMode] = useContext(ThemeContext)
+    const { themeMode } = useContext(AuthContext)
 
     return(
         <View style={ [styles.container, appTheme[themeMode]] }>
@@ -25,21 +25,6 @@ export default function Money(){
             <View style={ styles.areaBtn }>
 
                 <Text style={[{ textAlign: 'center', fontSize: 25, color: '#161F4E', fontWeight: '600' }, appTheme[themeMode]]}>O que gostaria de ver?</Text>
-
-                <TouchableOpacity onPress={ () => navigation.navigate('Objetivo') } style={ [styles.btn, { borderColor: themeMode === 'light' ? '#161F4E' : '#481298' }] }>
-
-                    <View style={ [styles.view, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#481298', borderColor: themeMode === 'light' ? '#161F4E' : '#481298'  }] } >
-                        <View style={ styles.viewBtn }>
-                            <Text style={ styles.textoBtn }>OBJETIVOS</Text>
-                            <View style={ styles.icon }>
-                                <AntDesign name="arrowright" size={30} color={themeMode === 'light' ? '#161F4E' : '#481298'} /> 
-                            </View>
-                        </View>
-                    </View>
-
-                    <Text style={[{ fontSize: 20, margin: 15, color: '#161F4E'}, appTheme[themeMode]]}>Demonstrativo de metas estabelecidas no planejamento</Text>
-
-                </TouchableOpacity>
 
                 <TouchableOpacity onPress={ () => navigation.navigate('Gasto') } style={ [styles.btn, { borderColor: themeMode === 'light' ? '#161F4E' : '#481298' }] }>
 
@@ -52,9 +37,25 @@ export default function Money(){
                         </View>
                     </View>
 
-                    <Text style={[{ fontSize: 20, margin: 15, color: '#161F4E'}, appTheme[themeMode]]}>Controle financeiro ligado diretamente a datas</Text>
+                    <Text style={[{textAlign: 'justify', fontSize: 20, margin: 15, color: '#161F4E'}, appTheme[themeMode]]}>Controle financeiro ligado diretamente a datas</Text>
 
                 </TouchableOpacity>
+
+                <TouchableOpacity onPress={ () => navigation.navigate('Objetivo') } style={ [styles.btn, { borderColor: themeMode === 'light' ? '#161F4E' : '#481298' }] }>
+
+                    <View style={ [styles.view, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#481298', borderColor: themeMode === 'light' ? '#161F4E' : '#481298'  }] } >
+                        <View style={ styles.viewBtn }>
+                            <Text style={ styles.textoBtn }>OBJETIVOS</Text>
+                            <View style={ styles.icon }>
+                                <AntDesign name="arrowright" size={30} color={themeMode === 'light' ? '#161F4E' : '#481298'} /> 
+                            </View>
+                        </View>
+                    </View>
+
+                    <Text style={[{textAlign: 'justify', fontSize: 20, margin: 15, color: '#161F4E'}, appTheme[themeMode]]}>Demonstrativo de metas estabelecidas no planejamento</Text>
+
+                </TouchableOpacity>
+
             </View>
 
         </View>
@@ -65,12 +66,13 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        backgroundColor: '#fff'
+        backgroundColor: '#fff',
+        padding: 15
     },
     areaBtn: {
         flex: 1,
         justifyContent: 'space-around',
-        marginHorizontal: '3%'
+        marginBottom: 100
     },
     viewBtn: {
         flex: 1,

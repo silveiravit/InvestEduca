@@ -1,8 +1,5 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, ActivityIndicator, Modal } from "react-native";
-
-// Conexão Firebase
-import firebase from '../../../database/FirebaseConnection'
 
 // Hook de navegação
 import { useNavigation } from '@react-navigation/native'
@@ -17,7 +14,6 @@ import { AuthContext } from "../../contexts/auth";
 import { Switch } from "react-native-switch";
 
 // Tema
-import ThemeContext from "../../contexts/ThemeContext";
 import appTheme from "../../themes/Themes";
 
 // Dimensões da tela
@@ -28,33 +24,16 @@ export default function Config(){
     // Constante de navegação
     const navigation = useNavigation()
 
-    // Context username
-    const { username } = useContext(AuthContext)
-
-    // Constante de loading
-    const [loading, setLoading] = useState(false)
-
-    // Constante do tema
-    const [themeMode, setThemeMode] = useContext(ThemeContext)
+    // Context
+    const { username, loading, logout, theme, themeMode, transparent } = useContext(AuthContext)
 
     function sair(){
-        setLoading(true)
-        setTimeout( () => {
-            firebase.auth().signOut()
-            .then( () => {
-                navigation.navigate('Login')
-                setLoading(false)
-            })
-            .catch( () => {
-                alert('Ops, algo deu errado.')
-            })   
-        }, 2000)
+        logout()
     }
 
     return(
         <View style={ [styles.container, appTheme[themeMode]] }>
-
-            <Modal transparent visible={loading}>
+            <Modal transparent={transparent} visible={loading}>
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
                     <ActivityIndicator 
                         size={100}
@@ -63,16 +42,12 @@ export default function Config(){
                     />
                 </View>
             </Modal>
-
             <View style={ styles.areaImg }>
-                
                 <Image
                     source={ require('../../images/PorcoConfig.png') }
                     style={ styles.img }
                 />
-                
             </View>
-
             <View style={ styles.nomeUsuario }>
                 <Text style={[{ fontSize: 25, fontWeight: '600', color: '#161F4E' }, appTheme[themeMode]]}>Bem-vindo, { username }!</Text>
             </View>
@@ -83,14 +58,14 @@ export default function Config(){
                 <View style={ [styles.areaBtn, { borderBottomWidth: 1, borderBottomColor: '#ccc' }] }>
                     <Text style={ [styles.subtitulo, appTheme[themeMode] ]}>Tema Escuro</Text>
                     <Switch
-                        value={themeMode === 'light' ? false : true }
-                        onValueChange={ () => setThemeMode(themeMode === 'light' ? 'dark' : 'light')}
+                        value={themeMode === 'light' ? false : true}
+                        onValueChange={() => theme()}
                         circleSize={35}
                         activeText={'ON'}
                         inActiveText={'OFF'}
                     />
                 </View>               
-
+        
                 <Text style={ styles.titulo }>Conta</Text>
 
                 <TouchableOpacity style={ styles.btn } onPress={ () => navigation.navigate('Suporte')}>

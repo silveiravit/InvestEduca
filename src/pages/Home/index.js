@@ -1,9 +1,26 @@
 import React, { useContext } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions, TouchableWithoutFeedback } from "react-native";
+import { Dimensions } from "react-native";
+import { 
+    Container,
+    ViewContainerCotacao,
+    ViewContainerMovimentacao,
+    ViewContainerImages,
+    AreaBtn,
+    Button,
+    ViewButton,
+    TextButton,
+    ViewIcon,
+    SpaceButton
+} from './styles/styles'
 
 // Importado o arquivo de conversor de moeda
 import Conversor from "../../services/conversor"; 
-import Saldo from "../../components/saldo";
+import Saldo from "../../components/Saldo"
+import Receita from "../../components/Receita";
+import Despesa from "../../components/Despesa";
+import CarouselCotacao from "../../components/CarouselCotacao";
+import CarouselMovimentacao from "../../components/CarouselMovimentacao";
+import CarouselAssuntos from "../../components/CarouselAssuntos";
 
 // Biblioteca de icones
 import { AntDesign } from '@expo/vector-icons';
@@ -13,14 +30,12 @@ import { useNavigation } from '@react-navigation/native'
 
 // Biblioteca de animação/carousel
 import Carousel from 'react-native-reanimated-carousel'
-// import Animated, { Easing } from 'react-native-reanimated';
 
 // Temas
-import ThemeContext from "../../contexts/ThemeContext";
-import appTheme from "../../themes/Themes";
+import { AuthContext } from "../../contexts/auth";
 
 // Dimensões da tela
-const SLIDER_WIDTH = Dimensions.get('window').width
+const screenWidth = Dimensions.get('window').width
 
 // Acima faremos com que os componentes da tela se adaptem de acordo com a tela do celular
 
@@ -30,19 +45,17 @@ export default function Home(){
     const navigation = useNavigation()
 
     // Context do tema
-    const [themeMode] = useContext(ThemeContext)
+    const { themeMode } = useContext(AuthContext)
 
     const carouselMoeda = [
         { moeda: ( <Conversor moedaA="USD" moedaB="BRL" /> ) },
+        { moeda: ( <Conversor moedaA="BTC" moedaB="BRL" /> ) },
         { moeda: ( <Conversor moedaA="EUR" moedaB="BRL" /> ) },
         { moeda: ( <Conversor moedaA="GBP" moedaB="BRL" /> ) },
         { moeda: ( <Conversor moedaA="CAD" moedaB="BRL" /> ) },
         { moeda: ( <Conversor moedaA="SEK" moedaB="BRL" /> ) },
-        { moeda: ( <Conversor moedaA="AUD" moedaB="BRL" /> ) },
         { moeda: ( <Conversor moedaA="CHF" moedaB="BRL" /> ) },
         { moeda: ( <Conversor moedaA="CNY" moedaB="BRL" /> ) },
-        { moeda: ( <Conversor moedaA="ARS" moedaB="BRL" /> ) },
-        { moeda: ( <Conversor moedaA="JPY" moedaB="BRL" /> ) },
     ]
 
     const carouselImagem = [
@@ -52,11 +65,11 @@ export default function Home(){
         },
         {   
             key: 2,
-            image:  'https://futurofunsejem.org.br/online/wp-content/uploads/2021/09/120-edfinanceira-1920x1080px-1.jpg' 
+            text:  ( <Receita /> )
         },
         {   
             key: 3,
-            image:  'https://www.sucessor.com.br/wp-content/uploads/2020/09/educa%C3%A7%C3%A3o-financeira-scaled.jpg' 
+            text:  ( <Despesa /> )
         },
     ]
 
@@ -87,52 +100,7 @@ export default function Home(){
         },
     ]
 
-    function renderMoeda({ item }){
-        return(
-            <View style={ [styles.areaCotacao, { backgroundColor: themeMode === 'light' ? '#000' : '#0D1117'}] }>     
-                {item.moeda}
-            </View> 
-        )
-    }
-
-    function renderItem({ item }){
-        return(
-            <View style={ [styles.carouselItemContainer, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#481298'} ] }> 
-            { item.key !== 1 ? (
-                <Image
-                    source={{ uri: `${item.image}`}}
-                    style={ styles.image }
-                /> ) :
-
-                ( 
-                    <View style={{height: '100%', justifyContent: 'center', alignItems: 'center'}}>
-                        <Text>{item.text}</Text>
-                    </View>
-                )
-            }    
-            </View> 
-        )
-    }
-
-    function renderItemCentro({ item }){
-        return(
-            <View style={ [styles.carouselItemContainerCentro, { borderColor: themeMode === 'light' ? '#161F4E' : '#481298' }] }> 
-
-                <TouchableWithoutFeedback onPress={ () => mudarTela(item.title) }>
-                    <Image
-                        source={{ uri: `${item.image}` }}
-                        style={ styles.imageCentro }
-                    />
-                </TouchableWithoutFeedback>
-
-                <Text style={ styles.title }>{ item.title }</Text>
-                <Text style={ styles.text }>{ item.text }</Text>
-            </View> 
-        )
-    }
-
     function mudarTela(navegar){
-
         if( navegar === 'O que é investimento?' ){
             navigation.navigate('Investimento')
             
@@ -144,188 +112,88 @@ export default function Home(){
 
         } else if( navegar === 'Saindo das dívidas' ){
             navigation.navigate('Dividas')
-            
         }
-
     }
 
     return(
-        <View style={ [styles.container, appTheme[themeMode]] }>        
-
-            <View style={ styles.viewPrincipalCotacao }>
+        <Container theme={themeMode}>
+            <ViewContainerCotacao>      
                 <Carousel
                     data={carouselMoeda}
-                    renderItem={renderMoeda}
-                    width={SLIDER_WIDTH}
-                    height={50}
+                    renderItem={({item}) => <CarouselCotacao data={item} theme={themeMode}/>}
+                    width={screenWidth}
+                    height={0}
                     loop={true}
                     autoPlay
                     withAnimation={{
                         type: "timing",
                         config: {
-                          duration: 3000,
+                            duration: 3000,
                         },
                     }}
-                    enabled={false}
+                    enabled={true}
                 />
-            </View>
-
-            <View style={ styles.viewPrincipalImagem }>
+            </ViewContainerCotacao>  
+            <ViewContainerMovimentacao>
                 <Carousel
                     data={carouselImagem}
-                    renderItem={renderItem}
-                    width={SLIDER_WIDTH}
-                    height={150}
+                    renderItem={({item}) => <CarouselMovimentacao data={item} theme={themeMode}/>}
+                    width={screenWidth}
+                    height={0}
                     loop={true}
-                    autoPlay
-                    //scrollAnimationDuration={5000}
+                    autoPlay={true}
                     withAnimation={{
                         type: "spring",
                         config: {
-                          duration: 3000,
+                            duration: 5000,
                         },
                     }}
                     enabled={false}
                 />
-            </View>
-
-            <View style={ [styles.viewCentroImagem, appTheme[themeMode]] }>
+            </ViewContainerMovimentacao>
+            <ViewContainerImages>
                 <Carousel
                     data={carouselImagemCentro}
-                    renderItem={renderItemCentro}
-                    width={SLIDER_WIDTH}
-                    height={SLIDER_WIDTH/1.055}
+                    renderItem={({item}) => <CarouselAssuntos data={item} />}
+                    width={screenWidth}
+                    height={0}
                     loop={true}
                     autoPlay
                     withAnimation={{
                         type: "spring",
                         config: {
-                          duration: 6000,
+                            duration: 6000,
                         },
                     }}
                 />
-            </View>
-
-            <View style={ styles.areaBtn }>
-                <TouchableOpacity 
-                    style={ [styles.btn, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#481298' }] } 
-                    onPress={ () => navigation.navigate('Objetivo') }
-                >   
-                    <View style={ styles.viewBtn }>
-                        <Text style={ styles.textoBtn }>OBJETIVOS</Text>
-                        <View style={ styles.icon }>
-                            <AntDesign name="arrowright" size={30} color={ themeMode === 'light' ? '#161F4E' : '#481298' } /> 
-                        </View>
-                    </View>
-                </TouchableOpacity>
-
-                <TouchableOpacity 
-                    style={ [styles.btn, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#481298' }] } 
-                    onPress={ () => navigation.navigate('Gasto') }
-                >
-                    <View style={ styles.viewBtn }>
-                        <Text style={ styles.textoBtn }>GASTOS</Text>
-                        <View style={ styles.icon }>
-                            <AntDesign name="arrowright" size={30} color={ themeMode === 'light' ? '#161F4E' : '#481298' } /> 
-                        </View>
-                    </View>
-                </TouchableOpacity>
-            </View>
-
-        </View>
+            </ViewContainerImages>
+            <AreaBtn>
+                <Button onPress={ () => navigation.navigate('Gasto') } theme={themeMode}>
+                    <ViewButton>
+                        <TextButton>GASTOS</TextButton>
+                        <ViewIcon>
+                            <AntDesign 
+                                name="arrowright" 
+                                size={30} 
+                                color={ themeMode === 'light' ? '#161F4E' : '#481298' } 
+                            />
+                        </ViewIcon>
+                    </ViewButton>
+                </Button>
+                <SpaceButton></SpaceButton>
+                <Button onPress={ () => navigation.navigate('Objetivo') } theme={themeMode}>
+                    <ViewButton>
+                        <TextButton>OBJETIVOS</TextButton>
+                        <ViewIcon>
+                            <AntDesign 
+                                name="arrowright" 
+                                size={30} 
+                                color={ themeMode === 'light' ? '#161F4E' : '#481298' } 
+                            />
+                        </ViewIcon>
+                    </ViewButton>
+                </Button>
+            </AreaBtn>
+        </Container>
     )
 }
-
-const styles = StyleSheet.create({
-    // Interface
-    container: {
-        flex: 1,
-        backgroundColor: '#fff'
-    },
-    areaCotacao: {      
-        padding: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor:  '#000',
-    },
-    carouselItemContainer: {
-        marginHorizontal: '3%',
-        borderRadius: 10
-    },
-    image: {
-        width: '100%',
-        height: '100%',
-        borderRadius: 10
-    },
-    viewConteudo:{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    viewPrincipalCotacao: {
-        marginBottom: '3%',
-    },
-    viewPrincipalImagem: {
-        flex: 1,
-        justifyContent: 'flex-start'
-    },
-    carouselItemContainerCentro: {
-        padding: 20,
-        marginVertical: '4%',
-        marginHorizontal: '3%',
-        borderRadius: 10,
-        borderWidth: 3,
-        backgroundColor: '#FFF'
-    },
-    imageCentro : {
-        width: '100%',
-        height: 200,
-        borderRadius: 10
-    },
-    viewCentroImagem : {
-        backgroundColor: '#fff',
-    },
-    title: {
-        fontSize: 18,
-        color: '#161F4E',
-        fontWeight: '400',
-        marginTop: 10
-    }, 
-    text: {
-        fontSize: 14,
-        color: '#161F4E',
-        fontWeight: '400',
-        textAlign: 'justify'
-    },
-
-    // Botões
-    areaBtn: {
-        justifyContent: 'flex-end',
-        marginHorizontal: '3%'
-    },
-    viewBtn: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        paddingHorizontal: '3%'
-    },
-    btn: {
-        backgroundColor: '#161F4E',
-        marginBottom: '3%',
-        borderRadius: 15,
-        padding: 10,
-        flexDirection: 'row',
-        alignItems: 'center',
-    },  
-    textoBtn: {
-        color: '#FFF',
-        fontSize: 30,
-        fontWeight: 'bold',
-    },
-    icon: {
-        backgroundColor: '#E9AB43',
-        justifyContent: 'center',
-        borderRadius: 30,
-        padding: 5
-    }
-})

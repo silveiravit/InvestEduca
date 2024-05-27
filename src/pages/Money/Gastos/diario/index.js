@@ -1,6 +1,11 @@
 import React, { useState, useContext } from "react";
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Dimensions, FlatList, Modal, TouchableWithoutFeedback, Alert, ActivityIndicator } from "react-native";
+
 import { AntDesign } from '@expo/vector-icons';
+
+import CurrencyInput from "react-native-currency-input";
+
+import format from "date-fns/format";
 
 // Dimensões da tela
 const SLIDER_WIDTH = Dimensions.get('window').width
@@ -10,29 +15,42 @@ const ITEM_WIDTH = SLIDER_WIDTH * 0.90
 import firebase from '../../../../../database/FirebaseConnection'
 
 // Tema
-import ThemeContext from '../../../../contexts/ThemeContext'
-import appTheme from '../../../../themes/Themes'
+import {
+    Container,
+    CampoTitulo,
+    CampoValor,
+    AreaInputMoeda,
+    ButtonAdd,
+    Input,
+    AreaCategoria,
+    CampoCategoria,
+    CategoriaText,
+    CampoCategoria1,
+    ButtonAddCategoria,
+    Titulo
+} from '../styles/styles'
 
 // Componente de autenticação
 import { AuthContext } from "../../../../contexts/auth";
 
-// Componente categoria
-import Categoria from "./categoria";
+// Componentes
+import Categoria from "../../../../components/Categoria/categoria";
+import RegisterTypes from "../../../../components/RegisterTypes";
 
 export default function Diario(){
     
     // Context de usuário e tema
-    const { user } = useContext(AuthContext)
-    const [themeMode] = useContext(ThemeContext)
+    const { user, themeMode } = useContext(AuthContext)
 
     // Exibir modal
     const [modalVisible, setModalVisible] = useState(false)
     const [modalCadastro, setModalCadastro] = useState(false)
     
     // States de valores
-    const [novoValor, setNovoValor] = useState('')
+    const [novoValor, setNovoValor] = useState(0)
     const [valor, setValor] = useState('')
     const [nomeGasto, setNomeGasto] = useState('')
+    const [type, setType] = useState('Receita')
 
     // State de categorias
     const [categoria] = useState([
@@ -45,15 +63,13 @@ export default function Diario(){
     ])
 
     function handleAdd(){
-
         if( novoValor === '' || nomeGasto === '' ){
             alert('Preencha os campos corretamente.')
             return
         }
-
         Alert.alert(
-            "Confirme o gasto e o valor:",
-            `Gasto: ${nomeGasto} \nValor: R$ ${novoValor.replace('.',',')}`,
+            "Confirme seus dados:",
+            `Tipo: ${type} \nCategoria: ${nomeGasto} \nValor: ${novoValor.toLocaleString('pt-br', {style: 'currency', currency: 'BRL'})}`,
             [
                 {
                     text: "Cancelar",
@@ -61,7 +77,7 @@ export default function Diario(){
                     style: "cancel"
                 },
                 { 
-                    text: "OK", 
+                    text: "Confirmar", 
                     onPress: () => { 
                         setModalCadastro(true)
                         let gastos = firebase.database().ref('Gastos').child(user)
@@ -69,17 +85,17 @@ export default function Diario(){
 
                         gastos.child(chave).set({
                             nomeGasto: nomeGasto,
-                            valorGasto: Number(novoValor.replace(',','.')),
-                            mesCadastro: new Date().getMonth(),
-                            anoCadastro: new Date().getFullYear()
+                            tipo: type,
+                            valorGasto: type === 'Receita'?Number(novoValor.toFixed(2).replace('-','')):Number('-'+novoValor.toFixed(2).replace('-','')),
+                            data: format(new Date(), "dd/MM/yyyy")
                         })
                         .then( () => {
                             const data = {
                                 key: chave,
                                 nomeGasto: nomeGasto,
-                                valorGasto: Number(novoValor.replace(',','.')),
-                                mesCadastro: new Date(),
-                                anoCadastro: new Date().getFullYear()
+                                tipo: type,
+                                valorGasto: type === 'Receita'?Number(novoValor.toFixed(2).replace('-','')):Number('-'+novoValor.toFixed(2).replace('-','')),
+                                data: format(new Date(), "dd/MM/yyyy")
                             }
                             setValor(oldValor => [...oldValor, data].reverse())
                             setModalCadastro(false)
@@ -105,35 +121,35 @@ export default function Diario(){
     }
 
     return(
-        <View style={ [styles.container, appTheme[themeMode]] }>
-            <View style={ styles.campoValor }>
-                
-                <View style={ styles.areaInputMoeda }>
-                    <TouchableOpacity >                               
-                        <Text style={{ fontSize: 25, fontWeight: '600'}}>R$ </Text>
-                    </TouchableOpacity>
-
-                    <TextInput 
-                        style={ styles.input }
-                        onChangeText={ (valor) => setNovoValor(valor.replace(/[ #*;.<>\{\}\[\]\\\/]/gi, ',')) }
+        <Container theme={themeMode}>
+            <CampoTitulo>
+                <Titulo theme={themeMode}>Registro de Gastos</Titulo>
+            </CampoTitulo>
+            <CampoValor>
+                <AreaInputMoeda>                         
+                    <CurrencyInput 
+                        value={Number(novoValor)}
+                        onChangeValue={(value) => setNovoValor(Number(value))}
+                        renderTextInput={textInputProps => <Input {...textInputProps} variant='filled' />}
+                        prefix="R$ "
+                        delimiter="."
+                        separator=","
+                        precision={2}
+                        placeholder="Digite o valor"
                         keyboardType="numeric"
-                        value={novoValor}
-                    /> 
+                    />
+                    <ButtonAdd theme={themeMode} onPress={handleAdd}>
+                        <AntDesign name="plus" size={30} color="white" />
+                    </ButtonAdd>
+                </AreaInputMoeda> 
+                <RegisterTypes type={type} sendTypeChanged={(item) => setType(item)}/>
+            </CampoValor>
 
-                </View> 
-
-                <TouchableOpacity style={ styles.icon } onPress={ handleAdd }>
-                    <AntDesign name="plus" size={30} color="white" />
-                </TouchableOpacity>
-            </View>
-
-            <View style={ styles.viewCategoria } > 
-                <View style={ [styles.campoCategoria, { borderWidth: themeMode === 'light' ? 2 : 0 }] }>
-                    <Text style={{ fontSize: 30, color: '#161F4E', fontWeight: '700'}}>CATEGORIA</Text>
-                </View>
-
-                <View style={ [styles.campoCategoria1, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#481298', borderColor: '#E9AB43'}] }>
-                        
+            <AreaCategoria> 
+                <CampoCategoria theme={themeMode}>
+                    <CategoriaText theme={themeMode}>CATEGORIA</CategoriaText>
+                </CampoCategoria>
+                <CampoCategoria1 theme={themeMode}>
                     <FlatList
                         data={categoria}
                         keyExtractor={ (item) => item.key }
@@ -141,14 +157,12 @@ export default function Diario(){
                             <Categoria data={item} add={ (gasto) => setNomeGasto(gasto) } />
                         )}
                     />
-                        
-                </View>
+                </CampoCategoria1>
 
-                <TouchableOpacity style={ [styles.btnOutros, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#481298', borderLeftWidth: 0, borderRightWidth: 0, borderBottomWidth: 0,}] } onPress={ () => setModalVisible(true) }>
+                <ButtonAddCategoria theme={themeMode} onPress={ () => setModalVisible(true) }>
                     <Text style={ styles.textOutros }>Adicionar outra categoria</Text>
-                </TouchableOpacity>
-            </View> 
-
+                </ButtonAddCategoria>
+            </AreaCategoria> 
             <Modal visible={modalVisible} animationType="fade" transparent={true}>
                 <TouchableWithoutFeedback onPress={ () => setModalVisible(false)}>
                     <View style={ styles.viewModal1 }></View>
@@ -164,8 +178,7 @@ export default function Diario(){
                     />
                         
                     <TouchableOpacity style={ styles.btnFeito } onPress={ concluido }>
-                        <Text style={{ fontSize: 25, color: '#fff', fontWeight: '600'}}>FEITO </Text>
-                        <AntDesign name="check" size={30} color="white" />
+                        <Text style={{ fontSize: 25, color: '#fff', fontWeight: '600'}}>ok</Text>
                     </TouchableOpacity>
                 </View>
             </Modal>
@@ -173,85 +186,17 @@ export default function Diario(){
             <Modal visible={modalCadastro} animationType="fade" transparent={true}>
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#dddddd99'}}>
                     <ActivityIndicator 
-                        size={150}
+                        size={100}
                         color={ themeMode === 'light' ? '#161F4E' : '#0D1117' }
                         animating={true}
                     />
                 </View>
             </Modal>
-        </View>
+        </Container>
     )
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-    },
-    campoValor: {
-        backgroundColor: '#E9AB43',
-        borderWidth: 2,
-        borderRadius: 10,
-        alignItems: 'center',
-        flexDirection: 'row',
-        marginVertical: 20,
-        width:'95%',
-        paddingHorizontal: 40
-    },
-    input: {
-        fontSize: 25,
-        textAlign: 'center',
-        color: '#000',
-        width: '70%',
-        height: 50
-    },
-    areaInputMoeda: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        borderRadius: 10,
-        justifyContent: 'center',      
-        marginVertical: 40,
-        width: '75%',
-        marginHorizontal: 10,
-        backgroundColor: '#ffffff77',
-    },
-    icon: {
-        backgroundColor: '#161F4E',
-        padding: 10,
-        borderRadius: 10
-    },
-    campoCategoria: {
-        backgroundColor: '#E9AB43',
-        borderWidth: 2,
-        borderTopEndRadius: 10,
-        borderTopStartRadius: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'row',
-        paddingVertical: 20      
-    },
-    campoCategoria1: {
-        backgroundColor: '#161F4E',
-        height: '40%',
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingHorizontal: 15,
-        borderBottomWidth: 2,
-    },
-    viewCategoria: {
-        flex: 1,
-        width: '95%',
-    },
-    btnOutros: {
-        backgroundColor: '#161F4E',
-        borderBottomRightRadius: 10,
-        borderBottomLeftRadius: 10,
-        borderLeftWidth: 2,
-        borderRightWidth: 2,
-        borderBottomWidth: 2,
-        padding: 10,
-    },
     textOutros: {
         textAlign: 'center',
         color: '#fff',

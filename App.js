@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 
 // Componente para efetuar a navegação entre telas
 import { NavigationContainer } from '@react-navigation/native' 
@@ -17,9 +17,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 // Autenticação
 import AuthProvider from './src/contexts/auth';
 
-// Tema
-import ThemeContext from './src/contexts/ThemeContext';
-
 //Páginas
 import Routes from './src/routes';
 import Inicio from './src/pages/Inicial';
@@ -34,6 +31,7 @@ import Investimento from './src/pages/Learn/investimento';
 import Organizar from './src/pages/Learn/organizar';
 import Suporte from './src/pages/Config/suporte';
 import Consultar from './src/pages/Money/Objetivos/consultar';
+import Converter from './src/pages/Money/Conversao';
 
 // Constante de navegação
 const Stack = createNativeStackNavigator() 
@@ -45,7 +43,6 @@ export default function App () {
     return (
       
       <NavigationContainer>
-        <ThemeContext.Provider value={themeHook}>
           <AuthProvider>
             <Stack.Navigator
               screenOptions={{
@@ -122,6 +119,20 @@ export default function App () {
                   }
                 }}
               />
+
+              <Stack.Screen
+                name='Converter'
+                component={Converter}
+                options={{
+                  headerShown: false,
+                  headerTintColor: '#FFF',
+                  statusBarColor: themeHook === 'light' ? '#161F4E' : '#0D1117',
+                  headerStyle: {
+                    backgroundColor: '#161F4E'
+                  }
+                }}
+              />
+
               {/* Subtelas da área de configuração */}
           
               <Stack.Screen
@@ -182,7 +193,6 @@ export default function App () {
               />
             </Stack.Navigator>
           </AuthProvider>
-        </ThemeContext.Provider>
       </NavigationContainer>
     );
 }

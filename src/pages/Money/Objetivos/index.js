@@ -1,8 +1,28 @@
 import React, { useState, useContext } from "react";
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Dimensions, ScrollView, Modal, Platform, ActivityIndicator } from "react-native";
+import { View, Text, Modal, ActivityIndicator } from "react-native";
+
+import CurrencyInput from "react-native-currency-input";
+
+import format from "date-fns/format";
+
+import { 
+    Container,
+    Titulo,
+    ViewFormulario,
+    DateButton,
+    Subtitulo,
+    TextDateButton,
+    Buttons,
+    TextButtons,
+    ContainerImage,
+    Image,
+    AreaButton,
+    Input,
+    ContainerPicker
+} from './styles/styles'
 
 // Biblioteca de icones
-import { AntDesign } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
 
 // Autenticação e Banco de Dados
 import { AuthContext } from "../../../contexts/auth";
@@ -10,41 +30,28 @@ import firebase from '../../../../database/FirebaseConnection'
 
 // Data e escolha de objetivo
 import { Picker } from '@react-native-picker/picker'
-import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePicker from 'react-native-modal-datetime-picker';
 
 // Componente de simulação
 import Simular from "./simulacao";
 
-// Tema
-import ThemeContext from '../../../contexts/ThemeContext'
-import appTheme from '../../../themes/Themes'
-
 // Navegação
 import { useNavigation } from "@react-navigation/native";
 
-// Dimensões da tela
-const SLIDER_WIDTH = Dimensions.get('window').width
-const ITEM_WIDTH = SLIDER_WIDTH * 0.90
-
 export default function Objetivo(){
 
-    // Constante de navegação
+    // Constante de navegação e context
     const navigation = useNavigation()
+    const { user, themeMode } = useContext(AuthContext)
 
-    // Context de usuário
-    const { user } = useContext(AuthContext)
-
-    // State de datas
-    const [date, setDate] = useState(new Date())
-
-    // State para mostrar a data
+    // Modais
     const [showDate, setShowDate] = useState(false)
+    const [modalVisible, setModalVisible] = useState(false)
+    const [loading, setLoading] = useState(false)
 
     // State para definir a data prevista
-    const [dataPrevista, setDataPrevista] = useState('')
-
-    // Context de Tema
-    const [themeMode] = useContext(ThemeContext)
+    const [dataPrevista, setDataPrevista] = useState(format(new Date, "dd/MM/yyyy"))
+    const [dataFormat, setDataFormat] = useState()
 
     // State de array de objetos de objetivos
     const [objetivos] = useState([
@@ -56,51 +63,17 @@ export default function Objetivo(){
 
     // State que define o objetivo selecionado
     const [objetivoSelect, setObjetivoSelect] = useState([])    
-
-    // State para exibir o modal
-    const [modalVisible, setModalVisible] = useState(false)
-
-    // State do valor mensal registrado
     const [valorMensal, setValorMensal] = useState('')
+    const [valorObjetivo, setValorObjetivo] = useState('')    
 
-    // State da renda do usuário
-    const [valorObjetivo, setValorObjetivo] = useState('')
-
-    // State de loading
-    const [loading, setLoading] = useState(false)
-
-    // State de data não formatado
-    const [dataFormat, setDataFormat] = useState()
-
-    function dataSelecionada({ type }, selectDate){
-        if( type == 'set' ){
-            const currentDate = selectDate
-            setDate(currentDate)
-            
-            if(Platform.OS === "android"){
-                dateFunc()
-                setDataPrevista(formatDate(currentDate))
-            }
-
-        } else {
-            dateFunc()
-        }
+    function handleConfirm(date){
+        const formatData = format(new Date(date),"dd/MM/yyyy")
+        setDataPrevista(formatData)
+        setDataFormat(formatData)
+        hideDatePicker()
     }
-
-    function formatDate(dataSelect){
-        let date = new Date(dataSelect)
-
-        setDataFormat(date)
-
-        let ano = date.getFullYear()
-        let mes = date.getMonth()+1
-        let dia = date.getDate()
-
-        return `${dia}/${mes}/${ano}` 
-    }
-
-    function dateFunc(){
-        setShowDate(!showDate)
+    function hideDatePicker(){
+        setShowDate(false)
     }
 
     function adicionarObjetivo(){
@@ -126,16 +99,16 @@ export default function Objetivo(){
 
             objetivo.child(chave).set({
                 nomeObjetivo: objetivoSelect,
-                valorMensal: Number(valorMensal.replace(',','.')),
-                valorObjetivo: Number(valorObjetivo.replace(',','.')),
+                valorMensal: Number(valorMensal),
+                valorObjetivo: Number(valorObjetivo),
                 dataPrevista: dataPrevista
             })
             .then( () => {
                 const data = {
                     key: chave,
                     nomeObjetivo: objetivoSelect,
-                    valorMensal: Number(valorMensal.replace(',','.')),
-                    valorObjetivo: Number(valorObjetivo.replace(',','.')),
+                    valorMensal: Number(valorMensal),
+                    valorObjetivo: Number(valorObjetivo),
                     dataPrevista: dataPrevista
                 }
                 setLoading(false)
@@ -145,204 +118,113 @@ export default function Objetivo(){
             .catch( () => {
                 alert('Ops, algo deu errado.')
             })
-        }, 3000)
+        })
     }
 
     return(
-        <View style={ styles.container }>
-            <View style={ [styles.viewCont, appTheme[themeMode]] }>
-                <Modal transparent visible={loading}>
-                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffffffcc'}}>
-                        <ActivityIndicator 
-                            size={100}
-                            color={themeMode === 'light' ? '#161F4E' :'#0D1117'}
-                            animating={true}
-                        />
-                        <Text style={{ fontSize: 25, marginTop: 50, fontWeight: 'bold', color: themeMode === 'light' ? '#161F4E' :'#0D1117' }}>SIMULANDO</Text>
-                    </View>
-                </Modal>
-                <ScrollView showsVerticalScrollIndicator={false}>
-                    <View style={ [styles.view1, appTheme[themeMode]] }>
-                        <Text style={ [styles.titulo, appTheme[themeMode]] }>Estabeleça seus Objetivos</Text>
-                        <View style={ styles.form }>
-                            <Text style={ [styles.subtitulo, appTheme[themeMode]] }>QUAL O SEU OBJETIVO?</Text>
-                            <View style={ [styles.pickerObj, { backgroundColor: '#fff' }] }>
-                                <Picker
-                                    selectedValue={ objetivoSelect }
-                                    onValueChange={ (itemvalue) => setObjetivoSelect(itemvalue) }
-                                    style={{ width: ITEM_WIDTH }}
-                                    placeholder={'teste'}
-                                >
-                                    {
-                                        objetivos.map(obj => {
-                                            return <Picker.Item value={obj.nome} label={obj.nome} key={obj.key} />
-                                        })
-                                    }
-                                </Picker>
-                            </View>
-                        </View>
-                        <View style={ styles.form }>
-                            <Text style={ [styles.subtitulo, appTheme[themeMode]] }>VALOR MENSAL</Text>
-                            <TextInput
-                                style={ [styles.input, { backgroundColor: '#fff'}] }
-                                keyboardType="numeric"
-                                placeholder="Valor mensal que pode investir"
-                                onChangeText={ (value) => setValorMensal(value.replace(/[- #*;,.<>\{\}\[\]\\\/]/, ',')) }
-                                value={valorMensal}
-                            />
-                        </View>
+        <Container theme={themeMode}>
+            <Modal transparent visible={loading}>
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#ffffffcc'}}>
+                    <ActivityIndicator 
+                        size={100}
+                        color={themeMode === 'light' ? '#161F4E' :'#0D1117'}
+                        animating={true}
+                    />
+                    <Text style={{ fontSize: 25, marginTop: 50, fontWeight: 'bold', color: themeMode === 'light' ? '#161F4E' :'#0D1117' }}>SIMULANDO</Text>
+                </View>
+            </Modal>
             
-                        <View style={ styles.form }>
-                            <Text style={ [styles.subtitulo, appTheme[themeMode]] }>DATA PREVISTA</Text>
-            
-                            
-                            <TouchableOpacity style={ [styles.btnDate, { backgroundColor: '#fff'}] } onPress={ dateFunc }>
-                                <Text style={{ flex: 1, textAlign: 'center', fontSize: 20, color: '#777'}}>
-                                    { dataPrevista == '' ? `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}` : dataPrevista }
-                                </Text>
-            
-                                <AntDesign name="calendar" size={30} color="#FF0000" />
-                            </TouchableOpacity>
-                            
+            <Titulo theme={themeMode}>Estabeleça seus Objetivos</Titulo>
 
-                            { showDate && (
-                                <DateTimePicker 
-                                    mode="date"
-                                    value={date}
-                                    display="default"
-                                    onChange={dataSelecionada}
-                                    minimumDate={new Date()}
-                                />
-                            ) }     
-            
-                        </View>
-                        <View style={ styles.form }>
-                            <Text style={ [styles.subtitulo, appTheme[themeMode]] }>VALOR DO SEU OBJETIVO</Text>
-                            <TextInput
-                                style={ [styles.input, { backgroundColor: '#fff'}] }
-                                keyboardType="numeric"
-                                placeholder="Valor do seu objetivo desejado"
-                                onChangeText={ (value) => setValorObjetivo(value.replace(/[- #*;,.<>\{\}\[\]\\\/]/, ',')) }
-                                value={valorObjetivo}
-                            />
-                        </View>
-                        <View style={ styles.areaBtn }>
-                            <TouchableOpacity style={ [styles.btn, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#481298'}] } onPress={ adicionarObjetivo } >
-                                <Text style={ styles.textoBtn }>SIMULAR</Text>
-                            </TouchableOpacity>
-                        </View>
+            <ContainerImage>
+                <Image 
+                    source={require('../../../images/objetivos.png')}
+                />
+            </ContainerImage>
 
-                        <View style={ [styles.areaBtn1, { borderTopColor: themeMode === 'light' ? '#161F4E' : '#481298'}] }>
-                            <TouchableOpacity style={ [styles.simBtn, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#481298'} ] } onPress={ () => navigation.navigate('Consultar') } >
-                                <Text style={ styles.textoSimBtn }>Consulte suas simulações</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </ScrollView>
-            </View>
+            <ViewFormulario theme={themeMode}>
+                <Subtitulo theme={themeMode}>QUAL O SEU OBJETIVO?</Subtitulo>
+                <ContainerPicker>
+                    <Picker
+                        selectedValue={ objetivoSelect }
+                        onValueChange={ (itemvalue) => setObjetivoSelect(itemvalue) }
+                        style={{ width: '100%' }}
+                    >
+                        {
+                            objetivos.map(obj => {
+                                return <Picker.Item value={obj.nome} label={obj.nome} key={obj.key} />
+                            })
+                        }
+                    </Picker>
+                </ContainerPicker>
+            </ViewFormulario>
+
+            <ViewFormulario theme={themeMode}>
+                <Subtitulo theme={themeMode}>VALOR MENSAL</Subtitulo>
+                <CurrencyInput
+                    placeholder="Valor mensal de investimento"
+                    onChangeValue={ (value) => setValorMensal(value) }
+                    value={valorMensal}
+                    prefix="R$"
+                    delimiter="."
+                    separator=","
+                    minValue={0}
+                    renderTextInput={textInputProps => <Input {...textInputProps} variant='filled' />}
+                />
+            </ViewFormulario>
+
+            <ViewFormulario theme={themeMode}>
+                <Subtitulo theme={themeMode}>DATA PREVISTA</Subtitulo>
+                <DateButton onPress={() => setShowDate(true)}>
+                    <TextDateButton>
+                        { dataPrevista }
+                    </TextDateButton>
+                    <Entypo name="calendar" size={30} color="red" />
+                </DateButton>
+                <DateTimePicker
+                    mode="date"
+                    isVisible={showDate}
+                    onConfirm={handleConfirm}
+                    onCancel={hideDatePicker}
+                    minimumDate={new Date()}
+                />    
+            </ViewFormulario>
+
+            <ViewFormulario theme={themeMode}>
+                <Subtitulo theme={themeMode}>VALOR DO SEU OBJETIVO</Subtitulo>
+                <CurrencyInput
+                    placeholder="Valor do objetivo desejado"
+                    onChangeValue={ (value) => setValorObjetivo(value) }
+                    value={valorObjetivo}
+                    prefix="R$"
+                    delimiter="."
+                    separator=","
+                    minValue={0}
+                    renderTextInput={textInputProps => <Input {...textInputProps} variant='filled' />}
+                />
+            </ViewFormulario>
+
+            <AreaButton>
+                <Buttons onPress={ adicionarObjetivo } theme={themeMode}>
+                    <TextButtons>Simular</TextButtons>
+                </Buttons>
+
+                <Buttons onPress={ () => navigation.navigate('Consultar') } theme={themeMode}>
+                    <TextButtons>Consulte</TextButtons>
+                </Buttons>
+            </AreaButton>
 
             <Modal visible={modalVisible} animationType="fade">
                 <Simular 
                     setVisible={ () => setModalVisible(false)}
                     data={objetivoSelect}
                     dataPrevista={dataPrevista}
-                    valorMensal={Number(valorMensal.replace(',','.'))}
+                    valorMensal={Number(valorMensal)}
                     dataFormat={dataFormat}
-                    valorObjetivo={Number(valorObjetivo.replace(',','.'))}
+                    valorObjetivo={Number(valorObjetivo)}
                 />
             </Modal>                
             
-        </View>
+        </Container>
     )
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    view1: {
-        alignItems: 'center',
-        backgroundColor: '#fff',
-        marginVertical: '3%'
-    },
-    viewCont: {
-        alignItems: 'center',
-        backgroundColor: '#fff',
-        flex: 1
-    },
-    areaBtn: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginVertical: 30,
-    },
-    titulo: {
-        color: '#161F4E',
-        fontSize: 25,
-        textAlign: 'center',
-        fontWeight: '600',
-        marginVertical: 40
-    },
-    subtitulo: {
-        fontSize: 20,
-        color: '#161F4E',
-        marginLeft: '3%',
-        marginBottom: 15,
-        fontWeight: '600'
-    },
-    input: {
-        borderWidth: 2,
-        borderRadius: 10,
-        fontSize: 20,
-        padding: 10,
-        width: ITEM_WIDTH,
-        textAlign: 'center',
-    },
-    btn: {
-        backgroundColor: '#161F4E',
-        borderRadius: 50,
-        width: 200,
-        height: 50,
-        justifyContent: 'center'
-    },
-    textoBtn: {
-        color: '#FFF',
-        fontSize: 25,
-        textAlign: 'center',
-        fontWeight: 'bold',
-    },
-    pickerObj: {
-        borderWidth: 2,
-        borderRadius: 10,      
-    },
-    form: {
-        marginVertical: 10,
-    },
-    btnDate: {
-        marginHorizontal: 10,
-        flexDirection: 'row',
-        width: ITEM_WIDTH,
-        justifyContent: 'space-between',
-        borderWidth: 2,
-        borderRadius: 10,
-        padding: 8
-    },
-    simBtn: {
-        backgroundColor: '#161F4E',
-        borderRadius: 10,
-        width: ITEM_WIDTH,
-        height: 50,
-        justifyContent: 'center',
-    },
-    textoSimBtn: {
-        color: '#FFF',
-        fontSize: 25,
-        textAlign: 'center',
-        fontWeight: 'bold',
-    },
-    areaBtn1: {
-        borderTopColor: '#161F4E',
-        borderTopWidth: 2,
-        paddingVertical: 30,
-        alignItems: 'center',
-    },
-})

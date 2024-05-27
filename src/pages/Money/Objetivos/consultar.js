@@ -5,7 +5,6 @@ import { View, Text, TouchableOpacity, StyleSheet, FlatList, Alert, Modal, Activ
 import firebase from '../../../../database/FirebaseConnection'
 
 // Tema
-import ThemeContext from '../../../contexts/ThemeContext'
 import appTheme from '../../../themes/Themes'
 
 // Componente de consulta
@@ -19,10 +18,9 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function Consultar(){
 
-    const { user } = useContext(AuthContext)
+    const { user, themeMode } = useContext(AuthContext)
     const [objetivo, setObjetivo] = useState([])
     const navigation = useNavigation()
-    const [themeMode] = useContext(ThemeContext)
     const [loading, setLoading] = useState(false)
 
     useEffect( () => {

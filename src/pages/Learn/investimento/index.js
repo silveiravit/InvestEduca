@@ -3,12 +3,12 @@ import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { FontAwesome } from '@expo/vector-icons';
 
 // Tema
-import ThemeContext from '../../../contexts/ThemeContext'
+import { AuthContext } from "../../../contexts/auth";
 import appTheme from '../../../themes/Themes'
 
 export default function Investimento(){
 
-    const [themeMode] = useContext(ThemeContext)
+    const { themeMode } = useContext(AuthContext)
 
     return(
         <View style={ [styles.container, appTheme[themeMode]] }>

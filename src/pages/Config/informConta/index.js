@@ -5,13 +5,15 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { AuthContext } from "../../../contexts/auth";
 
 // Tema
-import ThemeContext from '../../../contexts/ThemeContext'
 import appTheme from '../../../themes/Themes'
 
 export default function InformConta(){
 
-    const { email, resetPassword, username } = useContext(AuthContext)
-    const [themeMode] = useContext(ThemeContext)
+    const { email, resetPassword, username, themeMode } = useContext(AuthContext)
+
+    function trocarSenha(){
+        resetPassword(email)
+    }
 
     return(
         <View style={ [styles.container, appTheme[themeMode]] }>
@@ -29,7 +31,7 @@ export default function InformConta(){
                 </View>
 
                 <View style={ styles.informacoes }>
-                    <TouchableOpacity onPress={ resetPassword }>
+                    <TouchableOpacity onPress={ trocarSenha }>
                         <Text style={ [styles.titulo, appTheme[themeMode]] }>Trocar Senha</Text>
                     </TouchableOpacity>
                 </View>

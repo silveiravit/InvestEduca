@@ -8,7 +8,7 @@ export default function CampoConsulta({ data, deleteItem }){
 
     return(
         <View style={ styles.container }>
-            <TouchableOpacity onPress={ () => deleteItem(data.key) }>
+            <TouchableOpacity onLongPress={ () => deleteItem(data.key) }>
                 <View style={ styles.campoRegisto }>  
                     <View>
                         <Text style={ styles.text }>Objetivo: { data.nomeObjetivo } </Text>

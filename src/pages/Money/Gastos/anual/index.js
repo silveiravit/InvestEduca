@@ -1,5 +1,44 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions, FlatList, Modal, TouchableWithoutFeedback, ActivityIndicator } from "react-native";
+import { View, Text, FlatList, Modal, TouchableWithoutFeedback, ActivityIndicator } from "react-native";
+
+import DateTimePicker from "react-native-modal-datetime-picker";
+
+import { RadioButton } from 'react-native-paper'
+
+import format from "date-fns/format";
+
+import Lancamentos from "../../../../components/Lancamentos";
+
+import {
+    Container,
+    Titulo,
+    CampoTitulo,
+    Registro,
+    ContainerAno,
+    TituloAno,
+    ContainerModalClick,
+    ModalClickMes,
+    ButtonFeito,
+    ButtonFeito1,
+    ButtonTextFeito,
+    ButtonTextFeito1,
+    ContainerCarregar,
+    ButtonAno,
+    ContainerLancamento,
+    LancamentosGastos,
+    ContainerExtratoFiltro,
+    AreaButton,
+    TextFiltro,
+    ButtonData,
+    TextData,
+    AreaButtonData,
+    ContainerTextFiltro,
+    AreaButtonLancamento,
+    ButtonLancamento,
+    TextLancamento,
+    ContainerDataInicial,
+    ContainerTipoLancamento
+} from '../styles/styles'
 
 // Componente de autenticação
 import { AuthContext } from "../../../../contexts/auth";
@@ -7,212 +46,222 @@ import { AuthContext } from "../../../../contexts/auth";
 // Conexão firebase
 import firebase from '../../../../../database/FirebaseConnection'
 
-// Componente dos meses
-import Meses from "./meses";
-
 // Biblioteca de icones
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
-
-
-// Tema
-import ThemeContext from "../../../../contexts/ThemeContext";
-import appTheme from "../../../../themes/Themes";
-
-// Dimensões da tela
-const SLIDER_WIDTH = Dimensions.get('window').width
-const ITEM_WIDTH = SLIDER_WIDTH * 0.95
 
 export default function Anual(){
 
     const [loading, setLoading] = useState(false)
 
-    // Context de Tema
-    const [themeMode] = useContext(ThemeContext)
+    // paginas
+    const perPage = 4
+    const [page, setPage] = useState(1)
+    const [datas, setData] = useState([])
+    
     // Context de Usuário
-    const { user } = useContext(AuthContext)
-
-    // Constantes de objetos dos meses
-    const [meses] = useState([
-        { key: 0, mes: 'Janeiro'},
-        { key: 1, mes: 'Fevereiro'},
-        { key: 2, mes: 'Março'},
-        { key: 3, mes: 'Abril'},
-        { key: 4, mes: 'Maio'},
-        { key: 5, mes: 'Junho'},
-        { key: 6, mes: 'Julho'},
-        { key: 7, mes: 'Agosto'},
-        { key: 8, mes: 'Setembro'},
-        { key: 9, mes: 'Outubro'},
-        { key: 10, mes: 'Novembro'},
-        { key: 11, mes: 'Dezembro'},
-    ])
+    const { user, themeMode } = useContext(AuthContext)   
 
     // Exibir modal mensal
     const [modalVisible, setModalVisible] = useState(false)
-
-    // Exibir mês selecionado
-    const [mesPress, setMesPress] = useState('')
+    const [checked, setChecked] = useState(null)
 
     // Valor mensal registrado
-    const [valorMensal, setValorMensal] = useState()
+    const [valor, setValor] = useState(0)
     
     // Definir a data selecionada
-    const [anoAtual] = useState(new Date())
-    let anoCad = anoAtual.getFullYear()
-
-    // State para filtrar pelo mês
-    const [mesCad, setMesCad] = useState(null);
+    const [dataInicial, setDataInicial] = useState(null)
+    const [dataFinal, setDataFinal] = useState(null)
+    const [showDate, setShowDate] = useState(false)
+    const [showDateFinal, setShowDateFinal] = useState(false)
     
     useEffect( () => {
+        if(dataInicial !== null && dataFinal !== null){
+            filtroData()
+        }else{
+            extrato()
+        }
+    }, [checked])
 
-        firebase.database().ref('Gastos').child(user).orderByChild('mesCadastro').equalTo(mesCad).on('value', (snapshot) => {
-
-            setValorMensal([])
-            let gasto = []
+    function extrato(){
+        firebase.database().ref('Gastos').child(user).limitToLast(4).on('value', (snapshot) => {
+            setValor([])
             snapshot?.forEach( (childItem) => {
                 let data = {
                     key: childItem.key,
                     nomeGasto: childItem.val().nomeGasto,
                     valorGasto: childItem.val().valorGasto,
-                    mesCadastro: childItem.val().mesCadastro,
-                    anoCadastro: childItem.val().anoCadastro
+                    data: childItem.val().data
                 }
-                gasto.push(data.valorGasto)
+                setValor(oldData => [...oldData, data])
             })
-            let total = gasto.reduce((a, b) => a + b, 0)
-            setValorMensal(total)
-            
         })
+    }   
+    function filtroData(){
+        firebase.database().ref('Gastos').child(user).orderByChild('data').startAt(dataInicial).endAt(dataFinal).on('value', (snapshot) => {
+            setValor([])
+            snapshot?.forEach( (childItem) => {
+                let data = {
+                    key: childItem.key,
+                    nomeGasto: childItem.val().nomeGasto,
+                    valorGasto: childItem.val().valorGasto,
+                    data: childItem.val().data
+                }
+                setValor(oldData => [...oldData, data])
+            })
+        })
+    }   
 
-    }, [mesCad])
-
-
-    function keyMes(key){
-        setLoading(true)
-        setTimeout( () => {
-            setMesCad(key)
-            setLoading(false)
-        }, 1000)
-            
+    function handleConfirmDataInicial(date){
+        const formatDataInicial = format(new Date(date), "dd/MM/yyyy")
+        setDataInicial(formatDataInicial)
+        hideDatePicker()
     }
-
-    function handleMes(mes){
-        setTimeout( () => {
-            setModalVisible(true)
-            setMesPress(mes)
-        }, 1500) 
+    function handleConfirmDataFinal(date){
+        const formatDataFinal = format(new Date(date), "dd/MM/yyyy")
+        setDataFinal(formatDataFinal)
+        hideDatePicker()
+    }
+    function hideDatePicker(){
+        setShowDate(false)
+        setShowDateFinal(false)
+    }   
+    function filtrar(){
+        setModalVisible(false)
+    }
+    function redefinir(){
+        setValor(null)
+        setDataInicial(null)
+        setDataFinal(null)
+        setChecked(null)
+    }
+    function changeType(type){
+        if(type == 'Receita'){
+            setChecked('Receita')
+        }else{
+            setChecked('Despesa')
+        }
     }
 
     return(
-        <View style={ [styles.container, appTheme[themeMode]] }>
+        <Container theme={themeMode}>
+            <CampoTitulo>
+                <Titulo theme={themeMode}>Extrato</Titulo>
+            </CampoTitulo>
             <Modal transparent visible={loading}>
-                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                <ContainerCarregar>
                     <ActivityIndicator 
                         size={100}
                         color={'#fff'}
                         animating={true}
                     />
-                </View>
+                </ContainerCarregar>
             </Modal>
-
-            <View style={ styles.registros }>
-                
-                <TouchableOpacity style={ styles.areaAno } >
-                    <Text style={ styles.ano }>{ anoAtual.getFullYear() }</Text>
-                </TouchableOpacity>
-
-                <View style={ [styles.areaMes, { backgroundColor: themeMode === 'light' ? '#161F4E' : '#481298', borderColor: '#E9AB43'}] }>                
-                    <TouchableOpacity>
+            <Registro>
+                <ContainerAno color={themeMode}>
+                    <ContainerLancamento>
+                        <TituloAno color={themeMode}>Lançamentos</TituloAno>
+                    </ContainerLancamento>
+                    <ButtonAno onPress={() => setModalVisible(true)}>
+                        <MaterialCommunityIcons name="filter-menu" size={30} color={themeMode === 'light'?'#161f4e':'#fff'}/>
+                    </ButtonAno>
+                </ContainerAno>
+                <LancamentosGastos>
+                    { valor == 0 ? (
+                        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                            <Text style={{color: themeMode === 'light'?'#000':'#fff', fontSize: 20, fontWeight: 600}}>Não há lançamentos</Text>
+                        </View>
+                    ):(
                         <FlatList
-                            data={meses}
-                            keyExtractor={ (item) => item.key }
-                            renderItem={ ({item}) => (
-                                <Meses data={item} handleMes={handleMes} keyMes={keyMes}/>
+                            showsVerticalScrollIndicator={false}
+                            data={valor}
+                            keyExtractor={(item) => item.key}
+                            renderItem={({item}) => (
+                                <Lancamentos 
+                                data={item}
+                                />
                             )}
+                            
                         />
-                    </TouchableOpacity>
-                </View>
-
-            </View>
-
+                        )
+                    }
+                </LancamentosGastos>
+            </Registro>
             <Modal visible={modalVisible} transparent={true} animationType="fade">
                 <TouchableWithoutFeedback onPress={ () => setModalVisible(false) }>
-                    <View style={{ flex: 1, backgroundColor: '#ffffff88'}}></View>
+                    <ContainerModalClick></ContainerModalClick>
                 </TouchableWithoutFeedback>
-
-                <View style={ styles.mesModal }>
-                    <Text style={ styles.textMes }> Extrato do mês de { mesPress }: </Text>
-
-                    <Text style={ [styles.totalMes, { color: valorMensal > 0 ? '#27E309' : '#ff0000'} ] }>{ Number(valorMensal).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}) }</Text>
-
-                    <TouchableOpacity style={ styles.btnFeito } onPress={ () => setModalVisible(false) } >
-                        <Text style={{ fontSize: 20, color: '#fff', fontWeight: '600'}}>CONCLUÍDO </Text>
-                        <AntDesign name="check" size={30} color="white" />
-                    </TouchableOpacity>
-                </View>
+                <ModalClickMes>
+                    <ContainerExtratoFiltro>
+                        <ContainerTextFiltro>
+                            <TextFiltro>Filtro</TextFiltro>
+                        </ContainerTextFiltro>
+                        <AreaButtonData>
+                            <ButtonData onPress={() => setShowDate(true)}>
+                                <ContainerDataInicial>
+                                    <AntDesign name="calendar" size={30} color="black" />
+                                    <TextData>Data Inicial {dataInicial && `- ${dataInicial}`}</TextData>
+                                </ContainerDataInicial>
+                                <AntDesign name="right" size={30} color="black" />
+                            </ButtonData>
+                            <DateTimePicker
+                                mode="date"
+                                isVisible={showDate}
+                                onConfirm={handleConfirmDataInicial}
+                                onCancel={hideDatePicker}
+                                maximumDate={new Date()}
+                            />
+                            <ButtonData onPress={() => setShowDateFinal(true)}>
+                                <ContainerDataInicial>
+                                    <AntDesign name="calendar" size={30} color="black" />
+                                    <TextData>Data Final {dataFinal && `- ${dataFinal}`}</TextData>
+                                </ContainerDataInicial>
+                                <AntDesign name="right" size={30} color="black" />
+                            </ButtonData>
+                            <DateTimePicker
+                                mode="date"
+                                isVisible={showDateFinal}
+                                onConfirm={handleConfirmDataFinal}
+                                onCancel={hideDatePicker}
+                                maximumDate={new Date()}
+                            />
+                        </AreaButtonData>
+                        <ContainerTextFiltro>
+                            <TextFiltro>Tipo de lançamento</TextFiltro>
+                        </ContainerTextFiltro>
+                        <AreaButtonLancamento>
+                            <ButtonLancamento onPress={() => changeType('Receita')}>
+                                <ContainerTipoLancamento>
+                                    <AntDesign name="arrowup" size={30} color="black" />
+                                    <TextLancamento>Entradas</TextLancamento>
+                                </ContainerTipoLancamento>
+                                <RadioButton
+                                    value="Receita"
+                                    status={ checked === 'Receita' ? 'checked' : 'unchecked' }
+                                />
+                            </ButtonLancamento>
+                            <ButtonLancamento onPress={() => changeType('Despesa')}>
+                                <ContainerTipoLancamento>
+                                    <AntDesign name="arrowdown" size={30} color="black" />
+                                    <TextLancamento>Saídas</TextLancamento>
+                                </ContainerTipoLancamento>
+                                <RadioButton
+                                    value="Despesa"
+                                    status={ checked === 'Despesa' ? 'checked' : 'unchecked' }
+                                />
+                            </ButtonLancamento>                   
+                        </AreaButtonLancamento>
+                    </ContainerExtratoFiltro>
+                    <AreaButton>
+                        <ButtonFeito onPress={redefinir} >
+                            <ButtonTextFeito>redefinir</ButtonTextFeito>
+                        </ButtonFeito>
+                        <ButtonFeito1 onPress={filtrar} >
+                            <ButtonTextFeito1>ok</ButtonTextFeito1>
+                        </ButtonFeito1>
+                    </AreaButton>
+                </ModalClickMes>
             </Modal>
-            
-        </View>
+        </Container>
     )
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center'
-    },
-    registros: {
-        backgroundColor: '#E9AB43',
-        borderWidth: 2,
-        borderRadius: 10,
-        width: ITEM_WIDTH,
-        marginVertical: 20,
-        paddingVertical: 20
-    },
-    areaMes: {
-        backgroundColor: '#161F4E',
-        margin: 10,
-        borderRadius: 10,
-        padding: 10,
-        height: 250
-    },
-    ano: {
-        color: '#000',
-        textAlign: 'center',
-        fontSize: 25,
-        fontWeight: '600',
-        marginHorizontal: 10
-    },
-    areaAno: {
-        marginBottom: 20,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    mesModal: {
-        height: 200,
-        backgroundColor: '#fff',
-        justifyContent: 'space-around',
-        borderWidth: 1,
-        borderColor: '#161F4E'
-    },
-    textMes: {
-        fontSize: 20,
-        textAlign: 'center'
-    },
-    totalMes: {
-        fontSize: 20,
-        fontWeight: '600',
-        textAlign: 'center'
-    },
-    btnFeito: {
-        backgroundColor: '#161F4E', 
-        marginTop: 20, 
-        marginHorizontal: 20,
-        borderRadius: 10, 
-        alignItems: 'center', 
-        padding: 10,
-        flexDirection: 'row',
-        justifyContent: 'center'
-    }
-})

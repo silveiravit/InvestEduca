@@ -1,45 +1,13 @@
-import React from "react"
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
+import React, { useContext } from "react"
 
-// Componentes das telas
-import Diario from './diario'
-import Anual from './anual'
-import Mensal from './mensal'
+import BottomTabMoney from "../../../components/BottomTabMoney"
 
-// Constante de navegação
-const Tab = createMaterialTopTabNavigator()
+import { AuthContext } from "../../../contexts/auth"
 
 export default function Gasto(){
-
+    const { themeMode } = useContext(AuthContext)
+    
     return(
-        <Tab.Navigator   
-            screenOptions={{
-                headerShown: false,
-                tabBarActiveTintColor: '#161F4E',
-                tabBarLabelStyle: { fontSize: 20, fontWeight: '600'},
-                tabBarStyle: {
-                    backgroundColor: '#E9AB43',
-                    height: 100,
-                    justifyContent: 'center',
-                    borderBottomWidth: 2,
-                },      
-            }}
-        >
-            <Tab.Screen
-                name="Diário"
-                component={Diario}
-            />
-
-            <Tab.Screen
-                name="Mensal"
-                component={Mensal}
-            />
-
-            <Tab.Screen
-                name="Anual"
-                component={Anual}
-            />
-
-        </Tab.Navigator>
+        <BottomTabMoney theme={themeMode}/>
     )
 }

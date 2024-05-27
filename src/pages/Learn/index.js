@@ -5,8 +5,8 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useNavigation } from '@react-navigation/native'
 
 // Temas
-import ThemeContext from "../../contexts/ThemeContext";
 import appTheme from "../../themes/Themes";
+import { AuthContext } from "../../contexts/auth";
 
 export default function Learn(){
 
@@ -14,7 +14,7 @@ export default function Learn(){
     const navigation = useNavigation()
 
     // Context do tema
-    const [themeMode] = useContext(ThemeContext)
+    const { themeMode } = useContext(AuthContext)
 
     return(
         <View style={ [styles.container, appTheme[themeMode]] }>
@@ -84,10 +84,11 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        backgroundColor: '#fff'
+        backgroundColor: '#fff',
+        padding: 15
     },
     assunto: {
-        width: '90%',
+        width: '100%',
         backgroundColor: '#161F4EEB',
         borderRadius: 20,
         flexDirection: 'row',

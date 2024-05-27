@@ -1,5 +1,10 @@
-import react, { useState, useContext } from 'react'
+import react, { useState, useContext, useEffect } from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, ActivityIndicator, Modal, Dimensions } from 'react-native';
+
+// Styles
+import {
+
+} from './styles/styles'
 
 // Biblioteca de icones
 import { AntDesign } from '@expo/vector-icons';
@@ -8,7 +13,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native'
 
 // Tema
-import ThemeContext from '../../contexts/ThemeContext'
+import { AuthContext } from '../../contexts/auth';
 
 // Dimensões da tela
 const SLIDER_WIDTH = Dimensions.get('window').width
@@ -19,18 +24,30 @@ export default function Inicio(){
     // Constante de navegação
     const navigation = useNavigation()
 
+    const { themeMode } = useContext(AuthContext)
+
     // State de loading
     const [loading, setLoading] = useState(false)
 
     // Context do tema
-    const [themeMode] = useContext(ThemeContext)
+
+    useEffect(() => {
+        setLoading(true)
+        function iniciar(){
+            setTimeout( () => {
+                navigation.navigate('Login')
+                setLoading(false)
+            })
+        }
+        iniciar()
+    }, [])
 
     function proximo(){
         setLoading(true)
         setTimeout( () => {
-            navigation.navigate('Cadastro')
+            navigation.navigate('Login')
             setLoading(false)
-        }, 1000)
+        }, 2000)
     }
 
     return(

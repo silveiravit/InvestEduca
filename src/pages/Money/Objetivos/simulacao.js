@@ -2,16 +2,14 @@ import react, { useState, useContext, useEffect } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { differenceInCalendarMonths } from 'date-fns'
 
-import { FontAwesome5 } from '@expo/vector-icons';
-
 // Tema
-import ThemeContext from '../../../contexts/ThemeContext'
+import { AuthContext } from '../../../contexts/auth';
 import appTheme from '../../../themes/Themes'
 
 export default function Simular({ setVisible, data, dataPrevista, valorMensal, dataFormat, valorObjetivo }){
 
     // Context de tema
-    const [themeMode] = useContext(ThemeContext)
+    const { themeMode } = useContext(AuthContext)
 
     // Objetos de imagens
     const imagem = {
